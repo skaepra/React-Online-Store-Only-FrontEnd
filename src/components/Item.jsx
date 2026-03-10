@@ -1,0 +1,60 @@
+
+import { useGg } from "../context/gg";
+import products from "../data/products";
+
+export default function Item({id,quantity,color,image}) {
+  const {increc, decrec,increcTotal,decrecTotal,remove} = useGg();
+  const item =products.find((i)=>i.id === id);
+  const total=item.Price*quantity;
+
+  const plass = (id,color,Price) => {
+     increc(id,color)
+    increcTotal(Price);
+  };
+
+  const mines = (id,color,Price) => {
+    decrec(id,color)
+    if (quantity>1)
+    decrecTotal(Price);
+  };
+
+
+
+  return (
+    <>
+    <div className="justify-between mb-6 rounded-lg  bg-white p-6 shadow-md xs:flex xs:justify-start">
+              <img src={image} alt={item.ImageAlt} 
+              className="w-full aspect-[4/3] overflow-hidden rounded-lg  max-h-44 lg:max-h-32 lg:w-[250px] object-fill  "
+                />
+              <div className="xs:ml-4 xs:flex xs:w-full xs:justify-between">
+                <div className="mt-5 xs:mt-0">
+                  <h2 className="text-lg font-bold text-gray-900">{item.Name} {color}</h2>
+                  <p className="mt-1 text-xs text-gray-700">{item.Price}</p>
+                </div>
+                <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+                  <div className="flex items-center border-gray-100">
+
+                    <span onClick={() =>mines(id,color,item.Price)}
+                     className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+
+                    <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> {quantity} </span>
+
+                    <span  onClick={() => plass(id,color,item.Price)}
+                    className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <p className="text-sm">{total}</p>
+
+                    <svg   onClick={() => remove(id,total,quantity, color)}
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-600">
+                      <path  d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+    </>
+  );
+  
+}
