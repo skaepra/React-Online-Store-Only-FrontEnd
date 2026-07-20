@@ -1,6 +1,7 @@
-// layout/MainLayout.jsx
+import React from "react";
 import { Outlet } from "react-router-dom";
-const MainLayout = () => {
+
+export default function MainLayout(): React.JSX.Element {
   return (
     <> 
       <div className="sm:w-[calc(100%-200px)] sm:ml-[200px]">
@@ -8,6 +9,4 @@ const MainLayout = () => {
       </div>
     </>
   );
-};
-
-export default MainLayout;
+}

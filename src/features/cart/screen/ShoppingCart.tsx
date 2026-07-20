@@ -1,7 +1,7 @@
 import { useGg } from "../../../context/gg";
-import { Item } from "../components/Item";
+import { CartItem } from "../components/CartItem";
 
-const CartItem = () => {
+export default function ShoppingCartScreen() {
   // TypeScript سيتعرف تلقائياً على أنواع storitems و Totals و quint بفضل التحديث السابق للـ Context
   const { storitems, Totals, quint } = useGg();
   const AllTotal: number = quint * 4 + Totals;
@@ -51,7 +51,7 @@ const CartItem = () => {
                     <ul key={index}>
                       <li>
                         {/* تمرير خصائص العنصر بأمان الكامل مع Type Safety */}
-                        <Item {...item} />
+                        <CartItem {...item} />
                       </li>
                     </ul>
                   ))}
@@ -89,4 +89,3 @@ const CartItem = () => {
   }
 };
 
-export default CartItem;

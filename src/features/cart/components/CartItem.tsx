@@ -17,7 +17,7 @@ interface ItemProps {
   image: string|number; // رابط الصورة الممرر لعنصر السلة
 }
 
-export function Item({ id, quantity, color, image }: ItemProps) {
+export function CartItem({ id, quantity, color, image }: ItemProps) {
   const { increc, decrec, increcTotal, decrecTotal, remove } = useGg();
   
   // البحث عن المنتج مع التأكد من مطابقة نوع المعرّف واستخدام الكاستينج لقائمة المنتجات

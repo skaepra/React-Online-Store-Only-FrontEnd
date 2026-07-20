@@ -7,7 +7,7 @@ interface LoginValues {
   Remamper: boolean; // (Remember me)
 }
 
-const Login = () => {
+export default function LoginScreen (){
   const [values, setValues] = useState<LoginValues>({
     Email: "",
     Password: "",
@@ -104,4 +104,3 @@ const Login = () => {
   );
 };
 
-export default Login;

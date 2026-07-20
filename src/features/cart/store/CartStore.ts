@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import * as SecureStore from "expo-secure-store";
 import { CartItem } from "../types/CartItem";
-
-
 
 // 2. واجهة الـ Store
 type CartState = {
@@ -22,13 +19,13 @@ type CartState = {
 // 3. مهايئ Expo Secure Store
 const secureStorageAdapter = {
   getItem: async (name: string): Promise<string | null> => {
-    return await SecureStore.getItemAsync(name);
+    return await localStorage.getItemAsync(name);
   },
   setItem: async (name: string, value: string): Promise<void> => {
-    await SecureStore.setItemAsync(name, value);
+    await localStorage.setItemAsync(name, value);
   },
   removeItem: async (name: string): Promise<void> => {
-    await SecureStore.deleteItemAsync(name);
+    await localStorage.deleteItemAsync(name);
   },
 };
 
