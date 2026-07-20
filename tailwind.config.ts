@@ -1,9 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from 'tailwindcss'
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
-      xs:'480px',
+      xs: '480px',
       sm: '600px',
       md: '768px',
       lg: '976px',
@@ -12,6 +13,5 @@ export default {
     extend: {},
   },
   plugins: [],
-
   darkMode: "class",
-};
+} satisfies Config
