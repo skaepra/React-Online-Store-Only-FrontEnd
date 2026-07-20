@@ -42,7 +42,7 @@ git clone https://github.com/YourUsername/React-Online-Store.git
 Move into the project
 
 ```bash
-cd React-Online-Store
+cd React-Online-Store-Only-FrontEnd
 ```
 
 Install dependencies
