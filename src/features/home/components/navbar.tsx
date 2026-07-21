@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useGg } from "../../../context/gg";
+// 1. استيراد useCartStore بدلاً من Context
 import { Taggol } from "../../dark-mode/taggol";
 import { useThemeMode } from "../../dark-mode/dark";
+import { useCartStore } from "../../cart/store/useCartStore";
 
 interface NavItem {
   name: string;
   link: string;
 }
 
-
 export default function Newnav() {
   const [isvisible, setisvisible] = useState<boolean>(true);
   const [list, setlist] = useState<boolean>(true);
 
   const { mode, toggleMode } = useThemeMode() as { mode: string; toggleMode: () => void };
-  const { quint } = useGg() as { quint: number };
+  
+  // 2. سحب عدد العناصر (quint) من السلة
+  const quint = useCartStore((state) => state.quint);
 
   const navitem: NavItem[] = [
     { name: "Home", link: "/" },

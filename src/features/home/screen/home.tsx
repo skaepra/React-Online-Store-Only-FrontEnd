@@ -1,22 +1,23 @@
 import { Buylist } from "../../products/screen/buy-list";
 import products from "../../../data/products";
-import { useGg } from "../../../context/gg";
-import { motion } from "framer-motion";
+// 1. استيراد useProductUiStore بدلاً من Context
 
-// 1. تعريف واجهة البيانات الخاصة بالمنتج (Product Interface)
-// يمكنك نقل هذا الـ interface إلى ملف منفصل (مثل types.ts) واستيراده إذا كنت تستخدمه في أكثر من مكان.
+import { motion } from "framer-motion";
+import { useProductUiStore } from "../../products/store/useProductUiStore";
+
 interface Product {
-     id: number;
-    Name: string;
-    Images: string[];
-    ImageAlt: string;
-    Price: number;
-    Colors: string[];
-    Description: string;
+  id: number;
+  Name: string;
+  Images: string[];
+  ImageAlt: string;
+  Price: number;
+  Colors: string[];
+  Description: string;
 }
 
 export default function Home() {
-  const { hand } = useGg();
+  // 2. استخدام دالة hand من الـ UI Store لفتح تفاصيل المنتج
+  const hand = useProductUiStore((state) => state.hand);
 
   return (
     <>

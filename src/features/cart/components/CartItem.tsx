@@ -1,5 +1,6 @@
-import { useGg } from "../../../context/gg";
+
 import products from "../../../data/products";
+import { useCartStore } from "../store/useCartStore";
 
 // 1. تعريف أنواع البيانات
 interface DatabaseProduct {
@@ -16,9 +17,13 @@ interface ItemProps {
   image: string | number;
 }
 
-
 export function CartItem({ id, quantity, color, image }: ItemProps) {
-  const { increc, decrec, increcTotal, decrecTotal, remove } = useGg();
+  // سحب دوال التحكم في السلة من useCartStore
+  const increc = useCartStore((state) => state.increc);
+  const decrec = useCartStore((state) => state.decrec);
+  const increcTotal = useCartStore((state) => state.increcTotal);
+  const decrecTotal = useCartStore((state) => state.decrecTotal);
+  const remove = useCartStore((state) => state.remove);
 
   const item = (products as DatabaseProduct[]).find(
     (i) => Number(i.id) === Number(id)

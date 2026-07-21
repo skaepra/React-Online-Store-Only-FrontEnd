@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import { useGg } from "../../../context/gg";
+import { useEffect } from "react";
+// 1. استيراد useProductUiStore بدلاً من Context
+
 import products from "../../../data/products";
+import { useProductUiStore } from "../store/useProductUiStore";
 
 interface ProductItem {
   id: string | number;
@@ -12,29 +14,29 @@ interface ProductItem {
 }
 
 export const Image = () => {
-  const { imagenumper, show, setimage, image, setcolor } = useGg();
+  // 2. سحب البيانات والدوال المطلوبة من useProductUiStore
+  const imagenumper = useProductUiStore((state) => state.imagenumper);
+  const show = useProductUiStore((state) => state.show);
+  const image = useProductUiStore((state) => state.image);
+  const setImage = useProductUiStore((state) => state.setImage);
+  const setColor = useProductUiStore((state) => state.setColor);
 
-  // البحث عن المنتج وعمل كاستينج لنوعه
   const item = products.find((i) => i.id === show.id) as ProductItem | undefined;
 
   useEffect(() => {
-    // شرط حماية: تأكد أولاً من وجود المنتج
     if (!item) return;
 
-    // الوصول المباشر للعنصر بالفهرس (Index)
     const currentImage = item.Images[imagenumper];
     if (currentImage !== undefined) {
-      setimage(currentImage);
+      setImage(currentImage);
     }
 
     const currentColor = item.Colors[imagenumper];
     if (currentColor !== undefined) {
-      setcolor(currentColor);
+      setColor(currentColor);
     }
-    // إزالة 'item' من هنا لمنع حلقات الريندر اللانهائية (Infinite Loops)
-  }, [imagenumper, show.id, setimage, setcolor]);
+  }, [imagenumper, show.id, setImage, setColor]);
 
-  // إذا لم يتم العثور على المنتج، لا تعرض الصورة
   if (!item) return null;
 
   return (

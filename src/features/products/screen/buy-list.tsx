@@ -1,7 +1,9 @@
-import { useGg } from "../../../context/gg";
+
 import products from "../../../data/products";
+import { useCartStore } from "../../cart/store/useCartStore";
 import { Color } from "../components/color";
 import { Image } from "../components/image";
+import { useProductUiStore } from "../store/useProductUiStore";
 
 interface ProductItem {
   id: string | number;
@@ -13,7 +15,15 @@ interface ProductItem {
 }
 
 export const Buylist = () => {
-  const { visbil, hand, show, add } = useGg();
+
+  const visbil = useProductUiStore((state) => state.visbil);
+  const hand = useProductUiStore((state) => state.hand);
+  const show = useProductUiStore((state) => state.show);
+  const color = useProductUiStore((state) => state.color);
+  const image = useProductUiStore((state) => state.image);
+
+  const add = useCartStore((state) => state.add);
+
 
   // التأكد من وجود شو وتطابق المعرف
   const item = show.id 
@@ -22,8 +32,9 @@ export const Buylist = () => {
 
   const addcart = (id: string | number) => {
     if (item) {
-      add(id, item.Price);
-      hand(id);
+      // نمرر الـ color والـ image المختارين حالياً من الـ UI Store إلى السلة
+      add(id, item.Price, color, image);
+      hand(id); // لإغلاق النافذة
     }
   };
 

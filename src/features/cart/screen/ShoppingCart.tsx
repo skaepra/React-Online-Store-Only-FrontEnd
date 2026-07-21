@@ -1,10 +1,13 @@
-import { useGg } from "../../../context/gg";
+
 import { CartItem } from "../components/CartItem";
-
-
+import { useCartStore } from "../store/useCartStore";
 
 export default function ShoppingCartScreen() {
-  const { storitems, Totals, quint } = useGg();
+  // سحب حالات السلة من useCartStore
+  const storitems = useCartStore((state) => state.storitems);
+  const Totals = useCartStore((state) => state.Totals);
+  const quint = useCartStore((state) => state.quint);
+
   const AllTotal: number = quint * 4 + Totals;
 
   // حالة السلة الفارغة
