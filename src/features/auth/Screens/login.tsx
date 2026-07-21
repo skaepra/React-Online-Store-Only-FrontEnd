@@ -1,20 +1,21 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 
-// 1. تعريف واجهة المستخدم لبيانات الفورم (Form Interface)
+// 1. تعريف واجهة المستخدم لبيانات الفورم
 interface LoginValues {
   Email: string;
   Password: string;
-  Remamper: boolean; // (Remember me)
+  Remember: boolean;
 }
 
-export default function LoginScreen (){
+
+
+export default function LoginScreen() {
   const [values, setValues] = useState<LoginValues>({
     Email: "",
     Password: "",
-    Remamper: false,
+    Remember: false,
   });
 
-  // 2. تحديث الأنواع لدالة التغيير مع دعم الـ Checkbox والـ Text inputs معاً بأمان
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
     setValues({
@@ -23,84 +24,127 @@ export default function LoginScreen (){
     });
   };
 
-  // 3. تحديد نوع حدث الإرسال (Form Submit Event)
-  const onSubmit = (event: FormEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setValues({
       Email: "",
       Password: "",
-      Remamper: false,
+      Remember: false,
     });
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url(public/toje.jpg)] bg-center bg-cover bg-no-repeat">
-      <div className="space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[320px] h-[340px] back rounded-lg">
+    <div className={styles.screenWrapper}>
+      <form onSubmit={onSubmit} className={styles.card}>
         <div>
-          <a href="/" className="absolute top-4 left-4 right-0 w-0 h-0 bg-black">
-            <svg className="w-6 h-6 text-white rounded-3xl border-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+          <a href="/" className={styles.backLink} aria-label="Back to home">
+            <svg
+              className={styles.backIcon}
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14M5 12l4-4m-4 4 4 4"
+              />
             </svg>
           </a>
 
-          <div className="flex justify-center">
-            <h1 className="font-bold w-11 mb-2 mr-5 text-2xl text-white">Login</h1>
+          <div className={styles.titleContainer}>
+            <h1 className={styles.title}>Login</h1>
           </div>
         </div>
 
-        <div className="space-y-5">
-          <input 
-            type="email"  
-            name="Email" 
-            value={values.Email} 
+        <div className={styles.inputsContainer}>
+          <input
+            type="email"
+            name="Email"
+            value={values.Email}
             onChange={onChangeHandler}
-            className="p-4 w-full h-10 border-solid border-[2px] border-[#9e9e9e] bg-transparent rounded-2xl text-white"
-            placeholder="Your Email" 
-            required 
+            className={styles.input}
+            placeholder="Your Email"
+            required
           />
 
-          <input 
-            type="password" 
-            name="Password"  
-            value={values.Password} 
+          <input
+            type="password"
+            name="Password"
+            value={values.Password}
             onChange={onChangeHandler}
-            className="p-4 w-full h-10 border-solid border-[2px] border-[#9e9e9e] bg-transparent rounded-2xl text-white"
-            placeholder="password" 
-            required 
+            className={styles.input}
+            placeholder="Password"
+            required
           />
         </div>
 
-        <div className="flex">
-          <input  
-            type="checkbox" 
-            name="Remamper"  
-            checked={values.Remamper} 
+        <div className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            id="remember"
+            name="Remember"
+            checked={values.Remember}
             onChange={onChangeHandler}
-            className="border bg-transparent"
+            className={styles.checkbox}
           />
-          <h1 className="ml-2">Remember me</h1>
+          <label htmlFor="remember" className={styles.checkboxLabel}>
+            Remember me
+          </label>
         </div>
 
         <div>
-          <button 
-            type="submit" 
-            onClick={onSubmit}
-            // تم تصحيح values.Name إلى values.Email ليعمل شرط التعطيل بشكل سليم مع الـ TypeScript
-            disabled={values.Email === "" || values.Password === ""} 
-            className="border bg-white hover:bg-[#e6e4e4] font-bold w-full py-1.5 text-black rounded-2xl" 
+          <button
+            type="submit"
+            disabled={values.Email === "" || values.Password === ""}
+            className={styles.submitBtn}
           >
             Login
           </button>
         </div>
-        
-        <div className="flex justify-center">
-          <a href="sing" className="flex">
-            <span className="text-sm text-[#ececec]">Dont have an account? </span>
-            <span className="text-[15px] ml-1">Sign up</span>
+
+        <div className={styles.signupContainer}>
+          <a href="/sing" className="flex items-center">
+            <span className={styles.signupText}>Don't have an account?</span>
+            <span className={styles.signupLink}>Sign up</span>
           </a>
         </div>
-      </div>
+      </form>
     </div>
   );
-};
+}
 
+
+// 2. فصل كلاسات Tailwind في كائن منظم خارجي
+const styles = {
+  screenWrapper: "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('/toje.jpg')] bg-center bg-cover bg-no-repeat",
+  card: "relative space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[320px] backdrop-blur-sm bg-black/30 rounded-lg shadow-xl",
+  
+  // Header section
+  backLink: "absolute top-4 left-4 p-1 hover:bg-white/10 rounded-full transition-colors",
+  backIcon: "w-6 h-6 text-white rounded-full border-2",
+  titleContainer: "flex justify-center",
+  title: "font-bold text-2xl text-white mb-2",
+
+  // Form inputs
+  inputsContainer: "space-y-4",
+  input: "p-4 w-full h-10 border-2 border-[#9e9e9e] bg-transparent rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:border-white transition-colors",
+
+  // Checkbox
+  checkboxContainer: "flex items-center",
+  checkbox: "border bg-transparent rounded cursor-pointer accent-cyan-500",
+  checkboxLabel: "ml-2 text-sm select-none cursor-pointer",
+
+  // Submit button
+  submitBtn: "border bg-white hover:bg-[#e6e4e4] disabled:opacity-50 disabled:hover:bg-white font-bold w-full py-1.5 text-black rounded-2xl transition-all cursor-pointer disabled:cursor-not-allowed",
+
+  // Footer signup link
+  signupContainer: "flex justify-center text-sm",
+  signupText: "text-[#ececec]",
+  signupLink: "ml-1 font-semibold hover:underline",
+};

@@ -10,6 +10,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.btn-customrt {
+  @apply bg-blue-500 text-white transition-all;
+
+  &:hover {
+    @apply bg-blue-700 text-yellow-300 scale-105;
+  }
+}
+
 /*start roll*/
 .rolle{
   animation: roll-spin 2s forwards;

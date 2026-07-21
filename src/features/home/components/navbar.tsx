@@ -1,20 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useGg } from "../../../context/gg";
 import { Taggol } from "../../dark-mode/taggol";
 import { useThemeMode } from "../../dark-mode/dark";
 
-// 1. تعريف نوع عناصر القائمة
 interface NavItem {
   name: string;
   link: string;
 }
 
+
 export default function Newnav() {
   const [isvisible, setisvisible] = useState<boolean>(true);
   const [list, setlist] = useState<boolean>(true);
 
-  // واجهات الـ Context (تأكد من مطابقتها للملفات الأصلية لديك)
   const { mode, toggleMode } = useThemeMode() as { mode: string; toggleMode: () => void };
   const { quint } = useGg() as { quint: number };
 
@@ -28,8 +27,6 @@ export default function Newnav() {
     setlist(!list);
   };
 
-  /* nav-visible start */
-  // 2. تحديد نوع الـ Ref كرقم (number) ليتوافق مع window.scrollY
   const prevRef = useRef<number>(0);
 
   useEffect(() => {
@@ -57,45 +54,44 @@ export default function Newnav() {
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
-  /* nav-visible end */
 
   return (
     <>
       <div
-        className={`duration-100 border-gray-900 dark:bg-zinc-900 bg-[#212b46] flex justify-between text-white fixed top-0 left-0 right-0 
-        ${isvisible ? "duration-700" : "-mt-16 duration-700"}
-        h-14`}
+        className={`${styles.navBase} ${
+          isvisible ? styles.navVisible : styles.navHidden
+        }`}
       >
-        <div className="flex-none sm:flex h-14 w-28 ml-2">
-          <div className="flex items-center max-h-10 sm:mt-2.5 mt-3 max-w-24 mr-10">
+        <div className={styles.leftSection}>
+          <div className={styles.logoWrapper}>
             <img
               src="https://flowbite.com/docs/images/logo.svg"
-              className="h-8"
+              className={styles.logoImage}
               alt="Flowbite Logo"
             />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className={styles.logoText}>
               Flowbite
             </span>
           </div>
 
-          {/* button start */}
-          <div className="flex h-10 sm:mt-3 mt-5 space-x-3 items-center">
+          {/* Desktop Navigation */}
+          <div className={styles.desktopNavGroup}>
             {navitem.map((item, index) => (
               <div key={index}>
                 <NavLink
                   to={item.link}
-                  className="sr-only sm:not-sr-only flex justify-center w-12 ml-3 rounded-md size-7 sm:ml-3"
+                  className={styles.desktopNavLink}
                 >
                   <span className="ml-1 mr-1">{item.name}</span>
                 </NavLink>
               </div>
             ))}
 
-            <NavLink to="/cart" className="sm:not-sr-only">
+            <NavLink to="/cart" className={styles.cartWrapper}>
               <div className="sr-only sm:not-sr-only">
-                <div className="w-[16px] ml-[29px] mt-1 h-[16px] bg-red-700 rounded-full flex absolute -translate-y-1.5">
+                <div className={styles.cartBadgeWrapper}>
                   <h1
-                    className={`text-black text-[10px] absolute ${
+                    className={`${styles.cartBadgeText} ${
                       quint > 9 ? "ml-[3px]" : "ml-[5.5px]"
                     }`}
                   >
@@ -103,7 +99,7 @@ export default function Newnav() {
                   </h1>
                 </div>
                 <svg
-                  className="w-[36px] h-[31px] ml-2 dark:text-white space-x-10"
+                  className={styles.cartIcon}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -119,43 +115,41 @@ export default function Newnav() {
               </div>
             </NavLink>
           </div>
-          {/* button end */}
         </div>
-        
-        <div className="w-40 sm:w-auto">
-          <div className="mr-2 h-14 flex">
-            <div className="ml-14 sm:ml-0">
+
+        {/* Right Section */}
+        <div className={styles.rightSection}>
+          <div className={styles.rightInner}>
+            <div className={styles.toggleContainer}>
               <Taggol mode={mode} toggleMode={toggleMode} />
             </div>
-            <div className="sr-only sm:not-sr-only absolute">
-              <NavLink
-                to="/login"
-                className="flex justify-center backdrop-brightness-125 h-7 float-end w-20 m-3.5 ml-6 shadow-md rounded-md bg-cyan-500 shadow-cyan-500/50"
-              >
+
+            <div className={styles.subscribeWrapper}>
+              <NavLink to="/login" className={styles.subscribeBtn}>
                 <button>Subscribe</button>
               </NavLink>
             </div>
 
-            <div className="sr-only sm:not-sr-only">
+            <div className={styles.avatarWrapper}>
               <NavLink
                 to="https://www.youtube.com"
-                className="rounded-full mt-2 ml-1 float-left"
+                className={styles.avatarLink}
               >
                 <img
-                  className="w-10 h-10 rounded-full"
+                  className={styles.avatarImage}
                   src="src/assets/7.jpg"
                   alt="User Avatar"
                 />
               </NavLink>
             </div>
 
-            {/* button-list start */}
+            {/* Mobile Menu Button */}
             <div
               onClick={listhand}
-              className="not-sr-only sm:sr-only dark:hover:bg-[#363636] hover:bg-gray-700 rounded mt-3 ml-2 h-8 w-8 cursor-pointer"
+              className={styles.mobileMenuToggle}
             >
               <svg
-                className="w-8 h-8 text-white"
+                className={styles.mobileMenuIcon}
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -173,14 +167,15 @@ export default function Newnav() {
             </div>
           </div>
 
-          <div className="not-sr-only sm:sr-only">
-            <div className={`${list ? "sr-only" : "not-sr-only"} w-44 mr-11`}>
+          {/* Mobile Dropdown Menu */}
+          <div className={styles.mobileDropdownWrapper}>
+            <div className={`${list ? "sr-only" : "not-sr-only"} ${styles.mobileDropdownContainer}`}>
               {navitem.map((item, index) => (
                 <div key={index}>
                   <NavLink
                     onClick={listhand}
                     to={item.link}
-                    className="flex justify-center w-40 bg-gray-900 dark:bg-zinc-900 border-black border-[1px] size-7"
+                    className={styles.mobileNavLink}
                   >
                     <span className="ml-1 mr-1">{item.name}</span>
                   </NavLink>
@@ -189,22 +184,59 @@ export default function Newnav() {
               <NavLink
                 onClick={listhand}
                 to="/cart"
-                className="flex justify-center w-40 bg-gray-900 dark:bg-zinc-900 border-black border-[1px] size-7"
+                className={styles.mobileNavLink}
               >
                 <span className="ml-1 mr-1">Cart</span>
               </NavLink>
               <NavLink
                 onClick={listhand}
                 to="/login"
-                className="flex justify-center w-40 bg-gray-900 dark:bg-zinc-900 border-black border-[1px] size-7"
+                className={styles.mobileNavLink}
               >
                 <span className="ml-1 mr-1">Sign in</span>
               </NavLink>
             </div>
           </div>
-          {/* button-list end */}
         </div>
       </div>
     </>
   );
 }
+
+// 1. فصل جميع تنسيقات Tailwind في كائن styles خارجي
+const styles = {
+  navBase: "border-gray-900 dark:bg-zinc-900 bg-[#212b46] flex justify-between text-white fixed top-0 left-0 right-0 h-14 transition-all duration-700",
+  navVisible: "top-0",
+  navHidden: "-mt-16",
+
+  leftSection: "flex-none sm:flex h-14 w-28 ml-2",
+  logoWrapper: "flex items-center max-h-10 sm:mt-2.5 mt-3 max-w-24 mr-10",
+  logoImage: "h-8",
+  logoText: "self-center text-2xl font-semibold whitespace-nowrap dark:text-white",
+
+  desktopNavGroup: "flex h-10 sm:mt-3 mt-5 space-x-3 items-center",
+  desktopNavLink: "sr-only sm:not-sr-only flex justify-center w-12 ml-3 rounded-md size-7 sm:ml-3",
+
+  cartWrapper: "sm:not-sr-only",
+  cartBadgeWrapper: "w-[16px] ml-[29px] mt-1 h-[16px] bg-red-700 rounded-full flex absolute -translate-y-1.5",
+  cartBadgeText: "text-black text-[10px] absolute",
+  cartIcon: "w-[36px] h-[31px] ml-2 dark:text-white space-x-10",
+
+  rightSection: "w-40 sm:w-auto",
+  rightInner: "mr-2 h-14 flex",
+  toggleContainer: "ml-14 sm:ml-0",
+
+  subscribeWrapper: "sr-only sm:not-sr-only absolute",
+  subscribeBtn: "flex justify-center backdrop-brightness-125 h-7 float-end w-20 m-3.5 ml-6 shadow-md rounded-md bg-cyan-500 shadow-cyan-500/50",
+
+  avatarWrapper: "sr-only sm:not-sr-only",
+  avatarLink: "rounded-full mt-2 ml-1 float-left",
+  avatarImage: "w-10 h-10 rounded-full",
+
+  mobileMenuToggle: "not-sr-only sm:sr-only dark:hover:bg-[#363636] hover:bg-gray-700 rounded mt-3 ml-2 h-8 w-8 cursor-pointer",
+  mobileMenuIcon: "w-8 h-8 text-white",
+
+  mobileDropdownWrapper: "not-sr-only sm:sr-only",
+  mobileDropdownContainer: "w-44 mr-11",
+  mobileNavLink: "flex justify-center w-40 bg-gray-900 dark:bg-zinc-900 border-black border-[1px] size-7",
+};
