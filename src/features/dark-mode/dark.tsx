@@ -1,12 +1,19 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, useEffect } from "react";
+import { createContext, useContext, useMemo, useState, useEffect, ReactNode } from "react";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 
-const ThemeContext = createContext();
+type ThemeMode = "light" | "dark";
 
-export function AppThemeProvider({ children }) {
-  const [mode, setMode] = useState("light");
+interface ThemeContextType {
+  mode: ThemeMode;
+  toggleMode: () => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export function AppThemeProvider({ children }: { children: ReactNode }) {
+  const [mode, setMode] = useState<ThemeMode>("light");
 
   useEffect(() => {
     const saved = localStorage.getItem("dark");
@@ -25,7 +32,7 @@ export function AppThemeProvider({ children }) {
     }
   }, [mode]);
 
-  const toggleMode = () => setMode(prev => (prev === "light" ? "dark" : "light"));
+  const toggleMode = () => setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   const muiTheme = useMemo(
     () =>
@@ -51,4 +58,10 @@ export function AppThemeProvider({ children }) {
   );
 }
 
-export const useThemeMode = () => useContext(ThemeContext);
+export const useThemeMode = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useThemeMode must be used within an AppThemeProvider");
+  }
+  return context;
+};
