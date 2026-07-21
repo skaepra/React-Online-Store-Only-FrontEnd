@@ -11,7 +11,6 @@ import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useGg } from "../../context/gg";
 import Items from "../../data/Items";
 import axios from "axios";
 import moment from "moment/moment";
@@ -19,7 +18,8 @@ import { Input_date } from "../../components/mui-components/input_date";
 import { Input_time } from "../../components/mui-components/input_time";
 
 export function Show_Plas() {
-  const { carId } = useGg();
+
+  const carId=1
   const item = Items.find((i) => i.id === carId.id);
   const [img, setimg] = useState(item.imageSrc[0]);
   const [time, setTime] = useState("day");

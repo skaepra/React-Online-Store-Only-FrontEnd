@@ -1,4 +1,15 @@
-const Items =
+
+export interface Item{
+  id:number,
+  name:string,
+  imageSrc:string[],
+  modelycar:string,
+  price:number,
+  colors:string[],
+  description:string
+}
+
+const Items:Item[] =
  [
  
      {

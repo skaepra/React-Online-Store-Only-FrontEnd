@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useGg } from "../../../context/gg";
+import { useCartStore } from "../../cart/store/useCartStore";
 
 export const UserAddress = () => {
-  const { Totals, quint } = useGg();
+
+  const Totals = useCartStore((state) => state.Totals);
+  const quint = useCartStore((state) => state.AllQuantity);
   const AllTotal = quint * 4 + Totals;
   const [values, setValues] = useState({
     Country: "",

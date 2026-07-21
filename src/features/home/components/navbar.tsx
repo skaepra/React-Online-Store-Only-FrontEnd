@@ -17,7 +17,7 @@ export default function Newnav() {
   const { mode, toggleMode } = useThemeMode() as { mode: string; toggleMode: () => void };
   
   // 2. سحب عدد العناصر (quint) من السلة
-  const quint = useCartStore((state) => state.quint);
+  const quint = useCartStore((state) => state.AllQuantity);
 
   const navitem: NavItem[] = [
     { name: "Home", link: "/" },

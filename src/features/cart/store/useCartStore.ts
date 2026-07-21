@@ -12,7 +12,7 @@ interface CartState {
   // State
   storitems: CartItem[];
   Totals: number;
-  quint: number;
+  AllQuantity: number;
   carId: { id?: string | number };
 
   // Actions
@@ -31,7 +31,7 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       storitems: [],
       Totals: 0,
-      quint: 0,
+      AllQuantity: 0,
       carId: {},
 
       checkCar: (id) => set({ carId: { id } }),
@@ -44,9 +44,7 @@ export const useCartStore = create<CartState>()(
         if (itemColor) {
           return items.find((item) => item.id === id && item.color === itemColor)?.quantity || 0;
         }
-        return items
-          .filter((item) => item.id === id)
-          .reduce((sum, item) => sum + item.quantity, 0);
+        return items.find((item) => item.id === id)?.quantity || 0;
       },
 
       add: (id, price, color, image) =>
@@ -56,7 +54,7 @@ export const useCartStore = create<CartState>()(
 
           return {
             storitems: [...state.storitems, { id, quantity: 1, color, image }],
-            quint: state.quint + 1,
+            AllQuantity: state.AllQuantity + 1,
             Totals: state.Totals + price,
           };
         }),
@@ -72,7 +70,7 @@ export const useCartStore = create<CartState>()(
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             ),
-            quint: state.quint + 1,
+            AllQuantity: state.AllQuantity + 1,
           };
         }),
 
@@ -87,7 +85,7 @@ export const useCartStore = create<CartState>()(
                 ? { ...item, quantity: item.quantity - 1 }
                 : item
             ),
-            quint: state.quint - 1,
+            AllQuantity: state.AllQuantity - 1,
           };
         }),
 
@@ -95,7 +93,7 @@ export const useCartStore = create<CartState>()(
         set((state) => ({
           storitems: state.storitems.filter((item) => item.id !== id || item.color !== itemColor),
           Totals: state.Totals - Tota,
-          quint: state.quint - quantity,
+          AllQuantity: state.AllQuantity - quantity,
         })),
     }),
     {

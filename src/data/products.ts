@@ -1,4 +1,15 @@
- const products =
+ 
+ export interface Product {
+  id: number;
+  Name: string;
+  Images: string[];
+  ImageAlt: string;
+  Price: number;
+  Colors: string[];
+  Description: string;
+}
+ 
+ const products:Product[] =
  [
    {
      id: 1,

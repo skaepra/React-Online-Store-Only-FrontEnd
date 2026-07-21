@@ -5,16 +5,15 @@ import Newnav from "./features/home/components/navbar";
 import { UserAddress } from "./features/Address/screen/useraddress";
 import ErrorPage from "./features/error/error";
 
-import { MuiHome } from "./page/Mui-pages/home";
-import GgProvider from "./context/gg";
-import { Mnav } from "./page/Mui-pages/mui_navbar";
-import { Add_expenses } from "./page/Mui-pages/add_expenses";
-import { My_expenses } from "./page/Mui-pages/my_expenses";
-import { Order } from "./page/Mui-pages/order";
+// import { MuiHome } from "./page/Mui-pages/home";
+// import { Mnav } from "./page/Mui-pages/mui_navbar";
+// import { Add_expenses } from "./page/Mui-pages/add_expenses";
+// import { My_expenses } from "./page/Mui-pages/my_expenses";
+// import { Order } from "./page/Mui-pages/order";
 import MainLayout from "./LayoutDiv";
 import { Css } from "./page/test-pages/css";
 import { AppThemeProvider } from "./features/dark-mode/dark";
-import { Show_Plas } from "./page/Mui-pages/show_plas";
+// import { Show_Plas } from "./page/Mui-pages/show_plas";
 
 import Home from "./features/home/screen/home";
 import ShoppingCartScreen from "./features/cart/screen/ShoppingCart";
@@ -35,7 +34,6 @@ export default function Layout(): React.JSX.Element {
   return (
     <>
       <AppThemeProvider>
-        <GgProvider>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rent" element={<Css />} />
@@ -44,20 +42,19 @@ export default function Layout(): React.JSX.Element {
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/sing" element={<SignUpScreen />} />
             <Route path="/error" element={<ErrorPage />} />
-            <Route path="/Show" element={<Show_Plas />} />
+            {/* <Route path="/Show" element={<Show_Plas />} /> */}
             
             {/* الصفحات التي بداخل الـ MainLayout تأخذ الـ margin المعرف داخله */}
             <Route path="/" element={<MainLayout />}>
-              <Route path="Home" element={<MuiHome />} />
+              {/* <Route path="Home" element={<MuiHome />} />
               <Route path="Addexpenses" element={<Add_expenses />} />
               <Route path="Order" element={<Order />} />
-              <Route path="Myexpenses" element={<My_expenses />} />
+              <Route path="Myexpenses" element={<My_expenses />} /> */}
             </Route>
           </Routes>
           
           {shouldHideNavbar && <Newnav />}
-          {shouldHideMnav && <Mnav/>}
-        </GgProvider>
+          {/* {shouldHideMnav && <Mnav/>} */}
       </AppThemeProvider>
     </>
   );

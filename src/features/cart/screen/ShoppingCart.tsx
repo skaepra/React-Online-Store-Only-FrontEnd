@@ -6,7 +6,7 @@ export default function ShoppingCartScreen() {
   // سحب حالات السلة من useCartStore
   const storitems = useCartStore((state) => state.storitems);
   const Totals = useCartStore((state) => state.Totals);
-  const quint = useCartStore((state) => state.quint);
+  const quint = useCartStore((state) => state.AllQuantity);
 
   const AllTotal: number = quint * 4 + Totals;
 
