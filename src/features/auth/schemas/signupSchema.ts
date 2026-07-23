@@ -1,8 +1,21 @@
 import { z } from "zod";
 
-export const signupSchema = z
-  .object({
-    fullName: z
+export const signUpSchema = z.object({
+  //  photoUrl: z
+  //     .string()
+  //     .refine(
+  //       (val) =>
+  //         val === "" ||
+  //         val.startsWith("file://") ||
+  //         val.startsWith("http://") ||
+  //         val.startsWith("https://") ||
+  //         val.length > 0, // هذا ليقبل أي اسم ملف أو مسار يعيده السيرفر
+  //       {
+  //         message: "Invalid image file",
+  //       },
+  //     )
+  //     .default(""),
+ fullName: z
       .string()
       // حذف الفراغات من البداية والنهاية
       .trim()
@@ -41,55 +54,13 @@ export const signupSchema = z
       .refine((value) => !/^\d+$/.test(value), {
         message: "Full name cannot contain only numbers",
       }),
-
-    phone: z
-      .string()
-      .trim()
-      .transform((value) => value.replace(/\s+/g, ""))
-      .refine((value) => /^9\d{8}$/.test(value), {
-        message: "Phone must be 9 digits and start with 9",
-      }),
-
-    countryCode: z.string().refine((val) => val === "SY", {
-      message: "Only Syria is supported currently",
-    }),
-    callingCode: z.string().min(1),
-
-    birthDate: z
-      .date({
-        required_error: "Birth date is required",
-        invalid_type_error: "Invalid birth date",
-      })
-      .refine(
-        (date) => {
-          const today = new Date();
-          return date <= today;
-        },
-        {
-          message: "Birth date cannot be in the future",
-        },
-      )
-      .refine(
-        (date) => {
-          const today = new Date();
-
-          let age = today.getFullYear() - date.getFullYear();
-
-          const hasHadBirthdayThisYear =
-            today.getMonth() > date.getMonth() ||
-            (today.getMonth() === date.getMonth() &&
-              today.getDate() >= date.getDate());
-
-          if (!hasHadBirthdayThisYear) age--;
-
-          return age >= 14 && age <= 100;
-        },
-        {
-          message: "Age must be between 14 and 100",
-        },
-      ),
-
-    password: z
+  Email: z
+  .string()
+  .min(1, "Email is required")
+  .trim() // بيمسح أي مسافات إضافية في البداية أو النهاية تلقائياً
+  .toLowerCase() // بيحول الإيميل لحروف صغيرة (Best Practice)
+  .email("Invalid email address"),
+  password: z
       .string()
       .trim()
 
@@ -127,31 +98,8 @@ export const signupSchema = z
         message:
           "Password can contain only uppercase letters, lowercase letters, numbers and !@#$%^&*() symbols",
       }),
+  Remember: z.boolean().default(false),
+});
 
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-
-    photoUrl: z
-      .string()
-      .refine(
-        (val) =>
-          val === "" ||
-          val.startsWith("file://") ||
-          val.startsWith("http://") ||
-          val.startsWith("https://") ||
-          val.length > 0, // هذا ليقبل أي اسم ملف أو مسار يعيده السيرفر
-        {
-          message: "Invalid image file",
-        },
-      )
-      .default(""),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-export type SignupFormData = Omit<z.infer<typeof signupSchema>, "birthDate"> & {
-  birthDate: Date | null;
-};
+// استخراج نوع الـ State تلقائياً من المخطط
+export type SignUpState = z.infer<typeof signUpSchema>;

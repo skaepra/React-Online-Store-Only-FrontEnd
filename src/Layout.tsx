@@ -40,7 +40,7 @@ export default function Layout(): React.JSX.Element {
             <Route path="/cart" element={<ShoppingCartScreen />} />
             <Route path="/useraddress" element={<UserAddress />} />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/sing" element={<SignUpScreen />} />
+            <Route path="/singUp" element={<SignUpScreen />} />
             <Route path="/error" element={<ErrorPage />} />
             {/* <Route path="/Show" element={<Show_Plas />} /> */}
             

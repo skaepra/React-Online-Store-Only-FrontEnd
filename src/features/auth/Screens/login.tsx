@@ -1,36 +1,17 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { FormEvent, ChangeEvent } from "react";
+import { IoMailOutline, IoArrowBack } from "react-icons/io5";
 
-// 1. تعريف واجهة المستخدم لبيانات الفورم
-interface LoginValues {
-  Email: string;
-  Password: string;
-  Remember: boolean;
-}
-
-
+import { useLogin } from "../hooks/useLogin";
+import PasswordInput from "../../../shared/components/PasswordInput";
+import BaseInput from "../../../shared/components/BaseInput";
 
 export default function LoginScreen() {
-  const [values, setValues] = useState<LoginValues>({
-    Email: "",
-    Password: "",
-    Remember: false,
-  });
+  const { formData, errors, updateField, submit, loading, errorMessage } =
+    useLogin();
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = event.target;
-    setValues({
-      ...values,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setValues({
-      Email: "",
-      Password: "",
-      Remember: false,
-    });
+    await submit();
   };
 
   return (
@@ -38,23 +19,7 @@ export default function LoginScreen() {
       <form onSubmit={onSubmit} className={styles.card}>
         <div>
           <a href="/" className={styles.backLink} aria-label="Back to home">
-            <svg
-              className={styles.backIcon}
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 12h14M5 12l4-4m-4 4 4 4"
-              />
-            </svg>
+            <IoArrowBack size={20} className="text-white" />
           </a>
 
           <div className={styles.titleContainer}>
@@ -62,25 +27,36 @@ export default function LoginScreen() {
           </div>
         </div>
 
+        {/* عرض رسالة الخطأ القادمة من السيرفر إن وجدت */}
+        {errorMessage && (
+          <div className="p-2 text-xs text-center text-white bg-dangerRose/80 rounded-lg">
+            {errorMessage}
+          </div>
+        )}
+
         <div className={styles.inputsContainer}>
-          <input
+          {/* الإيميل - مطابقة الاسم Email للحرف الكبير */}
+          <BaseInput
             type="email"
             name="Email"
-            value={values.Email}
-            onChange={onChangeHandler}
-            className={styles.input}
+            value={formData.Email || ""}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateField("Email", e.target.value)
+            }
             placeholder="Your Email"
-            required
+            error={errors?.Email}
+            icon={<IoMailOutline size={20} />}
           />
 
-          <input
-            type="password"
-            name="Password"
-            value={values.Password}
-            onChange={onChangeHandler}
-            className={styles.input}
+          {/* كلمة السر */}
+          <PasswordInput
+            name="password"
+            value={formData.password || ""}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateField("password", e.target.value)
+            }
             placeholder="Password"
-            required
+            error={errors?.password}
           />
         </div>
 
@@ -89,8 +65,10 @@ export default function LoginScreen() {
             type="checkbox"
             id="remember"
             name="Remember"
-            checked={values.Remember}
-            onChange={onChangeHandler}
+            checked={!!formData.Remember}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateField("Remember", e.target.checked)
+            }
             className={styles.checkbox}
           />
           <label htmlFor="remember" className={styles.checkboxLabel}>
@@ -101,15 +79,15 @@ export default function LoginScreen() {
         <div>
           <button
             type="submit"
-            disabled={values.Email === "" || values.Password === ""}
+            disabled={loading || !formData.Email || !formData.password}
             className={styles.submitBtn}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </div>
 
         <div className={styles.signupContainer}>
-          <a href="/sing" className="flex items-center">
+          <a href="/singUp" className="flex items-center">
             <span className={styles.signupText}>Don't have an account?</span>
             <span className={styles.signupLink}>Sign up</span>
           </a>
@@ -119,32 +97,32 @@ export default function LoginScreen() {
   );
 }
 
-
-// 2. فصل كلاسات Tailwind في كائن منظم خارجي
 const styles = {
-  screenWrapper: "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('/toje.jpg')] bg-center bg-cover bg-no-repeat",
-  card: "relative space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[320px] backdrop-blur-sm bg-black/30 rounded-lg shadow-xl",
-  
+  screenWrapper:
+    "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('/toje.jpg')] bg-center bg-cover bg-no-repeat",
+  card: "relative space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[340px] backdrop-blur-sm bg-black/40 rounded-2xl shadow-xl",
+
   // Header section
-  backLink: "absolute top-4 left-4 p-1 hover:bg-white/10 rounded-full transition-colors",
-  backIcon: "w-6 h-6 text-white rounded-full border-2",
+  backLink:
+    "absolute top-4 left-4 p-1.5 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center",
   titleContainer: "flex justify-center",
   title: "font-bold text-2xl text-white mb-2",
 
   // Form inputs
-  inputsContainer: "space-y-4",
-  input: "p-4 w-full h-10 border-2 border-[#9e9e9e] bg-transparent rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:border-white transition-colors",
+  inputsContainer: "space-y-1",
 
   // Checkbox
-  checkboxContainer: "flex items-center",
-  checkbox: "border bg-transparent rounded cursor-pointer accent-cyan-500",
-  checkboxLabel: "ml-2 text-sm select-none cursor-pointer",
+  checkboxContainer: "flex items-center my-2",
+  checkbox:
+    "border bg-transparent rounded cursor-pointer accent-cyan-500 w-4 h-4",
+  checkboxLabel: "ml-2 text-sm select-none cursor-pointer text-gray-200",
 
   // Submit button
-  submitBtn: "border bg-white hover:bg-[#e6e4e4] disabled:opacity-50 disabled:hover:bg-white font-bold w-full py-1.5 text-black rounded-2xl transition-all cursor-pointer disabled:cursor-not-allowed",
+  submitBtn:
+    "border-none bg-white hover:bg-[#e6e4e4] disabled:opacity-50 disabled:hover:bg-white font-bold w-full py-2.5 text-black rounded-2xl transition-all cursor-pointer disabled:cursor-not-allowed mt-2",
 
   // Footer signup link
-  signupContainer: "flex justify-center text-sm",
+  signupContainer: "flex justify-center text-sm pt-2",
   signupText: "text-[#ececec]",
-  signupLink: "ml-1 font-semibold hover:underline",
+  signupLink: "ml-1 font-semibold hover:underline text-cyan-400",
 };
