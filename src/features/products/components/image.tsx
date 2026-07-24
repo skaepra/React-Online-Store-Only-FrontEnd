@@ -43,7 +43,7 @@ export const Image = () => {
     <img
       src={typeof image === "number" ? String(image) : image}
       alt={item.Name}
-      className="ml-[345px] aspect-square w-52 rounded-e bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+      className=" aspect-square w-52 rounded-e bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80   "
     />
   );
 };

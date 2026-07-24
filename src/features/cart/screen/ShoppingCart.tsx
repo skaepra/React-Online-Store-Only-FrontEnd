@@ -75,7 +75,7 @@ export default function ShoppingCartScreen() {
           
           <p className={styles.vatNotice}>including VAT</p>
 
-          <a href="useraddress" className={styles.checkoutBtn}>
+          <a href="checkOut" className={styles.checkoutBtn}>
             Check out
           </a>
         </div>

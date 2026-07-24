@@ -42,6 +42,6 @@ export const Color = () => {
 };
 
 const styles = {
-  container: "flex -space-x-4 rtl:space-x-reverse absolute mt-[200px] ml-[15px]",
+  container: "flex -space-x-4 rtl:space-x-reverse   ml-[15px]",
   colorButton: "w-10 h-10 transition-all rounded-full block ring-[#3b3838] ring-1 focus:ring-4 ring-offset-1 cursor-pointer",
 };

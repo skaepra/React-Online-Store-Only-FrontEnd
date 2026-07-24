@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useCartStore } from "../../cart/store/useCartStore";
-import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
+import { useCartStore } from "../cart/store/useCartStore";
+import LocationPickerMaps from "../google-map/screen/LocationPickerMaps";
 
 interface AddressFormValues {
   country: string;
@@ -29,10 +29,10 @@ const initialValues: AddressFormValues = {
 };
 
 // كلاسات مخصصة لمعالجة الخلفية البيضاء الخاصة بالـ Autofill
-  const autofillClasses =
-    "autofill:bg-transparent autofill:text-text [&&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s] [&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
+const autofillClasses =
+  "autofill:bg-transparent autofill:text-text [&&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s] [&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
 
-export default function UserAddress() {
+export default function CheckOutScreen() {
   const Totals = useCartStore((state) => state.Totals);
   const quint = useCartStore((state) => state.AllQuantity);
   const AllTotal: number = quint * 4 + Totals;
@@ -41,7 +41,9 @@ export default function UserAddress() {
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
   const onChangeHandler = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
@@ -79,7 +81,6 @@ export default function UserAddress() {
         <form onSubmit={onSubmit} className={styles.formCard}>
           <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3 dark:border-zinc-700">
             <h2 className={styles.sectionHeader}>Shipping Details</h2>
-            
           </div>
 
           {/* Country & City */}
@@ -156,30 +157,34 @@ export default function UserAddress() {
           <div>
             <label className={styles.label}>Street Address</label>
             <div className="flex">
-            <input
-              type="text"
-              name="addressLine1"
-              placeholder="Enter your street address or pick from map"
-              onChange={onChangeHandler}
-              value={values.addressLine1}
-              className={styles.input}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowMapModal(true)}
-              className={`${styles.mapBtn} ${
-                values.latitude ? styles.mapBtnSelected : styles.mapBtnDefault
-              }`}
-            >
-              {values.latitude ? "✏️ Change Selected Location" : "📍 Pin Location on Map"}
-            </button>
+              <input
+                type="text"
+                name="addressLine1"
+                placeholder="Enter your street address or pick from map"
+                onChange={onChangeHandler}
+                value={values.addressLine1}
+                className={styles.input}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowMapModal(true)}
+                className={`${styles.mapBtn} ${
+                  values.latitude ? styles.mapBtnSelected : styles.mapBtnDefault
+                }`}
+              >
+                {values.latitude
+                  ? "✏️ Change Selected Location"
+                  : "📍 Pin Location on Map"}
+              </button>
             </div>
           </div>
 
           {/* Address Line 2 */}
           <div>
-            <label className={styles.label}>Building / Apartment / Floor (Optional)</label>
+            <label className={styles.label}>
+              Building / Apartment / Floor (Optional)
+            </label>
             <input
               type="text"
               name="addressLine2"
@@ -205,7 +210,12 @@ export default function UserAddress() {
                 Cash on Delivery (COD)
               </label>
               <label className="flex items-center gap-2 cursor-not-allowed opacity-50">
-                <input type="radio" name="paymentMethod" value="Card" disabled />
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Card"
+                  disabled
+                />
                 Credit Card (Coming Soon)
               </label>
             </div>
@@ -292,7 +302,8 @@ const styles = {
   // Common Layout
   wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-zinc-800 p-4",
   headerTitle: "mt-12 mb-5 text-center text-2xl font-bold dark:text-white",
-  mainLayout: "mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0",
+  mainLayout:
+    "mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0",
 
   // Form Section
   formCard:
@@ -300,8 +311,7 @@ const styles = {
   sectionHeader: "text-xl font-bold text-gray-900 dark:text-white",
   inputRow: "grid grid-cols-1 md:grid-cols-2 gap-4",
   label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",
-  input:
-    `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white ${autofillClasses}`,
+  input: `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white ${autofillClasses}`,
   select:
     "w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-white",
   textarea:
@@ -320,15 +330,17 @@ const styles = {
     "mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3 dark:bg-zinc-900 dark:border-zinc-700",
   summaryRow: "mb-2 flex justify-between text-gray-700 dark:text-gray-300",
   summaryDivider: "my-4 border-gray-200 dark:border-zinc-700",
-  summaryTotalRow: "flex justify-between text-lg font-bold text-gray-900 dark:text-white",
+  summaryTotalRow:
+    "flex justify-between text-lg font-bold text-gray-900 dark:text-white",
   vatNotice: "text-sm text-gray-500 float-end mt-1",
 
   // Submit Button Style
   checkoutBtn:
-    "mt-6 w-full py-2 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none",
+    "mt-6 w-full py-2 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg  duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none",
 
   // Modal Styles
-  modalBackdrop: "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4",
+  modalBackdrop:
+    "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4",
   modalContent:
     "bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative border dark:border-zinc-700",
   modalHeader:
