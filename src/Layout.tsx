@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Newnav from "./features/home/components/navbar";
 
-import { UserAddress } from "./features/Address/screen/useraddress";
+
 import ErrorPage from "./features/error/error";
 
 // import { MuiHome } from "./page/Mui-pages/home";
@@ -20,6 +20,7 @@ import ShoppingCartScreen from "./features/cart/screen/ShoppingCart";
 import LoginScreen from "./features/auth/Screens/Login";
 
 import SignUpScreen from "./features/auth/Screens/SignUp";
+import UserAddress from "./features/Address/screen/useraddress";
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();

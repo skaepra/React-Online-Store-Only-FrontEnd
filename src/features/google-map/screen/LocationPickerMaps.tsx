@@ -1,23 +1,14 @@
-// @ts-ignore
 import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-
+import * as maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import axios from "axios";
-import * as Location from "expo-location";
-import * as MapLibreGL from "@maplibre/maplibre-react-native";
 
-const { MapView, Camera } = MapLibreGL;
+// يفضل نقلها إلى .env
+const MAPTILER_KEY =
+  "yO5BCOXvi0MwW2kvjQf1";
 
-// مفاتيح الـ API (تأكد من تعريفها في مشروعك)
-const MAPTILER_KEY = "YefZtd9Oy6PoFkzReWv6";
 const ORS_API_KEY =
+
   "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQ3YWM5M2UxOGE5YjRjZjFiMTgxODU5ODQ1YzNjMDFkIiwiaCI6Im11cm11cjY0In0=";
 
 type LocationType = {
@@ -26,78 +17,50 @@ type LocationType = {
 };
 
 type Props = {
-  isPermissionDenied: boolean; // استلام الـ prop من الأعلى
+  isPermissionDenied?: boolean;
   onConfirm?: (location: {
     latitude: number;
     longitude: number;
     address: string;
   }) => void;
 };
-// إحداثيات افتراضية في حال رفض المستخدم الإذن (مثال: دمشق، سوريا أو غيرها حسب تطبيقك)
-const DEFAULT_COORDS = [36.2765, 33.5138]; 
 
-export default function LocationPickerMaps({ onConfirm, isPermissionDenied }: Props) {
-  const cameraRef = useRef<any>(null);
+const DEFAULT_COORDS: [number, number] = [36.2765, 33.5138];
 
-  const [selectedLocation, setSelectedLocation] = useState<LocationType | null>(null);
+export default function LocationPickerMaps({
+  onConfirm,
+  isPermissionDenied,
+}: Props) {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const lastLocationRef = useRef<LocationType | null>(null);
+
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationType>({
+      longitude: DEFAULT_COORDS[0],
+      latitude: DEFAULT_COORDS[1],
+    });
+
   const [address, setAddress] = useState("");
+
   const [loading, setLoading] = useState(false);
-
-/*
-  ========================================
-  GET USER LOCATION (تُستدعى فقط عند الضغط على زر ◎)
-  ========================================
-  */
-  async function getCurrentLocation() {
-    try {
-      setLoading(true);
-      
-      // 🟢 هنا نقوم بفحص الإذن الحالي فقط دون إظهار نافذة منبثقة للمستخدم
-      const { status } = await Location.getForegroundPermissionsAsync();
-
-      // إذا كان المستخدم قد رفض الإذن مسبقاً في صفحة الـ Home وضغط على زر ◎
-      if (status !== "granted") {
-        Alert.alert(
-          "تنبيه",
-          "ميزة تحديد الموقع التلقائي معطلة لأنك رفضت إذن الوصول للموقع. يمكنك تفعيله من إعدادات الهاتف، أو استمر في تحديد موقعك يدوياً بسحب الخريطة."
-        );
-        return;
-      }
-
-      // إذا كان الإذن مقبولاً (مثلاً لو وافق عليه مسبقاً) يجلب الموقع فوراً
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-
-      setSelectedLocation(coords);
-
-      cameraRef.current?.setCamera({
-        centerCoordinate: [coords.longitude, coords.latitude],
-        zoomLevel: 15,
-        animationDuration: 1500,
-      });
-
-      reverseGeocode(coords.latitude, coords.longitude);
-    } catch (error) {
-      console.log("Location Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   /*
   ========================================
   REVERSE GEOCODE
   ========================================
   */
-  async function reverseGeocode(latitude: number, longitude: number) {
+
+  async function reverseGeocode(
+    latitude: number,
+    longitude: number
+  ) {
     try {
       setLoading(true);
+
       const response = await axios.get(
         "https://api.openrouteservice.org/geocode/reverse",
         {
@@ -110,10 +73,15 @@ export default function LocationPickerMaps({ onConfirm, isPermissionDenied }: Pr
         }
       );
 
-      const label = response.data.features?.[0]?.properties?.label || "عنوان غير معروف";
+      const label =
+        response.data.features?.[0]?.properties?.label ??
+        "عنوان غير معروف";
+
       setAddress(label);
     } catch (error) {
-      console.log("Reverse Geocode Error:", error);
+      console.error("Reverse Geocode Error:", error);
+
+      setAddress("تعذر الحصول على العنوان");
     } finally {
       setLoading(false);
     }
@@ -121,12 +89,146 @@ export default function LocationPickerMaps({ onConfirm, isPermissionDenied }: Pr
 
   /*
   ========================================
+  INITIALIZE MAP
+  ========================================
+  */
+
+  useEffect(() => {
+    if (!mapContainerRef.current || mapRef.current) return;
+
+    const map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`,
+      center: DEFAULT_COORDS,
+      zoom: 13,
+      attributionControl: false,
+    });
+
+    mapRef.current = map;
+
+    map.on("load", () => {
+      reverseGeocode(
+        DEFAULT_COORDS[1],
+        DEFAULT_COORDS[0]
+      );
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(() => {
+        map.resize();
+      });
+    });
+
+    resizeObserver.observe(mapContainerRef.current);
+
+    map.on("moveend", () => {
+      const center = map.getCenter();
+
+      const newLoc = {
+        latitude: center.lat,
+        longitude: center.lng,
+      };
+
+      if (
+        lastLocationRef.current &&
+        Math.abs(
+          lastLocationRef.current.latitude -
+            newLoc.latitude
+        ) < 0.0001 &&
+        Math.abs(
+          lastLocationRef.current.longitude -
+            newLoc.longitude
+        ) < 0.0001
+      ) {
+        return;
+      }
+
+      lastLocationRef.current = newLoc;
+
+      setSelectedLocation(newLoc);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        reverseGeocode(
+          newLoc.latitude,
+          newLoc.longitude
+        );
+      }, 500);
+    });
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      resizeObserver.disconnect();
+
+      map.remove();
+
+      mapRef.current = null;
+    };
+  }, []);
+   /*
+  ========================================
+  GET CURRENT LOCATION
+  ========================================
+  */
+
+  function getCurrentLocation() {
+    if (!navigator.geolocation) {
+      alert("متصفحك لا يدعم تحديد الموقع الجغرافي.");
+      return;
+    }
+
+    setLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+
+        setSelectedLocation(coords);
+
+        // حفظ آخر موقع لمنع تكرار reverseGeocode لنفس الإحداثيات
+        lastLocationRef.current = coords;
+
+        mapRef.current?.flyTo({
+          center: [coords.longitude, coords.latitude],
+          zoom: 15,
+          duration: 1500,
+        });
+
+        reverseGeocode(coords.latitude, coords.longitude);
+      },
+      (error) => {
+        setLoading(false);
+
+        console.error("Location Error:", error);
+
+        alert(
+          "تعذر تحديد موقعك الحالي. تأكد من منح إذن الوصول للموقع في المتصفح."
+        );
+      },
+      {
+        enableHighAccuracy: true,
+      }
+    );
+  }
+
+  /*
+  ========================================
   CONFIRM LOCATION
   ========================================
   */
+
   function handleConfirmLocation() {
     if (!selectedLocation) {
-      Alert.alert("تنبيه", "الرجاء تحديد موقع على الخريطة أولاً.");
+      alert("الرجاء تحديد موقع على الخريطة أولاً.");
       return;
     }
 
@@ -138,150 +240,171 @@ export default function LocationPickerMaps({ onConfirm, isPermissionDenied }: Pr
   }
 
   return (
-    <View style={styles.container}>
+    <div style={styles.container}>
       {/* MAP */}
-      <MapView
+      <div
+        ref={mapContainerRef}
         style={styles.map}
-        mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`}
-        compassEnabled={false}
-        rotateEnabled={false}
-        pitchEnabled={false}
-        logoEnabled={false}
-        attributionEnabled={false}
-        onRegionDidChange={(event) => {
-          const geometry = event.geometry;
-          if (!geometry?.coordinates) return;
-
-          const coords = geometry.coordinates;
-          const newLocation = {
-            longitude: coords[0],
-            latitude: coords[1],
-          };
-
-          setSelectedLocation(newLocation);
-          reverseGeocode(newLocation.latitude, newLocation.longitude);
-        }}
-      >
-        {/* CAMERA */}
-        <Camera
-          ref={cameraRef}
-          defaultSettings={{
-            centerCoordinate: DEFAULT_COORDS,
-            zoomLevel: 13,
-          }}
-        />
-      </MapView>
+      />
 
       {/* CENTER MARKER */}
-      <View pointerEvents="none" style={styles.markerContainer}>
-        <View style={styles.markerOuter}>
-          <View style={styles.markerInner} />
-        </View>
-      </View>
+      <div style={styles.markerContainer}>
+        <div style={styles.markerOuter}>
+          <div style={styles.markerInner} />
+        </div>
+      </div>
 
-      {/* ADDRESS CARD */}
-      <View style={styles.bottomCard}>
-        <Text style={styles.title}>
-          {isPermissionDenied ? "حدد موقعق يدويا" : "اختر موقع التوصيل"}
-        </Text>
+      {/* BOTTOM CARD */}
+      <div style={styles.bottomCard}>
+        <h3 style={styles.title}>
+          {isPermissionDenied
+            ? "حدد موقعك يدوياً"
+            : "اختر موقع التوصيل"}
+        </h3>
 
         {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator color="#000" />
-            <Text style={styles.loadingText}>جاري تحديد العنوان...</Text>
-          </View>
+          <div style={styles.loadingContainer}>
+            <span style={styles.spinner}></span>
+
+            <span style={styles.loadingText}>
+              جاري تحديد العنوان...
+            </span>
+          </div>
         ) : (
-          <Text style={styles.addressText}>
+          <p style={styles.addressText}>
             {address || "قم بتحريك الخريطة لتحديد الموقع"}
-          </Text>
+          </p>
         )}
 
-        {/* CONFIRM BUTTON */}
-        <Pressable
-          style={[styles.confirmButton, loading && styles.disabledButton]}
-          onPress={handleConfirmLocation}
+        <button
+          style={{
+            ...styles.confirmButton,
+            ...(loading
+              ? styles.disabledButton
+              : {}),
+          }}
           disabled={loading}
+          onClick={handleConfirmLocation}
         >
-          <Text style={styles.confirmButtonText}>تأكيد الموقع</Text>
-        </Pressable>
-      </View>
+          تأكيد الموقع
+        </button>
+      </div>
 
       {/* CURRENT LOCATION BUTTON */}
-      <Pressable
-        style={[
-          styles.currentLocationButton, 
-          isPermissionDenied && { opacity: 0.6 } // جعل الزر شبه شفاف لتوضيح أن الميزة مقيدة
-        ]}
-        onPress={getCurrentLocation}
+
+      <button
+        style={{
+          ...styles.currentLocationButton,
+          ...(isPermissionDenied
+            ? { opacity: 0.6 }
+            : {}),
+        }}
+        title="تحديد موقعي الحالي"
+        onClick={getCurrentLocation}
       >
-        <Text style={styles.currentLocationText}>◎</Text>
-      </Pressable>
-    </View>
+        ◎
+      </button>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { flex: 1 },
+// التنسيقات باستخدام Inline CSS للتبسيط (يمكنك تحويلها لـ CSS Modules أو Tailwind)
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    position: "relative",
+    width: "100%",
+    height: "100vh",
+    fontFamily: "sans-serif",
+    direction: "rtl",
+  },
+  map: {
+    width: "100%",
+    height: "100%",
+  },
   markerContainer: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    marginLeft: -15,
-    marginTop: -15,
-    justifyContent: "center",
-    alignItems: "center",
+    transform: "translate(-50%, -50%)",
+    pointerEvents: "none",
+    zIndex: 10,
   },
   markerOuter: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: "30px",
+    height: "30px",
+    borderRadius: "50%",
     backgroundColor: "rgba(0, 122, 255, 0.3)",
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   markerInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: "12px",
+    height: "12px",
+    borderRadius: "50%",
     backgroundColor: "#007AFF",
   },
   bottomCard: {
     position: "absolute",
-    bottom: 30,
-    left: 20,
-    right: 20,
+    bottom: "30px",
+    left: "20px",
+    right: "20px",
+    maxWidth: "400px",
+    margin: "0 auto",
     backgroundColor: "#FFF",
-    padding: 20,
-    borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    padding: "20px",
+    borderRadius: "15px",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+    zIndex: 10,
   },
-  title: { fontSize: 18, fontWeight: "bold", textAlign: "right", marginBottom: 10 },
-  loadingContainer: { flexDirection: "row-reverse", alignItems: "center", justifyContent: "center", marginVertical: 10 },
-  loadingText: { marginRight: 10, fontSize: 14, color: "#666" },
-  addressText: { fontSize: 14, color: "#444", textAlign: "right", marginVertical: 10 },
-  confirmButton: { backgroundColor: "#007AFF", padding: 12, borderRadius: 10, alignItems: "center", marginTop: 10 },
-  disabledButton: { backgroundColor: "#A2C9FF" },
-  confirmButtonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  title: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    margin: "0 0 10px 0",
+  },
+  loadingContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    margin: "10px 0",
+  },
+  loadingText: {
+    fontSize: "14px",
+    color: "#666",
+  },
+  addressText: {
+    fontSize: "14px",
+    color: "#444",
+    margin: "10px 0",
+  },
+  confirmButton: {
+    width: "100%",
+    backgroundColor: "#007AFF",
+    color: "#FFF",
+    border: "none",
+    padding: "12px",
+    borderRadius: "10px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  disabledButton: {
+    backgroundColor: "#A2C9FF",
+    cursor: "not-allowed",
+  },
   currentLocationButton: {
     position: "absolute",
-    bottom: 220,
-    right: 20,
+    bottom: "220px",
+    right: "20px",
     backgroundColor: "#FFF",
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    border: "none",
+    width: "50px",
+    height: "50px",
+    borderRadius: "25px",
+    fontSize: "24px",
+    color: "#007AFF",
+    cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+    zIndex: 10,
   },
-  currentLocationText: { fontSize: 24, color: "#007AFF" },
-});
+};

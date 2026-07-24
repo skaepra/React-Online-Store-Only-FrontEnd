@@ -38,6 +38,7 @@ export const useCartStore = create<CartState>()(
 
       increcTotal: (tot) => set((state) => ({ Totals: state.Totals + tot })),
       decrecTotal: (tot) => set((state) => ({ Totals: state.Totals - tot })),
+      
 
       Quantity: (id, itemColor) => {
         const items = get().storitems;
