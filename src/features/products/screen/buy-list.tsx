@@ -50,7 +50,9 @@ export const Buylist = () => {
       ></div>
       
       <div className={styles.modalCard}>
-        
+        <div className="flex justify-center">
+              <Image />
+              </div>
         <div className="w-[340px] flex-col justify-between flex">
           <div>
         <span className={styles.productName}>
@@ -63,7 +65,7 @@ export const Buylist = () => {
         </div>
         <div>
         <Color />
-        <div className=" flex justify-between items-center w-full px-4 mb-5 mt-3">
+        <div className=" flex justify-between items-center w-full px-4 mb-5 mt-3 ">
         <button
           onClick={() => addcart(show.id!)}
           className={styles.addToCartBtn}
@@ -77,7 +79,6 @@ export const Buylist = () => {
         </div>
         </div>
         </div>
-        <Image />
 
       </div>
     </div>
@@ -92,11 +93,11 @@ const styles = {
   overlay: "bg-black w-full h-full fixed top-0 left-0 right-0 opacity-75 z-40 cursor-pointer",
   
   // النافذة المنبثقة (مهم: تمت إزالة relative لتستقر التموضعات المطلقة بالداخل)
-  modalCard: "bg-[#e4e1e1] rounded w-[548px] h-[320px] fixed top-[80px] dark:bg-zinc-900 z-50 shadow-2xl flex ",
+  modalCard: "bg-[#e4e1e1] rounded sm:w-[548px] sm:h-[320px] fixed sm:top-[80px] top-[10px] dark:bg-zinc-900 z-50 shadow-2xl  sm:flex flex-row-reverse",
   
   // النصوص
-  productName: "text-zinc-700 dark:text-white text-4xl  ml-3 mt-1",
-  productDescription: "text-zinc-800 dark:text-white text-justify ml-2 mt-2 w-80 p-1",
+  productName: "text-zinc-700 dark:text-white sm:text-4xl text-2xl  ml-3 mt-1",
+  productDescription: "text-zinc-800 dark:text-white text-justify ml-2 sm:mt-2 w-80 p-1",
   productPrice: "text-zinc-800 text-xl dark:text-white ",
   
   // زر الإضافة للسلة
