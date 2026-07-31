@@ -31,7 +31,7 @@ export default function ContactUsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 py-12 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-16 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Page Header */}
@@ -40,7 +40,7 @@ export default function ContactUsPage() {
             <IoChatbubblesOutline className="text-3xl" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Get in <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Touch</span>
+            Get in <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Touch</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
             Have a question, feedback, or need assistance with your order? Our team is here to help you.
@@ -181,7 +181,7 @@ export default function ContactUsPage() {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto py-2.5 px-6 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow hover:scale-[1.02] active:scale-95 duration-200 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto py-2.5 px-6 text-sm font-semibold text-white  bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow hover:scale-[1.02] active:scale-95 duration-200 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <IoSend className="text-xs" />
                   <span>Send Message</span>
@@ -198,7 +198,8 @@ export default function ContactUsPage() {
               <iframe
                 title="Location Map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215707164416!2d-73.98784412342544!3d40.75797473483935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
-                className="absolute inset-0 w-full h-full border-0 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                className="absolute inset-0 w-full h-full border-0 dark:grayscale dark:opacity-80 
+                 dark:hover:opacity-100 dark:hover:grayscale-0 transition-all duration-300"
                 loading="lazy"
               ></iframe>
             </div>

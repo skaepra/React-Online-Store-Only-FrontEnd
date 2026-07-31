@@ -11,7 +11,7 @@ import {
 
 export default function ShippingInfoPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 py-12 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-16 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Page Header */}
@@ -20,7 +20,7 @@ export default function ShippingInfoPage() {
             <FaTruckFast className="text-3xl" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Shipping & <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Delivery Info</span>
+            Shipping & <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Delivery Info</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
             Everything you need to know about our shipping options, delivery times, and order tracking.
@@ -95,22 +95,22 @@ export default function ShippingInfoPage() {
             How Your Order Travels
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-            <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg relative">
+            <div className="p-4 border bg-gray-50 dark:dark:bg-zinc-800/50 border-gray-200 dark:border-zinc-800 rounded-lg relative">
               <span className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center mx-auto mb-3 text-xs">1</span>
               <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Order Placed</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">You receive a confirmation email.</p>
             </div>
-            <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg relative">
+            <div className="p-4 border bg-gray-50 dark:dark:bg-zinc-800/50 border-gray-200 dark:border-zinc-800 rounded-lg relative">
               <span className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center mx-auto mb-3 text-xs">2</span>
               <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Processing</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">We pack your items with care.</p>
             </div>
-            <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg relative">
+            <div className="p-4 border bg-gray-50 dark:dark:bg-zinc-800/50 dark:border-zinc-800 rounded-lg relative">
               <span className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center mx-auto mb-3 text-xs">3</span>
               <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Dispatched</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Tracking number sent to you.</p>
             </div>
-            <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg relative">
+            <div className="p-4 border  bg-gray-50 dark:dark:bg-zinc-800/50 dark:border-zinc-800 rounded-lg relative">
               <span className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center mx-auto mb-3 text-xs">4</span>
               <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Delivered</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Package arrives at your door.</p>

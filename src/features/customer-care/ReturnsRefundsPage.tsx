@@ -17,7 +17,7 @@ export default function ReturnsRefundsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 py-12 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-16 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Page Header */}
@@ -26,7 +26,7 @@ export default function ReturnsRefundsPage() {
             <IoRefreshOutline className="text-3xl" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Returns & <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Refunds Policy</span>
+            Returns & <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Refunds Policy</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
             Hassle-free returns within 14 days. We want you to be completely satisfied with your purchase.
@@ -66,7 +66,7 @@ export default function ReturnsRefundsPage() {
             Simple 3-Step Return Process
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 space-y-2 relative">
+            <div className="p-5 border bg-gray-50  border-gray-200 dark:border-zinc-800 rounded-xl  dark:bg-zinc-900 space-y-2 relative">
               <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 01</span>
               <h4 className="font-semibold text-base text-gray-900 dark:text-white">Submit Request</h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -74,7 +74,7 @@ export default function ReturnsRefundsPage() {
               </p>
             </div>
 
-            <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 space-y-2 relative">
+            <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50  dark:bg-zinc-900 space-y-2 relative">
               <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 02</span>
               <h4 className="font-semibold text-base text-gray-900 dark:text-white">Pack Your Item</h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -82,7 +82,7 @@ export default function ReturnsRefundsPage() {
               </p>
             </div>
 
-            <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 space-y-2 relative">
+            <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50  dark:bg-zinc-900 space-y-2 relative">
               <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 03</span>
               <h4 className="font-semibold text-base text-gray-900 dark:text-white">Get Refunded</h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -164,7 +164,7 @@ export default function ReturnsRefundsPage() {
               >
                 <button
                   onClick={() => toggleAccordion(idx)}
-                  className="w-full flex justify-between items-center px-5 py-4 text-left font-medium text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer text-sm sm:text-base"
+                  className="w-full flex justify-between items-center px-5 py-4 text-left font-medium text-gray-900 bg-gray-50 dark:text-white hover:bg-gray-100 dark:bg-zinc-800  dark:hover:bg-zinc-800/50 transition-colors cursor-pointer text-sm sm:text-base"
                 >
                   <span className="font-semibold">{faq.q}</span>
                   <IoChevronDown

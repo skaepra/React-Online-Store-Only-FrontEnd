@@ -82,13 +82,13 @@ export default function FAQPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 py-12 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-16 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Top Header Section */}
         <div className="text-center space-y-4">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            How can we <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">help you?</span>
+            How can we <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">help you?</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
             Search our knowledge base or browse frequently asked questions below to find quick answers.
@@ -96,7 +96,7 @@ export default function FAQPage() {
 
           {/* Search Box */}
           <div className="relative max-w-md mx-auto pt-4">
-            <IoSearch className="absolute left-3.5 top-7 transform -translate-y-1/2 text-gray-400 text-base" />
+            <IoSearch className="absolute left-3.5 top-[38px] transform -translate-y-1/2 text-gray-400 text-base" />
             <input
               type="text"
               placeholder="Search for answers..."
@@ -118,7 +118,7 @@ export default function FAQPage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md"
+                    ? " bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md"
                     : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700"
                 }`}
               >
@@ -141,7 +141,7 @@ export default function FAQPage() {
                 >
                   <button
                     onClick={() => toggleAccordion(faq.id)}
-                    className="w-full flex justify-between items-center px-5 py-4 text-left font-medium text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer"
+                    className="w-full flex justify-between items-center px-5 py-4 text-left font-medium text-gray-900 bg-gray-50 dark:text-white hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer"
                   >
                     <span className="text-sm sm:text-base font-semibold">{faq.question}</span>
                     <IoChevronDown
