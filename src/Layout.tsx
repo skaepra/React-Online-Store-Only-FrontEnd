@@ -21,14 +21,18 @@ import LoginScreen from "./features/auth/Screens/Login";
 import SignUpScreen from "./features/auth/Screens/SignUp";
 import CheckOutScreen from "./features/checkout/CheckOut";
 import Footer from "./features/home/components/Footer";
+import FAQPage from "./features/customer-care/FAQ";
+import ShippingInfoPage from "./features/customer-care/ShippingInfo";
+import ReturnsRefundsPage from "./features/customer-care/ReturnsRefundsPage";
+import ContactUsPage from "./features/customer-care/ContactUsPage";
 
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
 
   // تحديد النوع كـ مصفوفة نصوص ثابتة للقراءة فقط لضمان الحماية والأداء
-  const hideNavbarRoutes: readonly string[] = ["/", "/cart", "/checkOut"];
-  const hideFooterRoutes: readonly string[] = ["/"];
+  const hideNavbarRoutes: readonly string[] = ["/", "/cart", "/checkOut","/faq","/shipping","/returns","/contact"];
+  const hideFooterRoutes: readonly string[] = ["/","/faq","/shipping","/returns","/contact"];
   const shouldHideNavbar: boolean = hideNavbarRoutes.includes(
     location.pathname,
   );
@@ -54,6 +58,10 @@ export default function Layout(): React.JSX.Element {
           <Route path="/checkOut" element={<CheckOutScreen />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/singUp" element={<SignUpScreen />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/shipping" element={<ShippingInfoPage />} />
+          <Route path="/returns" element={<ReturnsRefundsPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
           <Route path="/error" element={<ErrorPage />} />
           {/* <Route path="/Show" element={<Show_Plas />} /> */}
 

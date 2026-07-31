@@ -28,10 +28,10 @@ export default function Footer() {
           <div>
             <h3 className={styles.sectionTitle}>Customer Care</h3>
             <ul className={styles.linkList}>
-              <li><a href="#faq" className={styles.link}>FAQ & Help</a></li>
-              <li><a href="#shipping" className={styles.link}>Shipping Info</a></li>
-              <li><a href="#returns" className={styles.link}>Returns & Refunds</a></li>
-              <li><a href="#contact" className={styles.link}>Contact Us</a></li>
+              <li><a href="/faq" className={styles.link}>FAQ & Help</a></li>
+              <li><a href="/shipping" className={styles.link}>Shipping Info</a></li>
+              <li><a href="/returns" className={styles.link}>Returns & Refunds</a></li>
+              <li><a href="/contact" className={styles.link}>Contact Us</a></li>
             </ul>
           </div>
 
