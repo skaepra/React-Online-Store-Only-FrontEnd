@@ -1,101 +1,133 @@
-
-import products from "../../../data/products";
 import { useCartStore } from "../store/useCartStore";
-
-// 1. تعريف أنواع البيانات
-interface DatabaseProduct {
-  id: string | number;
-  Name: string;
-  Price: number;
-  ImageAlt?: string;
-}
+import { IoAdd, IoRemove, IoTrashOutline } from "react-icons/io5";
 
 interface ItemProps {
   id: string | number;
+  name?: string;
+  Name?: string;
+  price?: number;
+  Price?: number;
   quantity: number;
   color: string;
+  size?: string;
   image: string | number;
 }
 
-export function CartItem({ id, quantity, color, image }: ItemProps) {
-  // سحب دوال التحكم في السلة من useCartStore
+export function CartItem({
+  id,
+  name,
+  Name,
+  price,
+  Price,
+  quantity,
+  color,
+  size,
+  image,
+}: ItemProps) {
+  // 1. استخراج الاسم والسعر من الـ Props مع التوافق بين الأحرف الكبيرة والصغيرة
+  const itemTitle = name || Name || "Product";
+  const itemPrice = price ?? Price ?? 0;
+
+  // 2. سحب دوال التحكم من Zustand
   const increc = useCartStore((state) => state.increc);
   const decrec = useCartStore((state) => state.decrec);
-  const increcTotal = useCartStore((state) => state.increcTotal);
-  const decrecTotal = useCartStore((state) => state.decrecTotal);
   const remove = useCartStore((state) => state.remove);
 
-  const item = (products as DatabaseProduct[]).find(
-    (i) => Number(i.id) === Number(id)
-  );
+  // حساب الإجمالي للمنتج
+  const total = itemPrice * quantity;
 
-  if (!item) return null;
-
-  const total: number = item.Price * quantity;
-
-  const plass = (itemId: string | number, itemColor: string, price: number) => {
-    increc(itemId, itemColor);
-    increcTotal(price);
+  // دوال الإضافة والإنقاص المبسطة
+  const handleIncrease = () => {
+    increc(id, color, size);
   };
 
-  const mines = (itemId: string | number, itemColor: string, price: number) => {
-    decrec(itemId, itemColor);
-    if (quantity > 1) decrecTotal(price);
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      decrec(id, color, size);
+    }
+  };
+
+  const handleRemove = () => {
+    remove(id, color, size);
   };
 
   return (
     <div className={styles.card}>
-      <img
-        src={typeof image === 'number' ? String(image) : image}
-        alt={item.ImageAlt || item.Name}
-        className={styles.productImg}
-      />
+      {/* صورة المنتج */}
+      <div className={styles.imageContainer}>
+        <img
+          src={typeof image === "number" ? String(image) : image}
+          alt={itemTitle}
+          className={styles.productImg}
+        />
+      </div>
+
+      {/* تفاصيل المنتج والأزرار */}
       <div className={styles.contentWrapper}>
         <div className={styles.detailsBox}>
-          <h2 className={styles.title}>
-            {item.Name} {color}
-          </h2>
-          <p className={styles.price}>${item.Price}</p>
+          <div>
+            <h3 className={styles.title}>{itemTitle}</h3>
+
+            {/* شارة اللون والتفاصيل */}
+            <div
+              className={`${styles.colorBadge} ${!color ? "invisible" : ""}`}
+            >
+              <span className={styles.colorLabel}>Color:</span>
+              <span className={styles.colorValue}>{color || "Default"}</span>
+              {size && (
+                <>
+                  <span className="mx-1 text-gray-300 dark:text-gray-600">|</span>
+                  <span className={styles.colorLabel}>Size:</span>
+                  <span className={styles.colorValue}>{size}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.priceTag}>${itemPrice.toFixed(2)}</div>
         </div>
 
+        {/* أزرار الإجراءات (الكمية + الحذف + الإجمالي) */}
         <div className={styles.actionsWrapper}>
           {/* عداد الكمية */}
           <div className={styles.quantityContainer}>
-            <span
-              onClick={() => mines(id, color, item.Price)}
-              className={styles.quantityBtnLeft}
+            <button
+              type="button"
+              onClick={handleDecrease}
+              disabled={quantity <= 1}
+              className={styles.quantityBtn}
+              aria-label="Decrease quantity"
             >
-              -
-            </span>
-            <span className={styles.quantityCount}>
-              {quantity}
-            </span>
-            <span
-              onClick={() => plass(id, color, item.Price)}
-              className={styles.quantityBtnRight}
+              <IoRemove className="text-xs" />
+            </button>
+
+            <span className={styles.quantityCount}>{quantity}</span>
+
+            <button
+              type="button"
+              onClick={handleIncrease}
+              className={styles.quantityBtn}
+              aria-label="Increase quantity"
             >
-              +
-            </span>
+              <IoAdd className="text-xs" />
+            </button>
           </div>
 
           {/* الإجمالي وزر الحذف */}
           <div className={styles.totalSection}>
-            <p className={styles.totalText}>${total}</p>
-            <svg
-              onClick={() => remove(id, total, quantity, color)}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className={styles.removeIcon}
+            <div className={styles.totalWrapper}>
+              <span className={styles.totalLabel}>Total:</span>
+              <span className={styles.totalText}>${total.toFixed(2)}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleRemove}
+              className={styles.removeBtn}
+              title="Remove product"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+              <IoTrashOutline className="text-lg" />
+            </button>
           </div>
         </div>
       </div>
@@ -103,26 +135,42 @@ export function CartItem({ id, quantity, color, image }: ItemProps) {
   );
 }
 
-// 2. فصل جميع كلاسات Tailwind في كائن styles خارجي
+// 2. كلاسات Tailwind المُحسّنة بالكامل
 const styles = {
-  card: "justify-between mb-6 rounded-lg bg-white dark:bg-zinc-900 border dark:border-zinc-800 p-6 shadow-md xs:flex xs:justify-start",
-  productImg: "w-full aspect-[4/3] overflow-hidden rounded-lg max-h-44 lg:max-h-32 lg:w-[250px] object-fill bg-gray-100 dark:bg-zinc-800",
-  
-  contentWrapper: "xs:ml-4 xs:flex xs:w-full xs:justify-between",
-  detailsBox: "mt-5 xs:mt-0",
-  title: "text-lg font-bold text-gray-900 dark:text-white",
-  price: "mt-1 text-xs text-gray-700 dark:text-gray-400",
+  card: "group relative flex flex-col sm:flex-row dark:bg-zinc-900 items-center gap-4 mb-4 rounded-2xl bg-white p-4 border border-gray-100 dark:border-zinc-700/60 shadow-sm hover:shadow-md transition-all duration-200",
 
-  actionsWrapper: "mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6",
-  
-  // Quantity Selector
-  quantityContainer: "flex items-center border-gray-100 dark:border-zinc-700",
-  quantityBtnLeft: "cursor-pointer rounded-l bg-gray-100 dark:bg-zinc-800 dark:text-white py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-white select-none",
-  quantityCount: "cursor-default bg-gray-100 dark:bg-zinc-800 dark:text-white py-1 px-3.5 duration-100 select-none",
-  quantityBtnRight: "cursor-pointer rounded-r bg-gray-100 dark:bg-zinc-800 dark:text-white py-1 px-3 duration-100 hover:bg-blue-500 hover:text-white select-none",
+  imageContainer:
+    "relative w-full sm:w-28 h-28 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700/40",
+  productImg:
+    "w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300",
 
-  // Price & Remove Section
-  totalSection: "flex items-center space-x-4",
-  totalText: "text-sm font-semibold text-gray-900 dark:text-white",
-  removeIcon: "h-5 w-5 cursor-pointer text-gray-500 dark:text-gray-400 duration-150 hover:text-red-600 dark:hover:text-red-500",
+  contentWrapper: "flex flex-col justify-between w-full h-full gap-3",
+
+  detailsBox: "flex items-start justify-between gap-2",
+  title: "text-sm font-bold text-gray-900 dark:text-white line-clamp-1",
+
+  colorBadge:
+    "inline-flex items-center gap-1.5 mt-1 px-2.5 py-0.5 rounded-md bg-gray-100 dark:bg-zinc-700/50 text-[11px] font-medium text-gray-600 dark:text-gray-300",
+  colorLabel: "text-gray-400 dark:text-gray-400",
+  colorValue: "capitalize font-semibold text-gray-700 dark:text-gray-200",
+
+  priceTag: "text-xs font-semibold text-gray-500 dark:text-gray-400",
+
+  actionsWrapper:
+    "flex items-center justify-between pt-2 border-t border-gray-100 dark:border-zinc-700/40 mt-auto",
+
+  quantityContainer:
+    "flex items-center gap-1 bg-gray-100 dark:bg-zinc-900/60 p-1 rounded-xl border border-gray-200/60 dark:border-zinc-700/50",
+  quantityBtn:
+    "w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 shadow-sm hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors duration-150 select-none disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-gray-700 dark:disabled:hover:bg-zinc-800",
+  quantityCount:
+    "w-8 text-center text-xs font-bold text-gray-900 dark:text-white select-none",
+
+  totalSection: "flex items-center gap-4",
+  totalWrapper: "flex flex-col items-end",
+  totalLabel: "text-[10px] text-gray-400 uppercase font-medium tracking-wider",
+  totalText: "text-sm font-extrabold text-indigo-600 dark:text-indigo-400",
+
+  removeBtn:
+    "p-2 text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors duration-150",
 };

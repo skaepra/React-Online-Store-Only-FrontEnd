@@ -135,7 +135,7 @@ const styles = {
   // Checkbox
   checkboxContainer: "flex items-center my-2",
   checkbox:
-    "border bg-transparent rounded cursor-pointer accent-cyan-500 w-4 h-4",
+    "border bg-transparent rounded cursor-pointer accent-blue-500 w-4 h-4",
   checkboxLabel: "ml-2 text-sm select-none cursor-pointer text-gray-200",
 
   // Submit button
@@ -145,5 +145,5 @@ const styles = {
   // Footer signin link
   signinContainer: "flex justify-center text-sm pt-2",
   signinText: "text-[#ececec]",
-  signinLink: "ml-1 font-semibold hover:underline text-cyan-400",
+  signinLink: "ml-1 font-semibold hover:underline text-blue-400",
 };

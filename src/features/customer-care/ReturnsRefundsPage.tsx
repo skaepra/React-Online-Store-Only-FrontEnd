@@ -1,6 +1,5 @@
 import  { useState } from "react";
 import { 
-  IoRefreshOutline, 
   IoShieldCheckmarkOutline, 
   IoTimeOutline, 
   IoCardOutline,
@@ -17,14 +16,12 @@ export default function ReturnsRefundsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-16 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-20 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center p-3 bg-indigo-50 dark:bg-zinc-800 text-indigo-500 rounded-2xl mb-2">
-            <IoRefreshOutline className="text-3xl" />
-          </div>
+          
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Returns & <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Refunds Policy</span>
           </h1>

@@ -1,104 +1,180 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface CartItem {
   id: string | number;
+  name: string;
   quantity: number;
   color: string;
-  image: string | number;
+  size: string;
+  price: number; // السعر للعرض المحلي السريع
+  image: string;
+  title?: string;
+}
+
+export interface AddToCartInput {
+  id: string | number;
+  Price: number;
+  PriceOverride?: number;
+  Images?: string[];
+  image?: string;
+  Name?: string;
+  quantity?: number;
+  selectedColor?: string;
+  selectedSize?: string;
 }
 
 interface CartState {
-  // State
   storitems: CartItem[];
-  Totals: number;
-  AllQuantity: number;
   carId: { id?: string | number };
 
-  // Actions
+  // Getters لحساب القيم المشتقة تلقائياً
+  getTotals: () => number;
+  getAllQuantity: () => number;
+
   checkCar: (id: string | number) => void;
-  increcTotal: (tot: number) => void;
-  decrecTotal: (tot: number) => void;
   Quantity: (id: string | number, itemColor?: string) => number;
-  add: (id: string | number, price: number, color: string, image: string | number) => void;
-  increc: (id: string | number, color: string) => void;
-  decrec: (id: string | number, color: string) => void;
-  remove: (id: string | number, Tota: number, quantity: number, color: string) => void;
+  addToCart: (product: AddToCartInput) => void;
+  increc: (id: string | number, color: string, size?: string) => void;
+  decrec: (id: string | number, color: string, size?: string) => void;
+  remove: (id: string | number, color: string, size?: string) => void;
+  clearCart: () => void;
+  
+  // دالة لتحديث الأسعار عند الحصول على أحدث البيانات من الباك إند
+  syncLatestPrices: (latestProducts: { id: string | number; price: number }[]) => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       storitems: [],
-      Totals: 0,
-      AllQuantity: 0,
       carId: {},
 
       checkCar: (id) => set({ carId: { id } }),
 
-      increcTotal: (tot) => set((state) => ({ Totals: state.Totals + tot })),
-      decrecTotal: (tot) => set((state) => ({ Totals: state.Totals - tot })),
-      
+      // 1. حساب الإجمالي ديناميكياً بدلاً من حفظه
+      getTotals: () => {
+        return get().storitems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+      },
+
+      // 2. حساب إجمالي الكمية ديناميكياً
+      getAllQuantity: () => {
+        return get().storitems.reduce((sum, item) => sum + item.quantity, 0);
+      },
 
       Quantity: (id, itemColor) => {
         const items = get().storitems;
         if (itemColor) {
-          return items.find((item) => item.id === id && item.color === itemColor)?.quantity || 0;
+          return (
+            items.find(
+              (item) =>
+                String(item.id) === String(id) && item.color === itemColor
+            )?.quantity || 0
+          );
         }
-        return items.find((item) => item.id === id)?.quantity || 0;
+        return (
+          items.find((item) => String(item.id) === String(id))?.quantity || 0
+        );
       },
 
-      add: (id, price, color, image) =>
+      addToCart: (product) =>
         set((state) => {
-          const isExist = state.storitems.some((item) => item.id === id && item.color === color);
-          if (isExist) return state;
+          const qtyToAdd = product.quantity || 1;
+          const name = product.Name || "منتج بدون اسم";
+          const price = product.PriceOverride ?? product.Price ?? 0;
+          const color = product.selectedColor || "default";
+          const size = product.selectedSize || "M";
+          const image = product.Images?.[0] || product.image || "";
 
-          return {
-            storitems: [...state.storitems, { id, quantity: 1, color, image }],
-            AllQuantity: state.AllQuantity + 1,
-            Totals: state.Totals + price,
-          };
-        }),
+          const existingIndex = state.storitems.findIndex(
+            (item) =>
+              String(item.id) === String(product.id) &&
+              item.color === color &&
+              item.size === size
+          );
 
-      increc: (id, itemColor) =>
-        set((state) => {
-          const isExist = state.storitems.some((item) => item.id === id && item.color === itemColor);
-          if (!isExist) return state;
-
-          return {
-            storitems: state.storitems.map((item) =>
-              item.id === id && item.color === itemColor
-                ? { ...item, quantity: item.quantity + 1 }
+          if (existingIndex > -1) {
+            const updatedItems = state.storitems.map((item, idx) =>
+              idx === existingIndex
+                ? { ...item, quantity: item.quantity + qtyToAdd }
                 : item
-            ),
-            AllQuantity: state.AllQuantity + 1,
-          };
-        }),
+            );
 
-      decrec: (id, itemColor) =>
-        set((state) => {
-          const targetItem = state.storitems.find((item) => item.id === id && item.color === itemColor);
-          if (!targetItem || targetItem.quantity <= 1) return state;
+            return { storitems: updatedItems };
+          }
 
           return {
-            storitems: state.storitems.map((item) =>
-              item.id === id && item.color === itemColor
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            ),
-            AllQuantity: state.AllQuantity - 1,
+            storitems: [
+              ...state.storitems,
+              {
+                id: product.id,
+                name,
+                quantity: qtyToAdd,
+                color,
+                size,
+                price,
+                image,
+                title: name,
+              },
+            ],
           };
         }),
 
-      remove: (id, Tota, quantity, itemColor) =>
+      increc: (id, itemColor, size) =>
         set((state) => ({
-          storitems: state.storitems.filter((item) => item.id !== id || item.color !== itemColor),
-          Totals: state.Totals - Tota,
-          AllQuantity: state.AllQuantity - quantity,
+          storitems: state.storitems.map((item) =>
+            String(item.id) === String(id) &&
+            item.color === itemColor &&
+            (!size || item.size === size)
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+        })),
+
+      decrec: (id, itemColor, size) =>
+        set((state) => ({
+          storitems: state.storitems.map((item) =>
+            String(item.id) === String(id) &&
+            item.color === itemColor &&
+            (!size || item.size === size) &&
+            item.quantity > 1
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          ),
+        })),
+
+      remove: (id, itemColor, size) =>
+        set((state) => ({
+          storitems: state.storitems.filter(
+            (item) =>
+              !(
+                String(item.id) === String(id) &&
+                item.color === itemColor &&
+                (!size || item.size === size)
+              )
+          ),
+        })),
+
+      clearCart: () => set({ storitems: [] }),
+
+      // 3. تحديث الأسعار بالسعر الجديد من الباك إند
+      syncLatestPrices: (latestProducts) =>
+        set((state) => ({
+          storitems: state.storitems.map((item) => {
+            const freshProduct = latestProducts.find(
+              (p) => String(p.id) === String(item.id)
+            );
+            return freshProduct ? { ...item, price: freshProduct.price } : item;
+          }),
         })),
     }),
     {
-      name: 'shopping-cart-storage',
+      name: "shopping-cart-storage",
+      // تخزين العناصر فقط واستبعاد باقي الخواص
+      partialize: (state) => ({ storitems: state.storitems }),
     }
   )
 );

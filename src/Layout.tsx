@@ -25,14 +25,16 @@ import FAQPage from "./features/customer-care/FAQ";
 import ShippingInfoPage from "./features/customer-care/ShippingInfo";
 import ReturnsRefundsPage from "./features/customer-care/ReturnsRefundsPage";
 import ContactUsPage from "./features/customer-care/ContactUsPage";
+import ShopingScreen from "./features/shop/Shoping";
+import ProductDetails from "./features/products/screen/ProductDetails";
 
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
 
   // تحديد النوع كـ مصفوفة نصوص ثابتة للقراءة فقط لضمان الحماية والأداء
-  const hideNavbarRoutes: readonly string[] = ["/", "/cart", "/checkOut","/faq","/shipping","/returns","/contact"];
-  const hideFooterRoutes: readonly string[] = ["/","/faq","/shipping","/returns","/contact"];
+  const hideNavbarRoutes: readonly string[] = ["/login","/singUp"];
+  const hideFooterRoutes: readonly string[] = ["/login","/singUp"];
   const shouldHideNavbar: boolean = hideNavbarRoutes.includes(
     location.pathname,
   );
@@ -40,13 +42,13 @@ export default function Layout(): React.JSX.Element {
     location.pathname,
   );
 
-  const hideMnavRoutes: readonly string[] = [
-    "/Home",
-    "/Addexpenses",
-    "/Myexpenses",
-    "/Order",
-  ];
-  const shouldHideMnav: boolean = hideMnavRoutes.includes(location.pathname);
+  // const hideMnavRoutes: readonly string[] = [
+  //   "/Home",
+  //   "/Addexpenses",
+  //   "/Myexpenses",
+  //   "/Order",
+  // ];
+  // const shouldHideMnav: boolean = hideMnavRoutes.includes(location.pathname);
 
   return (
     <>
@@ -54,6 +56,7 @@ export default function Layout(): React.JSX.Element {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rent" element={<Css />} />
+          <Route path="/shop" element={<ShopingScreen />} />
           <Route path="/cart" element={<ShoppingCartScreen />} />
           <Route path="/checkOut" element={<CheckOutScreen />} />
           <Route path="/login" element={<LoginScreen />} />
@@ -64,6 +67,7 @@ export default function Layout(): React.JSX.Element {
           <Route path="/contact" element={<ContactUsPage />} />
           <Route path="/error" element={<ErrorPage />} />
           {/* <Route path="/Show" element={<Show_Plas />} /> */}
+          <Route path="/product/:id" element={<ProductDetails />} />
 
           {/* الصفحات التي بداخل الـ MainLayout تأخذ الـ margin المعرف داخله */}
           <Route path="/" element={<MainLayout />}>
@@ -74,9 +78,9 @@ export default function Layout(): React.JSX.Element {
           </Route>
         </Routes>
 
-        {shouldHideNavbar && <Newnav />}
+        {!shouldHideNavbar && <Newnav />}
         {/* {shouldHideMnav && <Mnav/>} */}
-        {shouldHideFooter&&<Footer />}
+        {!shouldHideFooter&&<Footer />}
       </AppThemeProvider>
     </>
   );

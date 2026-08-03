@@ -33,9 +33,17 @@ const autofillClasses =
   "autofill:bg-transparent autofill:text-text [&&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s] [&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
 
 export default function CheckOutScreen() {
-  const Totals = useCartStore((state) => state.Totals);
-  const quint = useCartStore((state) => state.AllQuantity);
-  const AllTotal: number = quint * 4 + Totals;
+  const getTotals = useCartStore((state) => state.getTotals);
+  const getAllQuantity = useCartStore((state) => state.getAllQuantity);
+
+   // حساب القيم المباشرة
+  const totals = getTotals();
+  const totalQuantity = getAllQuantity();
+
+    // سعر الشحن الإجمالي (مثال: 4$ لكل قطعة)
+  const shippingFee = totalQuantity * 4;
+  const allTotal = totals + shippingFee;
+  
 
   const [values, setValues] = useState<AddressFormValues>(initialValues);
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
@@ -74,7 +82,7 @@ export default function CheckOutScreen() {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headerTitle}>Checkout ({quint} items)</h1>
+      <h1 className={styles.headerTitle}>Checkout ({totalQuantity} items)</h1>
 
       <div className={styles.mainLayout}>
         {/* Form Card */}
@@ -247,18 +255,18 @@ export default function CheckOutScreen() {
 
           <div className={styles.summaryRow}>
             <p>Subtotal</p>
-            <p>${Totals}</p>
+            <p>${totals}</p>
           </div>
           <div className={styles.summaryRow}>
             <p>Shipping</p>
-            <p>${quint * 4}</p>
+            <p>${totalQuantity * 4}</p>
           </div>
 
           <hr className={styles.summaryDivider} />
 
           <div className={styles.summaryTotalRow}>
             <p>Total</p>
-            <p>${AllTotal}</p>
+            <p>${allTotal}</p>
           </div>
 
           <p className={styles.vatNotice}>including VAT</p>
@@ -336,7 +344,7 @@ const styles = {
 
   // Submit Button Style
   checkoutBtn:
-    "mt-6 w-full py-2 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg  duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none",
+    "mt-6 w-full py-2 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg  duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none",
 
   // Modal Styles
   modalBackdrop:

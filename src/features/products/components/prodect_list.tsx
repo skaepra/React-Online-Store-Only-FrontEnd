@@ -1,15 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useProductUiStore } from "../store/useProductUiStore";
 
-// 1. تعريف نوع البيانات الخاص بالمنتج
+// 2. تعريف نوع البيانات الخاص بالمنتج
 interface Product {
   id: string | number;
   Name: string;
-  Colors: string[];
-  Images: string[];
+  Colors?: string[];
+  Images?: string[];
 }
 
 export const ProductLists = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const navigate = useNavigate();
+  const hand = useProductUiStore((state) => state.hand);
+
+  // 🔴 3. تعديل نوع id ليقبل string أو number
+  const handleProductClick = (id: string | number) => {
+    if (hand) hand(id);
+    navigate(`/product/${id}`);
+  };
 
   useEffect(() => {
     fetch("http://localhost:3000/products")
@@ -23,13 +33,13 @@ export const ProductLists = () => {
       <h1 className={styles.title}>Product List</h1>
       
       <div className={styles.grid}>
-        {products.map((product) => (
-          <div key={product.id} className={styles.card}>
+        {products.map((product) => (                    
+          <div key={product.id} className={styles.card} >
             <h2 className={styles.cardTitle}>{product.Name}</h2>
             
-            {/* عرض الألوان المتاحة */}
+            {/* 🔴 4. استخدام Optional Chaining حمايةً لعدم وجود مصفوفة الألوان */}
             <div className={styles.colorsContainer}>
-              {product.Colors.map((color, i) => (
+              {product.Colors?.map((color, i) => (
                 <div
                   key={i}
                   style={{ backgroundColor: color }}
@@ -38,9 +48,9 @@ export const ProductLists = () => {
               ))}
             </div>
             
-            {/* عرض صور المنتج */}
-            <div className={styles.imagesContainer}>
-              {product.Images.map((img, i) => (
+            {/* 🔴 5. استخدام Optional Chaining حمايةً لعدم وجود مصفوفة الصور */}
+            <div className={styles.imagesContainer} >
+              {product.Images?.map((img, i) => (
                 <img
                   key={i}
                   src={img}

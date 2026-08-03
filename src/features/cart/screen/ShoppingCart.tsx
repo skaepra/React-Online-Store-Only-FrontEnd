@@ -1,17 +1,22 @@
-
 import { CartItem } from "../components/CartItem";
 import { useCartStore } from "../store/useCartStore";
 
 export default function ShoppingCartScreen() {
-  // سحب حالات السلة من useCartStore
+  // 1. سحب البيانات والدوال الحسابية من Zustand
   const storitems = useCartStore((state) => state.storitems);
-  const Totals = useCartStore((state) => state.Totals);
-  const quint = useCartStore((state) => state.AllQuantity);
+  const getTotals = useCartStore((state) => state.getTotals);
+  const getAllQuantity = useCartStore((state) => state.getAllQuantity);
 
-  const AllTotal: number = quint * 4 + Totals;
+  // حساب القيم المباشرة
+  const totals = getTotals();
+  const totalQuantity = getAllQuantity();
+  
+  // سعر الشحن الإجمالي (مثال: 4$ لكل قطعة)
+  const shippingFee = totalQuantity * 4;
+  const allTotal = totals + shippingFee;
 
-  // حالة السلة الفارغة
-  if (Totals === 0) {
+  // 2. حالة السلة الفارغة (الفحص عبر طول المصفوفة أضمن)
+  if (storitems.length === 0) {
     return (
       <div className={styles.wrapper}>
         <div className={styles.emptyContainer}>
@@ -29,55 +34,59 @@ export default function ShoppingCartScreen() {
                 d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"
               />
             </svg>
-            <h1 className={styles.emptyText}>
-              no items in the cart
-            </h1>
+            <h1 className={styles.emptyText}>No items in the cart</h1>
           </div>
         </div>
       </div>
     );
   }
 
-  // حالة السلة مليئة
+  // 3. عرض عناصر السلة والملخص
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.cartHeader}>
-        Cart Items
-      </h1>
+      <h1 className={styles.cartHeader}>Cart Items</h1>
 
       <div className={styles.mainLayout}>
         {/* قائمة المنتجات */}
         <div className={styles.itemsListContainer}>
-          {storitems.map((item, index: number) => (
-            <div key={index}>
-              <CartItem {...item} />
-            </div>
-          ))}
+          {storitems.map((item) => {
+            // إنشاء Key فريد يجمع بين ID المنتج واللون والمقاس
+            const itemKey = `${item.id}-${item.color}-${item.size || "default"}`;
+            return <CartItem key={itemKey} {...item} />;
+          })}
         </div>
 
         {/* كارت الفاتورة / الملخص */}
         <div className={styles.summaryCard}>
           <div className={styles.summaryRow}>
             <p>Subtotal</p>
-            <p>${Totals}</p>
+            <p>${totals.toFixed(2)}</p>
           </div>
+
           <div className={styles.summaryRow}>
             <p>Shipping</p>
-            <p>${quint * 4}</p>
+            <p>${shippingFee.toFixed(2)}</p>
           </div>
-          
+
           <hr className={styles.summaryDivider} />
-          
+
           <div className={styles.summaryTotalRow}>
             <p>Total</p>
-            <p>${AllTotal}</p>
+            <p>${allTotal.toFixed(2)}</p>
           </div>
-          
+
           <p className={styles.vatNotice}>including VAT</p>
 
-          <a href="checkOut" className={styles.checkoutBtn}>
+          <button
+            type="button"
+            onClick={() => {
+              // توجيه لصفحة الـ Checkout حسب الـ Router المستعمل لديك
+              window.location.href = "/checkout";
+            }}
+            className={styles.checkoutBtn}
+          >
             Check out
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -108,5 +117,5 @@ const styles = {
   summaryTotalRow: "flex justify-between text-lg font-bold text-gray-900 dark:text-white",
   vatNotice: "text-sm text-gray-500 float-end mt-1",
   
-  checkoutBtn: "mt-6 w-full py-1.5 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center",
+  checkoutBtn: "mt-6 w-full py-1.5 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center",
 };
