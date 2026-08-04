@@ -1,33 +1,27 @@
 export type OrderItemType = {
-  id: string;
+  id: string | number;
   productName: string;
-  variantName: string;
+  color?: string[];
   unitPrice: number;
   quantity: number;
   lineTotal: number;
-  customerNote: string;
 };
 
 export type orderType = {
   id: string;
-  publicId: string;
-  orderType: number;
-  customerId: string;
-  merchantId: string; // بديل لـ restaurantId
-  pickupLatitude: number;
-  pickupLongitude: number;
+  Country: string;
+  City: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  building : string;
   dropoffLatitude: number;
   dropoffLongitude: number;
-  distanceKm: number;
-  itemsTotal: number;
-  deliveryFee: number;
-  tipAmount: number;
-  totalAmount: number; // بديل لـ totalPrice
-  paymentMethod: number; // رقمي من السيرفر
+  paymentMethod: number; 
+  Notes?: string;
+  totalAmount: number; 
   paymentStatus: number;
-  status: number; // الرقم الحالي لحالة الطلب (بديل لـ orderState)
-  requiredDriversCount: number;
+  status: number; 
   createdAt: string;
-  deliveredAt: string | null;
   items: OrderItemType[];
 };

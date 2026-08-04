@@ -1,15 +1,5 @@
-export interface Product {
-  id: number;
-  Name: string;
-  Category: 'Electronics' | 'Apparel' | 'Accessories' | 'Footwear';
-  Images: string[];
-  ImageAlt?: string;
-  Price: number; 
-  Colors?: string[];
-  Sizes?: string[];
-  Description: string;
-  IsFeatured?: boolean;
-}
+import { Product } from "../features/products/types/product";
+
  
  const homeProducts:Product[] =
  [

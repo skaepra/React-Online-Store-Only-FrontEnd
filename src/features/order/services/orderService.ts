@@ -1,11 +1,9 @@
-import { Api } from "../../../shared/api/api-delivery";
+import apiClient from "../../../shared/api/api-Client";
+import { orderType } from "../types/orderType";
 
-export const getOrders = async () => {
-  const res = await Api.get("/api/orders/my");
+export const getOrders  = async () => {
+  const res = await apiClient.get<orderType[]>("orders");
   return res.data;
 };
 
-export const editStatusOrders = async (id: string) => {
-  const res = await Api(`/api/orders/${id}/delivered`, { method: 'PATCH' }); // تأكد من استخدام PATCH حسب توثيق الـ API الخاص بك
-  return res.data;
-};
+

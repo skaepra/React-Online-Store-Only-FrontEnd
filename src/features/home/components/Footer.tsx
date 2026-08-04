@@ -90,7 +90,7 @@ const styles = {
   link: "hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-150",
   
   newsletterInput: "w-full border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 dark:bg-zinc-800 dark:text-white",
-  subscribeBtn: "py-1.5 px-4 text-sm font-semibold text-white bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow hover:scale-105 duration-200 cursor-pointer shrink-0",
+  subscribeBtn: "py-1.5 px-4 text-sm font-semibold text-white bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg cursor-pointer shrink-0 shadow-md shadow-purple-500/20  hover:shadow-purple-500/40",
   
   divider: "my-6 border-gray-200 dark:border-zinc-800",
   bottomSection: "flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-400 gap-4",

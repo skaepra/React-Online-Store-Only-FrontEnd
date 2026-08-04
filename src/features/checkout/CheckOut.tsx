@@ -1,6 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useCartStore } from "../cart/store/useCartStore";
 import LocationPickerMaps from "../google-map/screen/LocationPickerMaps";
+import { AddOrders } from "./services/checkoutService";
+import { OrderItemType, orderType } from "../order/types/orderType";
+
 
 interface AddressFormValues {
   country: string;
@@ -10,7 +13,7 @@ interface AddressFormValues {
   addressLine1: string;
   addressLine2: string;
   city: string;
-  notes: string;
+  notes?: string;
   paymentMethod: "COD" | "Card";
   latitude?: number;
   longitude?: number;
@@ -28,22 +31,18 @@ const initialValues: AddressFormValues = {
   paymentMethod: "COD",
 };
 
-// كلاسات مخصصة لمعالجة الخلفية البيضاء الخاصة بالـ Autofill
-const autofillClasses =
-  "autofill:bg-transparent autofill:text-text [&&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s] [&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
-
 export default function CheckOutScreen() {
   const getTotals = useCartStore((state) => state.getTotals);
   const getAllQuantity = useCartStore((state) => state.getAllQuantity);
+  const cartItems = useCartStore((state) => state.storitems); // عناصر السلة
+  const clearCart = useCartStore((state) => state.clearCart);
 
-   // حساب القيم المباشرة
+  const [loading, setLoading] = useState<boolean>(false);
+
   const totals = getTotals();
   const totalQuantity = getAllQuantity();
-
-    // سعر الشحن الإجمالي (مثال: 4$ لكل قطعة)
   const shippingFee = totalQuantity * 4;
   const allTotal = totals + shippingFee;
-  
 
   const [values, setValues] = useState<AddressFormValues>(initialValues);
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
@@ -70,14 +69,59 @@ export default function CheckOutScreen() {
     setShowMapModal(false);
   };
 
-  const onSubmit = (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
     if (!values.fullName || !values.phone || !values.addressLine1) {
       alert("Please fill in all required fields (Name, Phone, and Address).");
       return;
     }
-    console.log("Order submitted:", values);
-    alert("Order placed successfully!");
+
+    try {
+      setLoading(true);
+
+      // 1️⃣ تجهيز قائمة المنتجات لـ OrderItemType
+      const formattedItems: OrderItemType[] = cartItems.map((item: any) => ({
+        id: item.id,
+        productName: item.name,
+        color: item.color||[],
+        unitPrice: item.price ,
+        quantity: item.quantity,
+        lineTotal: item.price  * item.quantity,
+      }));
+
+      // 2️⃣ تجهيز كائن الطلب المطابق لـ orderType (بدون id لأن db.json سيولده تلقائياً)
+      const newOrder: Omit<orderType, "id"> = {
+        Country: values.country,
+        City: values.city,
+        fullName: values.fullName,
+        phone: values.phone,
+        email: values.email,
+        building: values.addressLine2, // أو يمكنك دمجه مع addressLine1
+        dropoffLatitude: values.latitude || 0,
+        dropoffLongitude: values.longitude || 0,
+        paymentMethod: values.paymentMethod === "COD" ? 0 : 1, // 0 لـ COD و 1 لـ Card
+        Notes: values.notes,
+        totalAmount: allTotal,
+        paymentStatus: 0, // 0 تعني Unpaid مثلاً
+        status: 0, // 0 تعني Pending (قيد الانتظار)
+        createdAt: new Date().toISOString(),
+        items: formattedItems,
+      };
+      console.log(newOrder)
+      // 3️⃣ إرسال الطلب لـ API
+      await AddOrders(newOrder as any);
+
+
+      alert("Order placed successfully!");
+      if (clearCart) clearCart();
+    } catch (error) {
+      
+      console.error("Error submitting order:", error);
+      alert("Failed to submit order. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -242,8 +286,8 @@ export default function CheckOutScreen() {
             />
           </div>
 
-          <button type="submit" className={styles.checkoutBtn}>
-            Place Order
+          <button type="submit" disabled={loading} className={styles.checkoutBtn}>
+            {loading ? "Submitting Order..." : "Place Order"}
           </button>
         </form>
 
@@ -305,35 +349,27 @@ export default function CheckOutScreen() {
   );
 }
 
-// التنسيقات المطابقة لصفحة السلة الخاصة بك تماماً
 const styles = {
-  // Common Layout
   wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-zinc-800 p-4",
   headerTitle: "mt-12 mb-5 text-center text-2xl font-bold dark:text-white",
   mainLayout:
     "mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0",
-
-  // Form Section
   formCard:
     "rounded-lg md:w-2/3 border bg-white p-6 shadow-md md:mt-0 mb-6 space-y-4 dark:bg-zinc-900 dark:border-zinc-700",
   sectionHeader: "text-xl font-bold text-gray-900 dark:text-white",
   inputRow: "grid grid-cols-1 md:grid-cols-2 gap-4",
   label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",
-  input: `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white ${autofillClasses}`,
+  input: `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white`,
   select:
     "w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-white",
   textarea:
     "w-full border border-gray-300 rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white",
-
-  // Map Button Styles
   mapBtn:
-    "text-xs md:text-sm font-semibold px-3  rounded-lg border transition-all duration-200 cursor-pointer ml-3",
+    "text-xs md:text-sm font-semibold px-3 rounded-lg border transition-all duration-200 cursor-pointer ml-3",
   mapBtnDefault:
     "bg-indigo-50 text-indigo-600 border-indigo-200 hover:bg-indigo-100 dark:bg-zinc-800 dark:text-indigo-400 dark:border-zinc-700",
   mapBtnSelected:
     "bg-green-50 text-green-700 border-green-300 hover:bg-green-100 dark:bg-green-950/50 dark:text-green-400 dark:border-green-800",
-
-  // Summary Card Styles
   summaryCard:
     "mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3 dark:bg-zinc-900 dark:border-zinc-700",
   summaryRow: "mb-2 flex justify-between text-gray-700 dark:text-gray-300",
@@ -341,12 +377,8 @@ const styles = {
   summaryTotalRow:
     "flex justify-between text-lg font-bold text-gray-900 dark:text-white",
   vatNotice: "text-sm text-gray-500 float-end mt-1",
-
-  // Submit Button Style
   checkoutBtn:
-    "mt-6 w-full py-2 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg  duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none",
-
-  // Modal Styles
+    "mt-6 w-full py-2 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none disabled:opacity-50 shadow-md shadow-purple-500/20  hover:shadow-purple-500/40",
   modalBackdrop:
     "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4",
   modalContent:

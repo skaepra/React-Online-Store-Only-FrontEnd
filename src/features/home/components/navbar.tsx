@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Taggol } from "../../dark-mode/taggol";
 import { useThemeMode } from "../../dark-mode/dark";
 import { useCartStore } from "../../cart/store/useCartStore";
+
 import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
 import {
   IoCartOutline,
@@ -11,6 +12,7 @@ import {
   IoClose,
   IoSparklesOutline,
 } from "react-icons/io5";
+
 
 interface NavItem {
   name: string;
@@ -30,14 +32,16 @@ export default function Newnav() {
     toggleMode: () => void;
   };
 
-const cartQuantity = useCartStore((state) =>
+  const cartQuantity = useCartStore((state) =>
     state.storitems.reduce((sum, item) => sum + item.quantity, 0)
   );
 
+
   const navItems: NavItem[] = [
     { name: "Home", link: "/" },
-    { name: "Rent", link: "/rent" },
     { name: "Shop", link: "/shop" },
+    { name: "Order", link: "/order" },
+    { name: "Favorite", link: "/wishlist" },
   ];
 
   const toggleMobileMenu = () => {
@@ -125,8 +129,8 @@ const cartQuantity = useCartStore((state) =>
               </nav>
             </div>
 
-            {/* Right Section: Location, DarkMode, Cart & Auth */}
-            <div className="flex items-center gap-2.5 sm:gap-4">
+            {/* Right Section: Location, DarkMode, Wishlist, Cart & Auth */}
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Location Picker Button */}
               <button
                 onClick={() => setIsMapOpen(true)}
@@ -144,7 +148,7 @@ const cartQuantity = useCartStore((state) =>
               </button>
 
               {/* Theme Toggle */}
-              <div className="flex items-center">
+              <div className="flex items-center mr-[-12px]">
                 <Taggol mode={mode} toggleMode={toggleMode} />
               </div>
 
@@ -165,7 +169,8 @@ const cartQuantity = useCartStore((state) =>
               {/* Subscribe / Login Button */}
               <NavLink
                 to="/login"
-                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-white font-medium text-xs shadow-md shadow-cyan-500/20 transition-all hover:shadow-cyan-500/40 active:scale-95"
+                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl  bg-indigo-500
+                hover:shadow-indigo-500/40 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  font-medium text-xs shadow-md shadow-purple-500/20 transition-all dark:hover:shadow-purple-500/40 active:scale-95"
               >
                 <IoSparklesOutline />
                 <span>Subscribe</span>
@@ -243,14 +248,12 @@ const cartQuantity = useCartStore((state) =>
               >
                 Subscribe / Login
               </NavLink>
-
-              <div className="flex items-center gap-2"></div>
             </div>
           </div>
         )}
       </header>
 
-      {/* 🔴 Modal الخريطة المنبثقة */}
+      {/* Modal الخريطة المنبثقة */}
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="relative w-full max-w-3xl h-[520px] bg-white dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-white/10">

@@ -27,6 +27,8 @@ import ReturnsRefundsPage from "./features/customer-care/ReturnsRefundsPage";
 import ContactUsPage from "./features/customer-care/ContactUsPage";
 import ShopingScreen from "./features/shop/Shoping";
 import ProductDetails from "./features/products/screen/ProductDetails";
+import OrdersPage from "./features/order/screen/OrdersPage";
+import WishlistPage from "./features/products/screen/WishlistPage";
 
 
 export default function Layout(): React.JSX.Element {
@@ -57,8 +59,10 @@ export default function Layout(): React.JSX.Element {
           <Route path="/" element={<Home />} />
           <Route path="/rent" element={<Css />} />
           <Route path="/shop" element={<ShopingScreen />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/cart" element={<ShoppingCartScreen />} />
           <Route path="/checkOut" element={<CheckOutScreen />} />
+          <Route path="/order" element={<OrdersPage />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/singUp" element={<SignUpScreen />} />
           <Route path="/faq" element={<FAQPage />} />

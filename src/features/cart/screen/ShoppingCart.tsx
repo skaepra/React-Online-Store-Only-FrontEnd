@@ -117,5 +117,5 @@ const styles = {
   summaryTotalRow: "flex justify-between text-lg font-bold text-gray-900 dark:text-white",
   vatNotice: "text-sm text-gray-500 float-end mt-1",
   
-  checkoutBtn: "mt-6 w-full py-1.5 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center",
+  checkoutBtn: "mt-6 w-full py-1.5 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-md shadow-purple-500/20  hover:shadow-purple-500/40 dark:hover:drop-shadow-2xl cursor-pointer block text-center",
 };

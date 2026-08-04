@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "../../cart/store/useCartStore";
+
 import {
   IoStar,
   IoStarOutline,
+  IoHeart,          
   IoHeartOutline,
   IoShareSocialOutline,
   IoCartOutline,
@@ -17,28 +19,26 @@ import {
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-// 🔴 1. استيراد القائمتين والـ Maps
 import Allproducts, {
   productsMap as allProductsMap,
 } from "../../../data/Allproducts.ts";
 import homeProducts, {
   productsMap as homeProductsMap,
 } from "../../../data/products.ts";
+import { useWishlistStore } from "../store/useWishlistStore.ts";
+import { Product } from "../types/product.ts";
 
-// 🔴 2. دمج كافة المنتجات
 const combinedAllProducts = [...Allproducts, ...homeProducts];
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // 🔴 3. البحث في الـ Map الأول ثم الثاني (Fallback Search)
   const productId = Number(id);
   const product = id
     ? allProductsMap[productId] || homeProductsMap[productId]
     : undefined;
 
-  // 4. تعريف جميع الـ Hooks
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -50,7 +50,16 @@ export default function ProductDetails() {
 
   const addToCart = useCartStore((state) => state.addToCart);
 
-  // 5. تحديث القيم الافتراضية للـ States
+  // 🔴 3. ربط Zustand Wishlist Store
+  const wishlist = useWishlistStore((state) => state.wishlist) || [];
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  // في حال كانت الدالة لديك باسم addToWishlist/removeFromWishlist يمكنك تعديلها هنا
+  
+  // التحقق إن كان المنتج الحالي ضمن الـ wishlist
+  const isWishlisted = product
+    ? wishlist.some((item:Product) => item.id === product.id)
+    : false;
+
   useEffect(() => {
     if (product) {
       setSelectedImage(product.Images?.[0] || "");
@@ -60,7 +69,6 @@ export default function ProductDetails() {
     }
   }, [id, product]);
 
-  // 6. Return في حال عدم وجود المنتج
   if (!product) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-4">
@@ -88,14 +96,18 @@ export default function ProductDetails() {
     setTimeout(() => setAddedToast(false), 3000);
   };
 
-  // 🔴 7. المنتجات ذات الصلة تشمل المنتجات من القائمتين
+  const handleToggleWishlist = () => {
+    if (toggleWishlist && product) {
+      toggleWishlist(product);
+    }
+  };
+
   const relatedProducts = combinedAllProducts.filter(
     (p) => p.Category === product.Category && p.id !== product.id,
   );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pt-20 pb-16 transition-colors duration-200">
-      {/* Toast Notification */}
       <AnimatePresence>
         {addedToast && (
           <motion.div
@@ -113,7 +125,6 @@ export default function ProductDetails() {
       </AnimatePresence>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-white mb-6 transition-colors"
@@ -122,9 +133,7 @@ export default function ProductDetails() {
           <span>Back</span>
         </button>
 
-        {/* Product Main Container */}
         <div className="sm:flex grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white dark:bg-zinc-800/80 p-6 sm:p-8 rounded-3xl border border-gray-200/80 dark:border-zinc-700/60 shadow-sm">
-          {/* Left Column: Image Gallery */}
           <div className="lg:col-span-7 flex flex-col gap-4">
             <div className="relative aspect-square w-full sm:w-[250px] md:w-[350px] rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700/40">
               <motion.img
@@ -138,9 +147,24 @@ export default function ProductDetails() {
               />
 
               <div className="absolute top-4 right-4 flex flex-col gap-2">
-                <button className="p-2.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-gray-700 dark:text-gray-200 hover:text-rose-500 transition-colors shadow-md">
-                  <IoHeartOutline className="text-lg" />
+                {/* Top Wishlist Badge */}
+                <button
+                  onClick={handleToggleWishlist}
+                  className={`p-2.5 rounded-full backdrop-blur-md transition-all shadow-md active:scale-90 ${
+                    isWishlisted
+                      ? "bg-rose-500 text-white hover:bg-rose-600 shadow-rose-500/30"
+                      : "bg-white/80 dark:bg-zinc-900/80 text-gray-700 dark:text-gray-200 hover:text-rose-500"
+                  }`}
+                  aria-label="Toggle Wishlist"
+                >
+                  {isWishlisted ? (
+                    <IoHeart className="text-lg text-white" />
+                  ) : (
+                    <IoHeartOutline className="text-lg" />
+                  )}
                 </button>
+                  
+
                 <button className="p-2.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition-colors shadow-md">
                   <IoShareSocialOutline className="text-lg" />
                 </button>
@@ -170,7 +194,6 @@ export default function ProductDetails() {
             )}
           </div>
 
-          {/* Right Column: Details & Purchasing Options */}
           <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -212,7 +235,6 @@ export default function ProductDetails() {
 
               <hr className="border-gray-100 dark:border-zinc-700/60" />
 
-              {/* Color Selection */}
               {product.Colors && product.Colors.length > 0 && (
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -239,7 +261,6 @@ export default function ProductDetails() {
                 </div>
               )}
 
-              {/* Size Selection */}
               {product.Sizes && product.Sizes.length > 0 && (
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -263,7 +284,6 @@ export default function ProductDetails() {
                 </div>
               )}
 
-              {/* Quantity Controls */}
               <div className="space-y-2">
                 <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                   Quantity
@@ -290,12 +310,17 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            {/* CTA Buttons */}
             <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-zinc-700/60">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
-                  onClick={handleAddToCart}
-                  className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/25 active:scale-95"
+                  onClick={() => {
+                    handleAddToCart();
+                    setQuantity(1);
+                  }}
+                  className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white
+                  dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:shadow-md
+                  dark:shadow-purple-500/20  dark:hover:shadow-purple-500/40
+                  rounded-2xl font-bold text-xs  sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/25 active:scale-95"
                 >
                   <IoCartOutline className="text-lg" />
                   <span>Add to Cart</span>
@@ -313,7 +338,6 @@ export default function ProductDetails() {
                 </button>
               </div>
 
-              {/* Feature Highlights */}
               <div className="grid grid-cols-3 gap-2 pt-3 text-[10px] text-gray-500 dark:text-gray-400 font-medium text-center">
                 <div className="flex flex-col items-center gap-1 p-2 rounded-xl bg-gray-50 dark:bg-zinc-900/50">
                   <IoCarOutline className="text-base text-indigo-500" />
@@ -332,7 +356,6 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        {/* Tabbed Info Section */}
         <div className="mt-12 bg-white dark:bg-zinc-800/80 p-6 rounded-3xl border border-gray-200/80 dark:border-zinc-700/60">
           <div className="flex border-b border-gray-200 dark:border-zinc-700/60 gap-8">
             {[
@@ -391,7 +414,6 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        {/* Related Products Section */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">

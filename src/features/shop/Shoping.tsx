@@ -1,24 +1,31 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  IoSearchOutline, 
-  IoFunnelOutline, 
-  IoEyeOutline, 
+import {
+  IoSearchOutline,
+  IoFunnelOutline,
+  IoEyeOutline,
   IoOptionsOutline,
   IoCartOutline,
   IoCloseOutline,
-  IoCheckmark
+  IoCheckmark,
+  IoHeart,
+  IoHeartOutline,
 } from "react-icons/io5";
 import { useProductUiStore } from "../products/store/useProductUiStore";
 import { useCartStore } from "../cart/store/useCartStore";
-import Allproducts, { Product } from "../../data/Allproducts.ts";
-
+import Allproducts from "../../data/Allproducts.ts";
+import { Product } from "../products/types/product.ts";
+import { useWishlistStore } from "../products/store/useWishlistStore.ts";
 
 export default function ShopingScreen() {
   const navigate = useNavigate();
   const hand = useProductUiStore((state) => state.hand);
   const addToCart = useCartStore((state) => state.addToCart);
+
+  // 💡 جلب المفضلات والدوال الخاصة بها بشكل صحيح
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  const wishlist = useWishlistStore((state) => state.wishlist);
 
   // حالات الفلترة والبحث
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -34,7 +41,7 @@ export default function ShopingScreen() {
   // استخراج الفئات المتاحة ديناميكياً
   const categories = useMemo(() => {
     const categoryMap: { [key: string]: number } = {};
-    
+
     allProducts.forEach((p) => {
       const cat = p.Category || "General";
       categoryMap[cat] = (categoryMap[cat] || 0) + 1;
@@ -54,10 +61,11 @@ export default function ShopingScreen() {
     return allProducts
       .filter((product) => {
         const matchesCategory =
-          selectedCategory === "All" || (product.Category || "General") === selectedCategory;
+          selectedCategory === "All" ||
+          (product.Category || "General") === selectedCategory;
 
         const matchesSearch = product.Name.toLowerCase().includes(
-          searchQuery.toLowerCase()
+          searchQuery.toLowerCase(),
         );
 
         const matchesPrice = product.Price <= maxPrice;
@@ -88,14 +96,13 @@ export default function ShopingScreen() {
       selectedColor: product.Colors?.[0] || "",
       quantity: 1,
     });
-    
+
     setAddedToast(product.Name);
     setTimeout(() => setAddedToast(null), 2500);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 pt-20 pb-16 transition-colors duration-200">
-      
       {/* Toast Alert */}
       <AnimatePresence>
         {addedToast && (
@@ -141,10 +148,8 @@ export default function ShopingScreen() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden lg:block w-64 flex-shrink-0 space-y-6">
-            
             {/* Category Filter */}
             <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-200 dark:border-zinc-700/60 shadow-sm space-y-4">
               <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -181,7 +186,9 @@ export default function ShopingScreen() {
             {/* Price Filter */}
             <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-200 dark:border-zinc-700/60 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">Max Price</h3>
+                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                  Max Price
+                </h3>
                 <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
                   ${maxPrice}
                 </span>
@@ -197,15 +204,12 @@ export default function ShopingScreen() {
                 className="w-full accent-indigo-600 cursor-pointer"
               />
             </div>
-
           </aside>
 
           {/* Main Products Grid Section */}
           <main className="flex-1">
-            
             {/* Top Toolbar */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-6 bg-white dark:bg-zinc-800 p-4 rounded-2xl border border-gray-200 dark:border-zinc-700/60">
-              
               {/* Category Pills (Mobile/Tablet) */}
               <div className="flex items-center gap-2 overflow-x-auto lg:hidden pb-1 w-full sm:w-auto">
                 <button
@@ -231,7 +235,11 @@ export default function ShopingScreen() {
 
               {/* Product Count Display */}
               <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-                Showing <span className="text-gray-900 dark:text-white font-bold">{filteredProducts.length}</span> Products
+                Showing{" "}
+                <span className="text-gray-900 dark:text-white font-bold">
+                  {filteredProducts.length}
+                </span>{" "}
+                Products
               </span>
 
               {/* Sort By Dropdown */}
@@ -258,79 +266,112 @@ export default function ShopingScreen() {
                 className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
               >
                 <AnimatePresence>
-                  {filteredProducts.map((product) => (
-                    <motion.div
-                      layout
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      key={product.id}
-                    >
-                      <div
-                        onClick={() => handleProductClick(product.id)}
-                        className="group relative bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700/50 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                  {filteredProducts.map((product) => {
+                    // فحص ما إذا كان هذا المنتج بالتحديد مضافاً إلى المفضلات
+                    const isFav = wishlist.some(
+                      (item) => item.id === product.id,
+                    );
+
+                    return (
+                      <motion.div
+                        layout
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        key={product.id}
                       >
-                        {/* Image Box */}
-                        <div className="relative aspect-square w-full bg-gray-100 dark:bg-zinc-900 overflow-hidden">
-                          <img
-                            src={product.Images[0]}
-                            alt={product.ImageAlt || product.Name}
-                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                          />
+                        <div
+                          onClick={() => handleProductClick(product.id)}
+                          className="group relative bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700/50 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                        >
+                          {/* Top Wishlist Button */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation(); // منع الانتقال لصفحة التفاصيل
+                              toggleWishlist(product);
+                            }}
+                            className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-colors ${
+                              isFav
+                                ? "bg-rose-500 text-white hover:bg-rose-600 shadow-rose-500/30"
+                                : "bg-white/80 dark:bg-zinc-900/80 text-gray-700 dark:text-gray-200 hover:text-rose-500"
+                            }`}
+                            title={
+                              isFav ? "Remove from Wishlist" : "Add to Wishlist"
+                            }
+                          >
+                            {isFav ? (
+                              <IoHeart className="text-base text-white" />
+                            ) : (
+                              <IoHeartOutline className="text-base" />
+                            )}
+                          </button>
 
-                          {/* Quick Actions Hover Overlay */}
-                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3 gap-2">
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleProductClick(product.id);
-                              }}
-                              className="flex-1 py-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl text-xs font-bold shadow-md flex items-center justify-center gap-1 hover:bg-white transition-colors"
-                            >
-                              <IoEyeOutline className="text-sm text-indigo-500" />
-                              <span className="hidden sm:inline">View</span>
-                            </button>
+                          {/* Image Box */}
+                          <div className="relative aspect-square w-full bg-gray-100 dark:bg-zinc-900 overflow-hidden">
+                            <img
+                              src={product.Images[0]}
+                              alt={product.ImageAlt || product.Name}
+                              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            />
 
-                            <button 
-                              onClick={(e) => handleQuickAdd(e, product)}
-                              className="p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md transition-colors"
-                              title="Add to Cart"
-                            >
-                              <IoCartOutline className="text-base" />
-                            </button>
+                            {/* Quick Actions Hover Overlay */}
+                            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3 gap-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleProductClick(product.id);
+                                }}
+                                className="flex-1 py-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl text-xs font-bold shadow-md flex items-center justify-center gap-1 hover:bg-white transition-colors"
+                              >
+                                <IoEyeOutline className="text-sm text-indigo-500" />
+                                <span className="hidden sm:inline">View</span>
+                              </button>
+
+                              <button
+                                onClick={(e) => handleQuickAdd(e, product)}
+                                className="p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md transition-colors"
+                                title="Add to Cart"
+                              >
+                                <IoCartOutline className="text-base" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Product Info */}
+                          <div className="p-4 flex flex-col justify-between flex-grow space-y-2">
+                            <div>
+                              <span className="text-[10px] font-bold tracking-wider text-indigo-500 uppercase">
+                                {product.Category || "General"}
+                              </span>
+                              <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-1 mt-0.5">
+                                {product.Name}
+                              </h3>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-zinc-700/50">
+                              <span className="text-xs text-gray-400">
+                                Price
+                              </span>
+                              <span className="text-sm font-extrabold text-gray-900 dark:text-white">
+                                ${product.Price}
+                              </span>
+                            </div>
                           </div>
                         </div>
-
-                        {/* Product Info */}
-                        <div className="p-4 flex flex-col justify-between flex-grow space-y-2">
-                          <div>
-                            <span className="text-[10px] font-bold tracking-wider text-indigo-500 uppercase">
-                              {product.Category || "General"}
-                            </span>
-                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-1 mt-0.5">
-                              {product.Name}
-                            </h3>
-                          </div>
-
-                          <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-zinc-700/50">
-                            <span className="text-xs text-gray-400">Price</span>
-                            <span className="text-sm font-extrabold text-gray-900 dark:text-white">
-                              ${product.Price}
-                            </span>
-                          </div>
-                        </div>
-
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </AnimatePresence>
               </motion.div>
             ) : (
               /* No Products Found State */
               <div className="text-center py-16 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700/50">
                 <IoOptionsOutline className="mx-auto text-4xl text-gray-400 mb-3" />
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">No Products Found</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  No Products Found
+                </h3>
                 <p className="text-xs text-gray-500 mt-1">
                   Try adjusting your category or search filter settings.
                 </p>
@@ -346,7 +387,6 @@ export default function ShopingScreen() {
                 </button>
               </div>
             )}
-
           </main>
         </div>
       </div>
@@ -362,7 +402,7 @@ export default function ShopingScreen() {
               onClick={() => setIsFilterMobileOpen(false)}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             />
-            
+
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -371,14 +411,18 @@ export default function ShopingScreen() {
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between border-b pb-4 dark:border-zinc-700">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Filters</h2>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                    Filters
+                  </h2>
                   <button onClick={() => setIsFilterMobileOpen(false)}>
                     <IoCloseOutline className="text-2xl text-gray-500" />
                   </button>
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Categories</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    Categories
+                  </h3>
                   {categories.map((cat) => (
                     <button
                       key={cat.name}
@@ -387,7 +431,9 @@ export default function ShopingScreen() {
                         setIsFilterMobileOpen(false);
                       }}
                       className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-semibold ${
-                        selectedCategory === cat.name ? "bg-indigo-600 text-white" : "bg-gray-100 dark:bg-zinc-700"
+                        selectedCategory === cat.name
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100 dark:bg-zinc-700"
                       }`}
                     >
                       <span>{cat.name}</span>
@@ -397,7 +443,9 @@ export default function ShopingScreen() {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Max Price: ${maxPrice}</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    Max Price: ${maxPrice}
+                  </h3>
                   <input
                     type="range"
                     min="10"
@@ -419,7 +467,6 @@ export default function ShopingScreen() {
           </div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }
