@@ -158,49 +158,6 @@
   ],
   "orders": [
     {
-      "id": "8f46",
-      "Country": "Syria",
-      "City": "damascus",
-      "fullName": "Fier Dragon",
-      "phone": "0987654321",
-      "email": "fierdragon6@gmail.com",
-      "building": "floor 4",
-      "dropoffLatitude": 0,
-      "dropoffLongitude": 0,
-      "paymentMethod": 0,
-      "Notes": "",
-      "totalAmount": 1065,
-      "paymentStatus": 0,
-      "status": 0,
-      "createdAt": "2026-08-03T23:54:36.471Z",
-      "items": [
-        {
-          "id": 564534,
-          "productName": "Air Pods",
-          "color": "white",
-          "unitPrice": 25,
-          "quantity": 1,
-          "lineTotal": 25
-        },
-        {
-          "id": 564534,
-          "productName": "Air Pods",
-          "color": "black",
-          "unitPrice": 25,
-          "quantity": 4,
-          "lineTotal": 100
-        },
-        {
-          "id": 5,
-          "productName": "Smart Fitness Watch V2",
-          "color": "#000000",
-          "unitPrice": 180,
-          "quantity": 5,
-          "lineTotal": 900
-        }
-      ]
-    },
-    {
       "id": "d7b8",
       "Country": "Syria",
       "City": "damascus",
