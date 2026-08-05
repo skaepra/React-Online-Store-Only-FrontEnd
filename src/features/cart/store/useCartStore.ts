@@ -1,16 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface CartItem {
-  id: string | number;
-  name: string;
-  quantity: number;
-  color: string;
-  size: string;
-  price: number; // السعر للعرض المحلي السريع
-  image: string;
-  title?: string;
-}
+import { CartItem } from "../types/CartItem";
 
 export interface AddToCartInput {
   id: string | number;
@@ -86,7 +76,7 @@ export const useCartStore = create<CartState>()(
           const name = product.Name || "منتج بدون اسم";
           const price = product.PriceOverride ?? product.Price ?? 0;
           const color = product.selectedColor || "default";
-          const size = product.selectedSize || "M";
+          const size = product.selectedSize || "";
           const image = product.Images?.[0] || product.image || "";
 
           const existingIndex = state.storitems.findIndex(

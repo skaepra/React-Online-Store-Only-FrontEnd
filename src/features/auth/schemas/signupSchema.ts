@@ -1,20 +1,6 @@
 import { z } from "zod";
 
 export const signUpSchema = z.object({
-  //  photoUrl: z
-  //     .string()
-  //     .refine(
-  //       (val) =>
-  //         val === "" ||
-  //         val.startsWith("file://") ||
-  //         val.startsWith("http://") ||
-  //         val.startsWith("https://") ||
-  //         val.length > 0, // هذا ليقبل أي اسم ملف أو مسار يعيده السيرفر
-  //       {
-  //         message: "Invalid image file",
-  //       },
-  //     )
-  //     .default(""),
  fullName: z
       .string()
       // حذف الفراغات من البداية والنهاية
@@ -102,4 +88,4 @@ export const signUpSchema = z.object({
 });
 
 // استخراج نوع الـ State تلقائياً من المخطط
-export type SignUpState = z.infer<typeof signUpSchema>;
+export type SignupFormData = z.infer<typeof signUpSchema>;

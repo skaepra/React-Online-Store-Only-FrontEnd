@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Taggol } from "../../dark-mode/taggol";
-import { useThemeMode } from "../../dark-mode/dark";
-import { useCartStore } from "../../cart/store/useCartStore";
-
 import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
+
 import {
   IoCartOutline,
   IoLocationOutline,
@@ -12,77 +9,22 @@ import {
   IoClose,
   IoSparklesOutline,
 } from "react-icons/io5";
+import { navItems, useNavbar } from "../hook/useNavbar";
 
-
-interface NavItem {
-  name: string;
-  link: string;
-}
-
-export default function Newnav() {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-
-  // حالة التحكم بإظهار وإخفاء نافذة الخريطة
-  const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
-  const [selectedAddress, setSelectedAddress] = useState<string>("");
-
-  const { mode, toggleMode } = useThemeMode() as {
-    mode: string;
-    toggleMode: () => void;
-  };
-
-  const cartQuantity = useCartStore((state) =>
-    state.storitems.reduce((sum, item) => sum + item.quantity, 0)
-  );
-
-
-  const navItems: NavItem[] = [
-    { name: "Home", link: "/" },
-    { name: "Shop", link: "/shop" },
-    { name: "Order", link: "/order" },
-    { name: "Favorite", link: "/wishlist" },
-  ];
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev);
-  };
-
-  const prevScrollRef = useRef<number>(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (currentScroll > prevScrollRef.current && currentScroll > 60) {
-            setIsVisible(false);
-          } else {
-            setIsVisible(true);
-          }
-          prevScrollRef.current = currentScroll;
-          ticking = false;
-        });
-
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleConfirmLocation = (locationData: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => {
-    setSelectedAddress(locationData.address);
-    setIsMapOpen(false);
-  };
+export default function AppNavbar() {
+  const {
+    isVisible,
+    isMobileMenuOpen,
+    setIsMobileMenuOpen,
+    isMapOpen,
+    setIsMapOpen,
+    selectedAddress,
+    mode,
+    toggleMode,
+    cartQuantity,
+    toggleMobileMenu,
+    handleConfirmLocation,
+  } = useNavbar();
 
   return (
     <>
@@ -95,7 +37,6 @@ export default function Newnav() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             {/* Left Section: Logo & Desktop Links */}
             <div className="flex items-center gap-8">
-              {/* Logo */}
               <NavLink to="/" className="flex items-center gap-2.5 group">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center p-1.5 shadow-md shadow-cyan-500/20 transition-transform group-hover:scale-105">
                   <img
@@ -109,12 +50,13 @@ export default function Newnav() {
                 </span>
               </NavLink>
 
-              {/* Desktop Navigation Links */}
+              {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center gap-1">
                 {navItems.map((item, index) => (
                   <NavLink
                     key={index}
                     to={item.link}
+                    onClick={()=>window.scrollTo({ top: 0})}
                     className={({ isActive }) =>
                       `px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
                         isActive
@@ -129,9 +71,9 @@ export default function Newnav() {
               </nav>
             </div>
 
-            {/* Right Section: Location, DarkMode, Wishlist, Cart & Auth */}
+            {/* Right Section: Location, DarkMode, Cart & Auth */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Location Picker Button */}
+              {/* Location Picker */}
               <button
                 onClick={() => setIsMapOpen(true)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-200 transition-all hover:scale-105 active:scale-95 cursor-pointer"
@@ -166,11 +108,10 @@ export default function Newnav() {
                 )}
               </NavLink>
 
-              {/* Subscribe / Login Button */}
+              {/* Subscribe Button */}
               <NavLink
                 to="/login"
-                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl  bg-indigo-500
-                hover:shadow-indigo-500/40 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  font-medium text-xs shadow-md shadow-purple-500/20 transition-all dark:hover:shadow-purple-500/40 active:scale-95"
+                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-500 hover:shadow-indigo-500/40 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-medium text-xs shadow-md shadow-purple-500/20 transition-all dark:hover:shadow-purple-500/40 active:scale-95"
               >
                 <IoSparklesOutline />
                 <span>Subscribe</span>
@@ -192,7 +133,7 @@ export default function Newnav() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Sheet */}
+        {/* Mobile Dropdown */}
         {isMobileMenuOpen && (
           <div className="md:hidden bg-slate-900/95 dark:bg-zinc-900/95 backdrop-blur-xl border-b border-white/10 px-4 pt-3 pb-6 space-y-3 shadow-2xl animate-in slide-in-from-top-5 duration-200">
             <nav className="flex flex-col space-y-1">
@@ -253,11 +194,10 @@ export default function Newnav() {
         )}
       </header>
 
-      {/* Modal الخريطة المنبثقة */}
+      {/* Map Modal */}
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="relative w-full max-w-3xl h-[520px] bg-white dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-white/10">
-            {/* Modal Header */}
             <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
               <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold shadow-md pointer-events-auto">
                 📍 اختر موقعك
@@ -270,7 +210,6 @@ export default function Newnav() {
               </button>
             </div>
 
-            {/* Map Component Container */}
             <div className="w-full h-full relative">
               <LocationPickerMaps onConfirm={handleConfirmLocation} />
             </div>

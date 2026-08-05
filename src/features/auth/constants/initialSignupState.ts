@@ -2,11 +2,7 @@ import { SignupFormData } from "../../auth/schemas/signupSchema";
 
 export const initialSignupState: SignupFormData = {
   fullName: "",
-  phone: "",
+  Email: "",
   password: "",
-  confirmPassword: "",
-  birthDate: null,
-  countryCode: "SY" ,
-  callingCode: "963",
-  photoUrl: "",
+  Remember: false,
 };

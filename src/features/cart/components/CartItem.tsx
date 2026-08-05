@@ -1,77 +1,24 @@
-import { useCartStore } from "../store/useCartStore";
 import { IoAdd, IoRemove, IoTrashOutline } from "react-icons/io5";
+import { CartItemProps, useCartItem } from "../hook/useCartItem";
 
-interface ItemProps {
-  id: string | number;
-  name?: string;
-  Name?: string;
-  price?: number;
-  Price?: number;
-  quantity: number;
-  color: string;
-  size?: string;
-  image: string | number;
-}
 
-export function CartItem({
-  id,
-  name,
-  Name,
-  price,
-  Price,
-  quantity,
-  color,
-  size,
-  image,
-}: ItemProps) {
-  // 1. استخراج الاسم والسعر من الـ Props مع التوافق بين الأحرف الكبيرة والصغيرة
-  const itemTitle = name || Name || "Product";
-  const itemPrice = price ?? Price ?? 0;
-
-  // 2. سحب دوال التحكم من Zustand
-  const increc = useCartStore((state) => state.increc);
-  const decrec = useCartStore((state) => state.decrec);
-  const remove = useCartStore((state) => state.remove);
-
-  // حساب الإجمالي للمنتج
-  const total = itemPrice * quantity;
-
-  // دوال الإضافة والإنقاص المبسطة
-  const handleIncrease = () => {
-    increc(id, color, size);
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      decrec(id, color, size);
-    }
-  };
-
-  const handleRemove = () => {
-    remove(id, color, size);
-  };
+export function CartItem(props: CartItemProps) {
+  const { name, price, quantity, color, size, image } = props;
+  const { total, handleIncrease, handleDecrease, handleRemove } = useCartItem(props);
 
   return (
     <div className={styles.card}>
       {/* صورة المنتج */}
       <div className={styles.imageContainer}>
-        <img
-          src={typeof image === "number" ? String(image) : image}
-          alt={itemTitle}
-          className={styles.productImg}
-        />
+        <img src={image} alt={name} className={styles.productImg} />
       </div>
 
-      {/* تفاصيل المنتج والأزرار */}
+      {/* تفاصيل المنتج */}
       <div className={styles.contentWrapper}>
         <div className={styles.detailsBox}>
           <div>
-            <h3 className={styles.title}>{itemTitle}</h3>
-
-            {/* شارة اللون والتفاصيل */}
-            <div
-              className={`${styles.colorBadge} ${!color ? "invisible" : ""}`}
-            >
+            <h3 className={styles.title}>{name}</h3>
+            <div className={`${styles.colorBadge} ${!color ? "invisible" : ""}`}>
               <span className={styles.colorLabel}>Color:</span>
               <span className={styles.colorValue}>{color || "Default"}</span>
               {size && (
@@ -83,13 +30,11 @@ export function CartItem({
               )}
             </div>
           </div>
-
-          <div className={styles.priceTag}>${itemPrice.toFixed(2)}</div>
+          <div className={styles.priceTag}>${price.toFixed(2)}</div>
         </div>
 
-        {/* أزرار الإجراءات (الكمية + الحذف + الإجمالي) */}
+        {/* الأزرار والإنقاص والإجمالي */}
         <div className={styles.actionsWrapper}>
-          {/* عداد الكمية */}
           <div className={styles.quantityContainer}>
             <button
               type="button"
@@ -113,7 +58,6 @@ export function CartItem({
             </button>
           </div>
 
-          {/* الإجمالي وزر الحذف */}
           <div className={styles.totalSection}>
             <div className={styles.totalWrapper}>
               <span className={styles.totalLabel}>Total:</span>

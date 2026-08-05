@@ -1,10 +1,11 @@
 // hooks/useSignup.ts
 import { useState } from "react";
-import { initialSignupState } from "../../auth/constants/initialSignupState";
+
 import { signup } from "../services/signupApi";
 import { SignupPayload } from "../types/SignupPayload";
 import { signUpSchema } from "../schemas/signupSchema";
 import { useForm } from "../../../shared/useForm";
+import { initialSignupState } from "../constants/initialSignupState";
 
 export function useSignup() {
   const form = useForm(initialSignupState, signUpSchema);
@@ -23,8 +24,6 @@ export function useSignup() {
       return null;
     }
 
-    // تنظيف البيانات
-    const { countryCode, callingCode, ...cleanData } = validData;
 
     setLoading(true);
     setIsSuccess(false);
@@ -32,9 +31,7 @@ export function useSignup() {
     setErrorMessage("");
 
     try {
-      // 🚀 2. إرسال البيانات للسيرفر
-      console.log("📤 جاري إرسال البيانات إلى db.json:", cleanData);
-      const result = await signup(cleanData);
+      const result = await signup(validData);
 
       setIsSuccess(true);
       setLoading(false);

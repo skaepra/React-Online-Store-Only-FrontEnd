@@ -1,10 +1,11 @@
 // hooks/useLogin.ts
 import { useState } from "react";
-import { initialLoginState } from "../../auth/constants/initialLoginState";
+
 import { login } from "../services/loginApi";
 import { LoginPayload } from "../types/LoginPayload";
 import { useForm } from "../../../shared/useForm";
 import { loginSchema } from "../schemas/loginSchema";
+import { initialLoginState } from "../constants/initialLoginState";
 
 export function useLogin() {
   const form = useForm(initialLoginState, loginSchema);

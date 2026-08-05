@@ -120,7 +120,7 @@ export default function SignUpScreen() {
 // كلاسات Tailwind
 const styles = {
   screenWrapper:
-    "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('/toje.jpg')] bg-center bg-cover bg-no-repeat",
+    "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1920&auto=format&fit=crop')] bg-center bg-cover bg-no-repeat",
   card: "relative space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[340px] backdrop-blur-sm bg-black/40 rounded-2xl shadow-xl",
 
   // Header section

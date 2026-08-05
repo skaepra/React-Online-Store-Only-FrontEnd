@@ -50,7 +50,7 @@ Email: z
 });
 
 // استخراج نوع الـ Values من مخطط Zod تلقائياً
-export type LoginValues = z.infer<typeof loginSchema>;
+export type LoginFormData  = z.infer<typeof loginSchema>;
 
 
 
