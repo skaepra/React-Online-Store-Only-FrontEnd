@@ -1,37 +1,68 @@
-# React + Vite
-# React Online Store
+#  React Online Store
 
-A modern e-commerce web application built with React, TypeScript, Vite and Tailwind.
-
----
-
-## Features
-
-- User Authentication
-- Product Categories
-- Product Search
-- Product Details
-- Shopping Cart
-- Wishlist
-- Responsive Design
-- Mock REST API using json-server
+A modern and responsive e-commerce web application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.
+The project follows **Feature-based Architecture** and demonstrates modern frontend development practices, including state management, form validation, animations, maps integration, and REST API communication.
 
 ---
 
-## Tech Stack
+##  Features
 
-- React
-- TypeScript
-- Vite
-- Tailwind
-- Zustand
-- React Router
-- Axios
-- json-server
+* User Authentication
+* Product Categories & Filtering
+* Product Search
+* Product Details
+* Shopping Cart
+* Wishlist
+* Checkout Page
+* Interactive Map for Location Selection
+* Responsive UI for Mobile, Tablet, and Desktop
+* Smooth Animations with Framer Motion
+* Mock REST API using JSON Server
 
 ---
 
-## Installation
+##  Tech Stack
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+
+### State Management
+
+* Zustand
+
+### Form Validation
+
+* Zod
+
+### Routing
+
+* React Router
+
+### API Integration
+
+* Axios
+* REST APIs
+* JSON Server (Mock Backend)
+
+### Maps
+
+* MapLibre GL
+
+### Animations
+
+* Framer Motion
+
+### Architecture
+
+* Feature-based Architecture
+
+---
+
+##  Installation
 
 Clone the repository
 
@@ -39,7 +70,7 @@ Clone the repository
 git clone https://github.com/YourUsername/React-Online-Store.git
 ```
 
-Move into the project
+Navigate to the project
 
 ```bash
 cd React-Online-Store-Only-FrontEnd
@@ -51,7 +82,7 @@ Install dependencies
 npm install
 ```
 
-Start the mock API
+Start the mock backend
 
 ```bash
 npm run server
@@ -65,42 +96,72 @@ npm run dev
 
 ---
 
-## Screenshots
+##  Screenshots
 
-(Add screenshots here)
+### Home
+
+![Home](screenshots/home.png)
+
+### Shopping List
+
+![Shopping](screenshots/shopping.png)
+
+### Product Details
+
+![Product Details](screenshots/product-details.png)
+
+### Shopping Cart
+
+![Cart](screenshots/cart.png)
+
+### Checkout
+
+![Checkout](screenshots/checkout.png)
+
+### Location Selection
+
+![Map](screenshots/map.png)
+
+### Order
+
+![Order](screenshots/order.png)
+
+### Sign Up
+
+![Sign Up](screenshots/sign-up.png)
 
 ---
 
-## Project Structure
 
-```
-clean code feature-based architecture
+##  Location Services
 
-```
+The checkout page integrates **MapLibre GL** to allow users to select their delivery location directly on the map.
 
 ---
 
-## Notes
+## 📱 Responsive Design
 
-This project uses **json-server** as a mock backend.
+The application is fully responsive and optimized for:
 
-The database is located in:
-
-```
-db.json
-```
+* Desktop
+* Tablet
+* Mobile
 
 ---
 
-## Future Improvements
+##  Future Improvements
 
-- Payment Integration
-- Order History
-- Admin Dashboard
-- Product Reviews
+* Real Backend Integration
+* Online Payment Gateway
+* User Order History
+* Product Reviews
+* Admin Dashboard
 
 ---
 
-## Author
+##  Author
 
-Ahmad Abo Al Shaar
+**Ahmad Abo Al Shaar**
+
+GitHub:
+https://github.com/skaepra
