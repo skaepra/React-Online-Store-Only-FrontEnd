@@ -1,11 +1,11 @@
-# 🛍️ React Online Store
+#  React Online Store
 
 A modern and responsive e-commerce web application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.
 The project follows **Feature-based Architecture** and demonstrates modern frontend development practices, including state management, form validation, animations, maps integration, and REST API communication.
 
 ---
 
-## ✨ Features
+##  Features
 
 * User Authentication
 * Product Categories & Filtering
@@ -21,7 +21,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 
@@ -62,7 +62,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 
 ---
 
-## 📦 Installation
+##  Installation
 
 Clone the repository
 
@@ -96,40 +96,44 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
-> Add screenshots of:
->
-> * Home Page
-> * Product Details
-> * Shopping Cart
-> * Wishlist
-> * Checkout
-> * Interactive Map
-> * Login
+### Home
+
+![Home](screenshots/home.png)
+
+### Shopping List
+
+![Shopping](screenshots/shopping.png)
+
+### Product Details
+
+![Product Details](screenshots/product-details.png)
+
+### Shopping Cart
+
+![Cart](screenshots/cart.png)
+
+### Checkout
+
+![Checkout](screenshots/checkout.png)
+
+### Location Selection
+
+![Map](screenshots/map.png)
+
+### Order
+
+![Order](screenshots/order.png)
+
+### Sign Up
+
+![Sign Up](screenshots/sign-up.png)
 
 ---
 
-## 📂 Project Structure
 
-The project follows a **Feature-based Architecture**, where each feature contains its own components, hooks, services, types, and pages. This structure improves scalability, maintainability, and code organization.
-
-Example:
-
-```text
-src/
-│
-├── features/
-├── shared/
-├── layouts/
-├── routes/
-├── services/
-└── utils/
-```
-
----
-
-## 📍 Location Services
+##  Location Services
 
 The checkout page integrates **MapLibre GL** to allow users to select their delivery location directly on the map.
 
@@ -145,7 +149,7 @@ The application is fully responsive and optimized for:
 
 ---
 
-## 🚀 Future Improvements
+##  Future Improvements
 
 * Real Backend Integration
 * Online Payment Gateway
@@ -155,9 +159,9 @@ The application is fully responsive and optimized for:
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Ahmad Abo Al Shaar**
 
 GitHub:
-https://github.com/YourUsername
+https://github.com/skaepra
