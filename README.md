@@ -1,37 +1,68 @@
-# React + Vite
-# React Online Store
+# 🛍️ React Online Store
 
-A modern e-commerce web application built with React, TypeScript, Vite and Tailwind.
-
----
-
-## Features
-
-- User Authentication
-- Product Categories
-- Product Search
-- Product Details
-- Shopping Cart
-- Wishlist
-- Responsive Design
-- Mock REST API using json-server
+A modern and responsive e-commerce web application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.
+The project follows **Feature-based Architecture** and demonstrates modern frontend development practices, including state management, form validation, animations, maps integration, and REST API communication.
 
 ---
 
-## Tech Stack
+## ✨ Features
 
-- React
-- TypeScript
-- Vite
-- Tailwind
-- Zustand
-- React Router
-- Axios
-- json-server
+* User Authentication
+* Product Categories & Filtering
+* Product Search
+* Product Details
+* Shopping Cart
+* Wishlist
+* Checkout Page
+* Interactive Map for Location Selection
+* Responsive UI for Mobile, Tablet, and Desktop
+* Smooth Animations with Framer Motion
+* Mock REST API using JSON Server
 
 ---
 
-## Installation
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+
+### State Management
+
+* Zustand
+
+### Form Validation
+
+* Zod
+
+### Routing
+
+* React Router
+
+### API Integration
+
+* Axios
+* REST APIs
+* JSON Server (Mock Backend)
+
+### Maps
+
+* MapLibre GL
+
+### Animations
+
+* Framer Motion
+
+### Architecture
+
+* Feature-based Architecture
+
+---
+
+## 📦 Installation
 
 Clone the repository
 
@@ -39,7 +70,7 @@ Clone the repository
 git clone https://github.com/YourUsername/React-Online-Store.git
 ```
 
-Move into the project
+Navigate to the project
 
 ```bash
 cd React-Online-Store-Only-FrontEnd
@@ -51,7 +82,7 @@ Install dependencies
 npm install
 ```
 
-Start the mock API
+Start the mock backend
 
 ```bash
 npm run server
@@ -65,42 +96,68 @@ npm run dev
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-(Add screenshots here)
-
----
-
-## Project Structure
-
-```
-clean code feature-based architecture
-
-```
-
----
-
-## Notes
-
-This project uses **json-server** as a mock backend.
-
-The database is located in:
-
-```
-db.json
-```
+> Add screenshots of:
+>
+> * Home Page
+> * Product Details
+> * Shopping Cart
+> * Wishlist
+> * Checkout
+> * Interactive Map
+> * Login
 
 ---
 
-## Future Improvements
+## 📂 Project Structure
 
-- Payment Integration
-- Order History
-- Admin Dashboard
-- Product Reviews
+The project follows a **Feature-based Architecture**, where each feature contains its own components, hooks, services, types, and pages. This structure improves scalability, maintainability, and code organization.
+
+Example:
+
+```text
+src/
+│
+├── features/
+├── shared/
+├── layouts/
+├── routes/
+├── services/
+└── utils/
+```
 
 ---
 
-## Author
+## 📍 Location Services
 
-Ahmad Abo Al Shaar
+The checkout page integrates **MapLibre GL** to allow users to select their delivery location directly on the map.
+
+---
+
+## 📱 Responsive Design
+
+The application is fully responsive and optimized for:
+
+* Desktop
+* Tablet
+* Mobile
+
+---
+
+## 🚀 Future Improvements
+
+* Real Backend Integration
+* Online Payment Gateway
+* User Order History
+* Product Reviews
+* Admin Dashboard
+
+---
+
+## 👨‍💻 Author
+
+**Ahmad Abo Al Shaar**
+
+GitHub:
+https://github.com/YourUsername
