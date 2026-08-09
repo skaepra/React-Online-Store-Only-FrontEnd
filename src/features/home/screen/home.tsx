@@ -2,16 +2,16 @@ import { motion } from "framer-motion";
 import { IoSparkles } from "react-icons/io5";
 import products from "../../../data/products";
 import { Product } from "../../products/types/product";
-import { ProductCard } from "../../products/components/ProductCard";
-import { useHomeScreen } from "../hook/useHomeScreen";
-
+import { ProductCard } from "../../shop/components/ProductCard";
+import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
+import { AddedToast } from "../../shop/components/AddedToast";
 
 export default function Home() {
-  const { handleProductClick, isProductFavorite, handleToggleWishlist } =
-    useHomeScreen();
+  const { state,actions } = useShoppingScreen();
 
   return (
     <div className="bg-white dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
+      <AddedToast message={state.addedToast} />
       {/* 1. Hero Header */}
       <div className="relative w-full h-[420px] sm:h-[480px] bg-[url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1600&auto=format&fit=crop')] bg-center bg-cover bg-no-repeat flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
@@ -65,14 +65,14 @@ export default function Home() {
 
         {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {(products as Product[]).map((product, index) => (
+          {(products as Product[]).map((product) => (
             <ProductCard
               key={product.id}
               product={product}
-              index={index}
-              isFav={isProductFavorite(product.id)}
-              onProductClick={handleProductClick}
-              onToggleWishlist={handleToggleWishlist}
+              isFav={actions.isProductInWishlist(product.id)}
+              onProductClick={actions.handleProductClick}
+              onToggleWishlist={actions.handleToggleWishlist}
+              onQuickAdd={actions.handleQuickAdd}
             />
           ))}
         </div>

@@ -1,20 +1,18 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useProductUiStore } from "../../products/store/useProductUiStore";
-import { useWishlistStore } from "../../products/store/useWishlistStore";
-
 import { Product } from "../../products/types/product";
 import Allproducts from "../../../data/Allproducts";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addToCart } from "../../cart/store/cartSlice";
-
+import { hand } from "../../products/store/productUiSlice";
+import { selectWishlistItems } from "../../products/store/WishlisSelectors";
+import { toggleWishlist } from "../../products/store/WishlistSlice";
 export function useShoppingScreen() {
   const navigate = useNavigate();
-  const hand = useProductUiStore((state) => state.hand);
   const dispatch = useAppDispatch();
+  const wishlist = useAppSelector (selectWishlistItems)
 
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
-  const wishlist = useWishlistStore((state) => state.wishlist);
+
 
   // States
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -68,8 +66,8 @@ export function useShoppingScreen() {
   }, [allProducts, selectedCategory, searchQuery, maxPrice, sortBy]);
 
   // Handlers
-  const handleProductClick = (id: number) => {
-    if (hand) hand(id);
+  const handleProductClick = (id: string) => {
+    if (hand) dispatch(hand(id));
     navigate(`/product/${id}`);
   };
 
@@ -99,6 +97,10 @@ export function useShoppingScreen() {
     setIsFilterMobileOpen(false);
   };
 
+    const handleToggleWishlist = (product:Product) =>{
+    dispatch(toggleWishlist(product))
+  }
+
   const isProductInWishlist = (productId: string) => {
     return wishlist.some((item) => item.id === productId);
   };
@@ -123,7 +125,7 @@ export function useShoppingScreen() {
       handleProductClick,
       handleQuickAdd,
       handleResetFilters,
-      toggleWishlist,
+      handleToggleWishlist,
       isProductInWishlist,
     },
   };

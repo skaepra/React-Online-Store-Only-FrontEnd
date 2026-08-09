@@ -92,7 +92,7 @@ export default function ShoppingScreen() {
                       isFav={actions.isProductInWishlist(product.id)}
                       onProductClick={actions.handleProductClick}
                       onQuickAdd={actions.handleQuickAdd}
-                      onToggleWishlist={actions.toggleWishlist}
+                      onToggleWishlist={actions.handleToggleWishlist}
                     />
                   ))}
                 </AnimatePresence>

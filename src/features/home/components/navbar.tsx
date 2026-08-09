@@ -23,7 +23,6 @@ export default function AppNavbar() {
     selectedAddress,
     mode,
     toggleMode,
-    cartQuantity,
     toggleMobileMenu,
     handleConfirmLocation,
   } = useNavbar();
@@ -37,7 +36,7 @@ export default function AppNavbar() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="bg-slate-900/85 dark:bg-zinc-900/85 backdrop-blur-md border-b border-white/10 dark:border-zinc-800 text-white shadow-lg">
+        <div className="bg-slate-900/85 dark:bg-zinc-900/85 backdrop-blur-md border-b border-white/10 dark:border-zinc-800 text-white shadow-lg ">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             {/* Left Section: Logo & Desktop Links */}
             <div className="flex items-center gap-8">
@@ -165,7 +164,7 @@ export default function AppNavbar() {
               >
                 <span>Shopping Cart</span>
                 <span className="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full font-bold">
-                  {cartQuantity} Items
+                  {quantity} Items
                 </span>
               </NavLink>
 

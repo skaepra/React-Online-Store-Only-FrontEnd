@@ -5,7 +5,7 @@ import { Product } from "../../products/types/product";
 interface ProductCardProps {
   product: Product;
   isFav: boolean;
-  onProductClick: (id: number) => void;
+  onProductClick: (id: string) => void;
   onQuickAdd: (e: React.MouseEvent, product: Product) => void;
   onToggleWishlist: (product: Product) => void;
 }

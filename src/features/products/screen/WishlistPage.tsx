@@ -1,21 +1,22 @@
 import { motion } from "framer-motion";
 import { IoEyeOutline, IoHeart, IoHeartOutline, IoBagHandleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { useWishlistStore } from "../../products/store/useWishlistStore";
-import { useProductUiStore } from "../../products/store/useProductUiStore";
+
 import { Product } from "../../products/types/product";
+import { useAppDispatch, useAppSelector} from "../../../store/hooks";
+import { hand } from "../store/productUiSlice";
+import { selectWishlistItems } from "../store/WishlisSelectors";
+import { toggleWishlist } from "../store/WishlistSlice";
 
 export default function WishlistPage() {
-  const hand = useProductUiStore((state) => state.hand);
-  
-  // جلب المفضلات ودالة التعديل من الـ Zustand Store
-  const wishlist = useWishlistStore((state) => state.wishlist);
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  const dispatch = useAppDispatch()
+  const wishlist = useAppSelector (selectWishlistItems)
+
 
   const navigate = useNavigate();
 
-  const handleProductClick = (id: string | number) => {
-    if (hand) hand(id);
+  const handleProductClick = (id: string ) => {
+    if (hand) dispatch(hand(id));
     navigate(`/product/${id}`);
     window.scrollTo({ top: 20 });
   };
@@ -101,7 +102,7 @@ export default function WishlistPage() {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation(); // منع الانتقال لصفحة التفاصيل عند الضغط
-                          toggleWishlist(product);
+                          dispatch(toggleWishlist(product));
                         }}
                         className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-colors ${
                           isFav

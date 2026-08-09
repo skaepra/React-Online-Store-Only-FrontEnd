@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
 import { selectCartItems, selectCartQuantity, selectCartTotalPrice } from "../store/cartSelectors";
 import { CartItem } from "../types/CartItem";
@@ -5,6 +6,7 @@ import { CartItem } from "../types/CartItem";
 
 
 export function useShoppingCart() {
+  const navigate = useNavigate();
   const storitems = useAppSelector(selectCartItems);
   const getTotals = useAppSelector(selectCartTotalPrice);
   const getAllQuantity = useAppSelector(selectCartQuantity);
@@ -16,7 +18,7 @@ export function useShoppingCart() {
   const isEmpty = storitems.length === 0;
 
   const handleCheckout = () => {
-    window.location.href = "/checkout";
+    navigate("/checkout");
   };
 
   //  إنشاء معرف فريد ومستقر لكل عنصر في قائمة السلة

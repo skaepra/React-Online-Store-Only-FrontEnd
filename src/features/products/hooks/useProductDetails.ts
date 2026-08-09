@@ -7,10 +7,12 @@ import homeProducts, {
   productsMap as homeProductsMap,
 } from "../../../data/products";
 
-import { useWishlistStore } from "../store/useWishlistStore";
+
 import { Product } from "../types/product";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addToCart } from "../../cart/store/cartSlice";
+import { selectWishlistItems } from "../store/WishlisSelectors";
+import { toggleWishlist } from "../store/WishlistSlice";
 
 const combinedAllProducts = [...Allproducts, ...homeProducts];
 
@@ -33,10 +35,7 @@ export function useProductDetails() {
   const [addedToast, setAddedToast] = useState<boolean>(false);
 
   const dispatch = useAppDispatch()
-
-
-  const wishlist = useWishlistStore((state) => state.wishlist) || [];
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  const wishlist = useAppSelector (selectWishlistItems)
 
   const isWishlisted = product
     ? wishlist.some((item: Product) => item.id === product.id)
@@ -71,7 +70,7 @@ export function useProductDetails() {
 
   const handleToggleWishlist = () => {
     if (toggleWishlist && product) {
-      toggleWishlist(product);
+      dispatch(toggleWishlist(product));
     }
   };
 
