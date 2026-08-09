@@ -10,6 +10,8 @@ import {
   IoSparklesOutline,
 } from "react-icons/io5";
 import { navItems, useNavbar } from "../hook/useNavbar";
+import { useAppSelector } from "../../../store/hooks";
+import { selectCartQuantity } from "../../cart/store/cartSelectors";
 
 export default function AppNavbar() {
   const {
@@ -25,6 +27,8 @@ export default function AppNavbar() {
     toggleMobileMenu,
     handleConfirmLocation,
   } = useNavbar();
+
+  const quantity = useAppSelector(selectCartQuantity);
 
   return (
     <>
@@ -101,9 +105,9 @@ export default function AppNavbar() {
                 title="Cart"
               >
                 <IoCartOutline className="text-2xl" />
-                {cartQuantity > 0 && (
+                {quantity > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
-                    {cartQuantity > 99 ? "99+" : cartQuantity}
+                    {quantity > 99 ? "99+" : quantity}
                   </span>
                 )}
               </NavLink>

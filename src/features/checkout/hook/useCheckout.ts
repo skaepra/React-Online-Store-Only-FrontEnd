@@ -1,7 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useCartStore } from "../../cart/store/useCartStore";
 import { OrderItemType, orderType } from "../../order/types/orderType";
 import { AddOrders } from "../services/checkoutService";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { selectCartItems, selectCartQuantity, selectCartTotalPrice } from "../../cart/store/cartSelectors";
+import { clearCart } from "../../cart/store/cartSlice";
 
 export interface AddressFormValues {
   country: string;
@@ -30,17 +32,17 @@ const initialValues: AddressFormValues = {
 };
 
 export function useCheckout() {
-  const getTotals = useCartStore((state) => state.getTotals);
-  const getAllQuantity = useCartStore((state) => state.getAllQuantity);
-  const cartItems = useCartStore((state) => state.storitems);
-  const clearCart = useCartStore((state) => state.clearCart);
+  const getTotals = useAppSelector(selectCartTotalPrice);
+  const getAllQuantity = useAppSelector(selectCartQuantity);
+  const cartItems = useAppSelector(selectCartItems);
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [values, setValues] = useState<AddressFormValues>(initialValues);
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
-  const totals = getTotals();
-  const totalQuantity = getAllQuantity();
+  const totals = getTotals;
+  const totalQuantity = getAllQuantity;
   const shippingFee = totalQuantity * 4;
   const allTotal = totals + shippingFee;
 
@@ -111,7 +113,8 @@ export function useCheckout() {
 
       await AddOrders(newOrder as any);
 
-      if (clearCart) clearCart();
+      if (clearCart) 
+        dispatch(clearCart());
       alert("Order placed successfully!");
       window.location.href = "/order";
     } catch (error) {

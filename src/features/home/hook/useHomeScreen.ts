@@ -9,13 +9,13 @@ export function useHomeScreen() {
   const wishlist = useWishlistStore((state) => state.wishlist);
   const navigate = useNavigate();
 
-  const handleProductClick = (id: string | number) => {
+  const handleProductClick = (id: string ) => {
     if (hand) hand(id);
     navigate(`/product/${id}`);
     window.scrollTo({ top: 20 });
   };
 
-  const isProductFavorite = (productId: string | number) => {
+  const isProductFavorite = (productId: string ) => {
     return wishlist.some((item) => item.id === productId);
   };
 

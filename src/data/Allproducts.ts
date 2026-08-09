@@ -2,7 +2,7 @@ import { Product } from "../features/products/types/product";
 
 const Allproducts: Product[] = [
   {
-    id: 1,
+    id: "1",
     Name: "Minimalist Leather Backpack",
     Category: "Accessories",
     Price: 120,
@@ -16,7 +16,7 @@ const Allproducts: Product[] = [
     IsFeatured: true,
   },
   {
-    id: 2,
+    id: "2",
     Name: "Wireless Noise-Canceling Headphones",
     Category: "Electronics",
     Price: 249,
@@ -30,7 +30,7 @@ const Allproducts: Product[] = [
     IsFeatured: true,
   },
   {
-    id: 3,
+    id: "3",
     Name: "Classic Oversized Cotton Hoodie",
     Category: "Apparel",
     Price: 65,
@@ -44,7 +44,7 @@ const Allproducts: Product[] = [
     IsFeatured: false,
   },
   {
-    id: 4,
+    id: "4",
     Name: "Urban Knit Sneakers",
     Category: "Footwear",
     Price: 110,
@@ -58,7 +58,7 @@ const Allproducts: Product[] = [
     IsFeatured: true,
   },
   {
-    id: 5,
+    id: "5",
     Name: "Smart Fitness Watch V2",
     Category: "Electronics",
     Price: 180,
@@ -72,7 +72,7 @@ const Allproducts: Product[] = [
     IsFeatured: false,
   },
   {
-    id: 6,
+    id: "6",
     Name: "Polarized Retro Sunglasses",
     Category: "Accessories",
     Price: 45,
@@ -87,9 +87,9 @@ const Allproducts: Product[] = [
   },
 ];
 
-export const productsMap: Record<number, Product> = Allproducts.reduce((acc, product) => {
+export const productsMap: Record<string, Product> = Allproducts.reduce((acc, product) => {
   acc[product.id] = product;
   return acc;
-}, {} as Record<number, Product>);
+}, {} as Record<string, Product>);
 
 export default Allproducts;

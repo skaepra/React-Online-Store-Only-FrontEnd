@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  id: string;
   Name: string;
   Images: string[];
   ImageAlt?: string;

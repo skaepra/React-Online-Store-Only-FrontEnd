@@ -2,15 +2,16 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProductUiStore } from "../../products/store/useProductUiStore";
 import { useWishlistStore } from "../../products/store/useWishlistStore";
-import { useCartStore } from "../../cart/store/useCartStore";
+
 import { Product } from "../../products/types/product";
 import Allproducts from "../../../data/Allproducts";
-
+import { useAppDispatch } from "../../../store/hooks";
+import { addToCart } from "../../cart/store/cartSlice";
 
 export function useShoppingScreen() {
   const navigate = useNavigate();
   const hand = useProductUiStore((state) => state.hand);
-  const addToCart = useCartStore((state) => state.addToCart);
+  const dispatch = useAppDispatch();
 
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
   const wishlist = useWishlistStore((state) => state.wishlist);
@@ -52,7 +53,7 @@ export function useShoppingScreen() {
           (product.Category || "General") === selectedCategory;
 
         const matchesSearch = product.Name.toLowerCase().includes(
-          searchQuery.toLowerCase()
+          searchQuery.toLowerCase(),
         );
 
         const matchesPrice = product.Price <= maxPrice;
@@ -74,14 +75,17 @@ export function useShoppingScreen() {
 
   const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
-    addToCart({
-      id: product.id,
-      Price: product.Price,
-      Name: product.Name,
-      Images: product.Images,
-      selectedColor: product.Colors?.[0] || "",
-      quantity: 1,
-    });
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.Name,
+        price: product.Price,
+        image: product.Images?.[0] || "",
+        color: product.Colors?.[0] || "",
+        size: product.Sizes?.[0] || "",
+        quantity: 1,
+      }),
+    );
 
     setAddedToast(product.Name);
     setTimeout(() => setAddedToast(null), 2500);
@@ -95,7 +99,7 @@ export function useShoppingScreen() {
     setIsFilterMobileOpen(false);
   };
 
-  const isProductInWishlist = (productId: number) => {
+  const isProductInWishlist = (productId: string) => {
     return wishlist.some((item) => item.id === productId);
   };
 
