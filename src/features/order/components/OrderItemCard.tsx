@@ -14,7 +14,7 @@ import { getPaymentMethodLabel, getPaymentStatusBadge, getStatusBadge } from "..
 interface OrderItemCardProps {
   order: orderType;
   isExpanded: boolean;
-  onToggleExpand: (id: string | number) => void;
+  onToggleExpand: (id: string ) => void;
 }
 
 export default function OrderItemCard({

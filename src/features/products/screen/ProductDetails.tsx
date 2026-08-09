@@ -38,7 +38,7 @@ export default function ProductDetails() {
           The product you are looking for does not exist or was removed.
         </p>
         <button
-          onClick={() => navigate("/Home")}
+          onClick={() => navigate("/")}
           className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-500 transition-all shadow-md"
         >
           Back to Shop

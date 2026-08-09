@@ -1,29 +1,24 @@
-import { useCartStore } from "../store/useCartStore";
+import { useAppDispatch } from "../../../store/hooks";
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "../store/cartSlice";
 
 export interface CartItemProps {
-  id: string | number;
+  id: string ;
   name: string;
   price: number;
   quantity: number;
   color: string;
-  size?: string;
+  size: string;
   image: string;
 }
 
 export function useCartItem(item: CartItemProps) {
-  const increc = useCartStore((state) => state.increc);
-  const decrec = useCartStore((state) => state.decrec);
-  const remove = useCartStore((state) => state.remove);
+  const dispatch = useAppDispatch();
 
   const total = item.price * item.quantity;
 
-  const handleIncrease = () => increc(item.id, item.color, item.size);
-  const handleDecrease = () => {
-    if (item.quantity > 1) {
-      decrec(item.id, item.color, item.size);
-    }
-  };
-  const handleRemove = () => remove(item.id, item.color, item.size);
+  const handleIncrease = () =>dispatch(increaseQuantity({id:item.id,color:item.color,size:item.size})) 
+  const handleDecrease = () =>  dispatch(decreaseQuantity({id:item.id,color:item.color,size:item.size})) 
+  const handleRemove = () => dispatch(removeFromCart({id:item.id,color:item.color,size:item.size})) 
 
   return {
     total,

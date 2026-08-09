@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useThemeMode } from "../../dark-mode/dark";
-import { useCartStore } from "../../cart/store/useCartStore";
+
 
 export interface NavItem {
   name: string;
@@ -25,9 +25,6 @@ export function useNavbar() {
     toggleMode: () => void;
   };
 
-  const cartQuantity = useCartStore((state) =>
-    state.storitems.reduce((sum, item) => sum + item.quantity, 0)
-  );
 
   const prevScrollRef = useRef<number>(0);
 
@@ -78,7 +75,6 @@ export function useNavbar() {
     selectedAddress,
     mode,
     toggleMode,
-    cartQuantity,
     toggleMobileMenu,
     handleConfirmLocation,
   };

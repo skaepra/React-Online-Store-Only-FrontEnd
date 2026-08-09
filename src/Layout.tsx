@@ -18,8 +18,10 @@ import ProductDetails from "./features/products/screen/ProductDetails";
 import OrdersPage from "./features/order/screen/OrdersPage";
 import WishlistPage from "./features/products/screen/WishlistPage";
 import CheckOutScreen from "./features/checkout/screen/CheckOut";
-import ErrorPage from "./features/error/error";
+
 import AppNavbar from "./features/home/components/navbar";
+import NotFoundPage from "./features/error/NotFound";
+
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
@@ -50,8 +52,8 @@ export default function Layout(): React.JSX.Element {
           <Route path="/shipping" element={<ShippingInfoPage />} />
           <Route path="/returns" element={<ReturnsRefundsPage />} />
           <Route path="/contact" element={<ContactUsPage />} />
-          <Route path="/error" element={<ErrorPage />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="*" element={<NotFoundPage/>} />      
         </Routes>
 
         {!shouldHideNavbar && <AppNavbar />}

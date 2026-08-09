@@ -6,9 +6,13 @@ import Allproducts, {
 import homeProducts, {
   productsMap as homeProductsMap,
 } from "../../../data/products";
-import { useCartStore } from "../../cart/store/useCartStore";
-import { useWishlistStore } from "../store/useWishlistStore";
+
+
 import { Product } from "../types/product";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { addToCart } from "../../cart/store/cartSlice";
+import { selectWishlistItems } from "../store/WishlisSelectors";
+import { toggleWishlist } from "../store/WishlistSlice";
 
 const combinedAllProducts = [...Allproducts, ...homeProducts];
 
@@ -30,9 +34,8 @@ export function useProductDetails() {
   >("description");
   const [addedToast, setAddedToast] = useState<boolean>(false);
 
-  const addToCart = useCartStore((state) => state.addToCart);
-  const wishlist = useWishlistStore((state) => state.wishlist) || [];
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  const dispatch = useAppDispatch()
+  const wishlist = useAppSelector (selectWishlistItems)
 
   const isWishlisted = product
     ? wishlist.some((item: Product) => item.id === product.id)
@@ -48,16 +51,26 @@ export function useProductDetails() {
   }, [id, product]);
 
   const handleAddToCart = () => {
-    if (addToCart && product) {
-      addToCart({ ...product, quantity, selectedColor, selectedSize });
-    }
-    setAddedToast(true);
+  if (!product) return;
+
+  dispatch(
+    addToCart({
+      id: product.id,
+      name: product.Name,
+      price: product.Price,
+      image: selectedImage,
+      color: selectedColor,
+      size: selectedSize,
+      quantity,
+    })
+  );
+   setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
-  };
+};
 
   const handleToggleWishlist = () => {
     if (toggleWishlist && product) {
-      toggleWishlist(product);
+      dispatch(toggleWishlist(product));
     }
   };
 

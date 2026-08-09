@@ -1,10 +1,10 @@
 export type CartItem = {
-  id: string | number;
+  id: string ;
   name: string;
   quantity: number;
   color: string;
   size: string;
-  price: number; // السعر للعرض المحلي السريع
+  price: number; 
   image: string;
   title?: string;
 };

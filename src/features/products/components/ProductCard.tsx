@@ -6,7 +6,7 @@ interface ProductCardProps {
   product: Product;
   index: number;
   isFav: boolean;
-  onProductClick: (id: string | number) => void;
+  onProductClick: (id: string ) => void;
   onToggleWishlist: (e: React.MouseEvent, product: Product) => void;
 }
 
