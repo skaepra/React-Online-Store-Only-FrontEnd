@@ -31,12 +31,13 @@ export default function AppNavbar() {
 
   return (
     <>
+      {/* 1. Header Navigation Bar */}
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="bg-slate-900/85 dark:bg-zinc-900/85 backdrop-blur-md border-b border-white/10 dark:border-zinc-800 text-white shadow-lg ">
+        <div className="bg-slate-900/85 dark:bg-zinc-900/85 backdrop-blur-md border-b border-white/10 dark:border-zinc-800 text-white shadow-lg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             {/* Left Section: Logo & Desktop Links */}
             <div className="flex items-center gap-8">
@@ -59,7 +60,7 @@ export default function AppNavbar() {
                   <NavLink
                     key={index}
                     to={item.link}
-                    onClick={()=>window.scrollTo({ top: 0})}
+                    onClick={() => window.scrollTo({ top: 0 })}
                     className={({ isActive }) =>
                       `px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
                         isActive
@@ -135,69 +136,91 @@ export default function AppNavbar() {
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 dark:bg-zinc-900/95 backdrop-blur-xl border-b border-white/10 px-4 pt-3 pb-6 space-y-3 shadow-2xl animate-in slide-in-from-top-5 duration-200">
-            <nav className="flex flex-col space-y-1">
-              {navItems.map((item, index) => (
-                <NavLink
-                  key={index}
-                  to={item.link}
+      {/* 2. Mobile Sidebar Drawer */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+
+          {/* Sidebar Drawer */}
+          <div className="relative ml-auto w-[70%] max-w-xs h-full bg-slate-900 dark:bg-zinc-900 border-l border-white/10 p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-300">
+            <div className="space-y-6">
+              {/* Header Drawer */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <span className="text-lg font-bold text-white">Menu</span>
+                <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) =>
-                    `px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-white/10 text-white font-bold"
-                        : "text-gray-300 hover:bg-white/5"
-                    }`
-                  }
+                  className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
                 >
-                  {item.name}
+                  <IoClose className="text-2xl" />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="flex flex-col space-y-1">
+                {navItems.map((item, index) => (
+                  <NavLink
+                    key={index}
+                    to={item.link}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-white/10 text-white font-bold"
+                          : "text-gray-300 hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
+                ))}
+
+                <NavLink
+                  to="/cart"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5"
+                >
+                  <span>Shopping Cart</span>
+                  <span className="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full font-bold">
+                    {quantity} Items
+                  </span>
                 </NavLink>
-              ))}
 
-              <NavLink
-                to="/cart"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5"
-              >
-                <span>Shopping Cart</span>
-                <span className="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full font-bold">
-                  {quantity} Items
-                </span>
-              </NavLink>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsMapOpen(true);
+                  }}
+                  className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-colors"
+                >
+                  <IoLocationOutline className="text-lg" />
+                  <span className="truncate">
+                    {selectedAddress ? `📍 ${selectedAddress}` : "تحديد الموقع الجغرافي"}
+                  </span>
+                </button>
+              </nav>
+            </div>
 
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsMapOpen(true);
-                }}
-                className="flex items-center gap-2 w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-colors"
-              >
-                <IoLocationOutline className="text-lg" />
-                <span>
-                  {selectedAddress
-                    ? `📍 ${selectedAddress}`
-                    : "تحديد الموقع الجغرافي"}
-                </span>
-              </button>
-            </nav>
-
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-3">
+            {/* Footer / Login Button */}
+            <div className="pt-4 border-t border-white/10">
               <NavLink
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium text-xs shadow-md"
+                className="block w-full py-3 text-center rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium text-sm shadow-md active:scale-95 transition-transform"
               >
                 Subscribe / Login
               </NavLink>
             </div>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
-      {/* Map Modal */}
+      {/* 3. Map Modal */}
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="relative w-full max-w-3xl h-[520px] bg-white dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-white/10">

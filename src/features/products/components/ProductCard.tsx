@@ -25,7 +25,7 @@ export function ProductCard({
       viewport={{ once: true }}
       onClick={() => onProductClick(product.id)}
     >
-      <div className="group relative bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-800/80 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 cursor-pointer flex flex-col h-full">
+      <div className="group relative bg-white dark:bg-zinc-800/60 border border-gray-300 dark:border-zinc-800/80 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 cursor-pointer flex flex-col h-full">
         {/* Image Container */}
         <div className="relative aspect-square w-full overflow-hidden bg-gray-100 dark:bg-zinc-800">
           <img
