@@ -1,34 +1,32 @@
 import { motion } from "framer-motion";
-import { IoEyeOutline, IoHeart, IoHeartOutline, IoBagHandleOutline } from "react-icons/io5";
+import { IoHeartOutline, IoBagHandleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 import { Product } from "../../products/types/product";
-import { useAppDispatch, useAppSelector} from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { hand } from "../store/productUiSlice";
 import { selectWishlistItems } from "../store/WishlisSelectors";
-import { toggleWishlist } from "../store/WishlistSlice";
+
+import { ProductCard } from "../../shop/components/ProductCard";
+import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
 
 export default function WishlistPage() {
-  const dispatch = useAppDispatch()
-  const wishlist = useAppSelector (selectWishlistItems)
-
+  const dispatch = useAppDispatch();
+  const wishlist = useAppSelector(selectWishlistItems);
+  const { actions } = useShoppingScreen();
 
   const navigate = useNavigate();
 
-  const handleProductClick = (id: string ) => {
+  const handleProductClick = (id: string) => {
     if (hand) dispatch(hand(id));
     navigate(`/product/${id}`);
     window.scrollTo({ top: 20 });
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
-      
- 
-
+    <div className="bg-gray-50 dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
       {/* 2. Wishlist Products Section */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14 pt-20">
-        
         {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -40,7 +38,6 @@ export default function WishlistPage() {
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             Favorite Products ({wishlist.length})
           </h2>
-          
         </motion.div>
 
         {/* Empty State / Wishlist Grid */}
@@ -54,13 +51,14 @@ export default function WishlistPage() {
             <div className="w-20 h-20 rounded-full bg-rose-50 dark:bg-rose-950/40 border border-rose-100 dark:border-rose-900/50 flex items-center justify-center text-rose-500 text-3xl shadow-sm">
               <IoHeartOutline />
             </div>
-            
+
             <div className="space-y-1">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                 Your wishlist is empty
               </h3>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                Looks like you haven't saved any items yet. Explore our collection and add your favorite pieces!
+                Looks like you haven't saved any items yet. Explore our
+                collection and add your favorite pieces!
               </p>
             </div>
 
@@ -75,9 +73,6 @@ export default function WishlistPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {wishlist.map((product: Product, index: number) => {
-              // طالما العناصر داخل القائمة فجميعها مفضلة (isFav = true)
-              const isFav = wishlist.some((item) => item.id === product.id);
-
               return (
                 <motion.div
                   key={product.id}
@@ -87,88 +82,19 @@ export default function WishlistPage() {
                   viewport={{ once: true }}
                   onClick={() => handleProductClick(product.id)}
                 >
-                  <div className="group relative bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-800/80 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 cursor-pointer flex flex-col h-full">
-                    
-                    {/* Image Container */}
-                    <div className="relative aspect-square w-full overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                      <img
-                        alt={product.ImageAlt || product.Name}
-                        src={product.Images[0]}
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      />
-
-                      {/* Top Wishlist Badge (Remove from Wishlist) */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation(); // منع الانتقال لصفحة التفاصيل عند الضغط
-                          dispatch(toggleWishlist(product));
-                        }}
-                        className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-colors ${
-                          isFav
-                            ? "bg-rose-500 text-white hover:bg-rose-600 shadow-rose-500/30"
-                            : "bg-white/80 dark:bg-zinc-900/80 text-gray-700 dark:text-gray-200 hover:text-rose-500"
-                        }`}
-                        title={isFav ? "Remove from Wishlist" : "Add to Wishlist"}
-                      >
-                        {isFav ? (
-                          <IoHeart className="text-base text-white" />
-                        ) : (
-                          <IoHeartOutline className="text-base" />
-                        )}
-                      </button>
-
-                      {/* Hover Quick View Overlay Button */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-3">
-                        <button className="w-full py-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md text-gray-900 dark:text-white rounded-xl text-xs font-semibold shadow-md flex items-center justify-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                          <IoEyeOutline className="text-sm text-indigo-500" />
-                          <span>View Details</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Details Content */}
-                    <div className="p-4 flex flex-col justify-between flex-grow space-y-2 bg-gray-50 dark:bg-zinc-800/60">
-                      <div>
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-1">
-                          {product.Name}
-                        </h3>
-                        
-                        {/* Color Palette Dots */}
-                        {product.Colors && product.Colors.length > 0 && (
-                          <div className="flex items-center gap-1.5 mt-2">
-                            {product.Colors.slice(0, 3).map((color, cIdx) => (
-                              <span
-                                key={cIdx}
-                                className="w-2.5 h-2.5 rounded-full border border-gray-300 dark:border-zinc-700"
-                                style={{ backgroundColor: color }}
-                              />
-                            ))}
-                            {product.Colors.length > 3 && (
-                              <span className="text-[10px] text-gray-400">
-                                +{product.Colors.length - 3}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Price Row */}
-                      <div className="flex items-center justify-between pt-1 border-t border-gray-100 dark:border-zinc-700/40">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">Price</span>
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">
-                          ${product.Price}
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isFav={actions.isProductInWishlist(product.id)}
+                    onProductClick={actions.handleProductClick}
+                    onToggleWishlist={actions.handleToggleWishlist}
+                    onQuickAdd={actions.handleQuickAdd}
+                  />
                 </motion.div>
               );
             })}
           </div>
         )}
-
       </div>
     </div>
   );

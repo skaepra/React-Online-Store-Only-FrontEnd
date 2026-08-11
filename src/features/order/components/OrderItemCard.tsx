@@ -31,7 +31,7 @@ export default function OrderItemCard({
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-zinc-800/80 border border-gray-100 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm transition-all hover:shadow-md"
+      className="bg-white dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm transition-all hover:shadow-md"
     >
       {/* Order Main Header */}
       <div

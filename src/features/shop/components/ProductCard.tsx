@@ -27,7 +27,7 @@ export function ProductCard({
     >
       <div
         onClick={() =>{ onProductClick(product.id),window.scrollTo({ top: 20})}}
-        className="group relative bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700/50 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
+        className="group relative bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700/50 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
       >
         <button
           type="button"
