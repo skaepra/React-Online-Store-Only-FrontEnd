@@ -66,7 +66,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 Clone the repository
 
 ```bash
-git clone https://github.com/skaepra/React-Online-Store.git
+https://github.com/skaepra/React-Online-Store-Only-FrontEnd.git
 ```
 
 Navigate to the project
