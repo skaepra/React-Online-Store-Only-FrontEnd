@@ -32,7 +32,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 
 ### State Management
 
-* Zustand
+* Redux
 
 ### Form Validation
 
