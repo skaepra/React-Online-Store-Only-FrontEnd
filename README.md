@@ -45,7 +45,6 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 ### API Integration
 
 * Axios
-* REST APIs
 * JSON Server (Mock Backend)
 
 ### Maps
