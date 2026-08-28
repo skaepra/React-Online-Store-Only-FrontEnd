@@ -6,6 +6,7 @@ import { ProductCard } from "../../shop/components/ProductCard";
 import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
 import { AddedToast } from "../../shop/components/AddedToast";
 import { useNavigate } from "react-router-dom";
+import Contener from "../../../shared/childern/contener";
 
 const FEATURES = [
   { icon: IoCarOutline, title: "Free Shipping", desc: "On all orders over $5" },
@@ -22,6 +23,7 @@ export default function Home() {
   };
 
   return (
+     <Contener>
     <div className="bg-gray-50 dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
       <AddedToast message={state.addedToast} />
 
@@ -72,6 +74,7 @@ export default function Home() {
           </motion.div>
         </div>
       </div>
+   
 
       {/* 2. Value Propositions Bar */}
       <div className="border-b border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50">
@@ -123,5 +126,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+      </Contener>
   );
 }
