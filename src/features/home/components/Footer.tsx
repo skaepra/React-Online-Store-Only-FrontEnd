@@ -79,8 +79,8 @@ export default function Footer() {
 // التنسيقات المطابقة لصفحات السلة والـ Checkout
 const styles = {
   footerWrapper: "bg-gray-50 dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 text-gray-700 dark:text-gray-300 transition-colors duration-200 mt-auto",
-  container: "mx-auto max-w-5xl px-6 py-10 xl:px-0",
-  grid: "grid grid-cols-1 md:grid-cols-4 gap-8 mb-8",
+  container: "mx-auto  px-6 py-10 xl:px-0 ",
+  grid: "grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 max-w-5xl mx-auto",
   
   brandTitle: "text-2xl font-bold tracking-tight text-gray-900 dark:text-white",
   brandDesc: "text-sm text-gray-600 dark:text-gray-400 leading-relaxed",
@@ -93,7 +93,7 @@ const styles = {
   subscribeBtn: "py-1.5 px-4 text-sm font-semibold text-white bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg cursor-pointer shrink-0 shadow-md shadow-purple-500/20  hover:shadow-purple-500/40",
   
   divider: "my-6 border-gray-200 dark:border-zinc-800",
-  bottomSection: "flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-400 gap-4 mb-[-20px]",
+  bottomSection: "flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-400 gap-4 mb-[-20px] mx-auto max-w-6xl",
   copyright: "text-center sm:text-left",
   payments: "flex gap-2 items-center text-gray-400 dark:text-gray-500 font-medium",
 };

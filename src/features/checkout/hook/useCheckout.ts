@@ -4,6 +4,7 @@ import { AddOrders } from "../services/checkoutService";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectCartItems, selectCartQuantity, selectCartTotalPrice } from "../../cart/store/cartSelectors";
 import { clearCart } from "../../cart/store/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 export interface AddressFormValues {
   country: string;
@@ -32,6 +33,7 @@ const initialValues: AddressFormValues = {
 };
 
 export function useCheckout() {
+  const navigate = useNavigate();
   const getTotals = useAppSelector(selectCartTotalPrice);
   const getAllQuantity = useAppSelector(selectCartQuantity);
   const cartItems = useAppSelector(selectCartItems);
@@ -116,7 +118,7 @@ export function useCheckout() {
       if (clearCart) 
         dispatch(clearCart());
       alert("Order placed successfully!");
-      window.location.href = "/order";
+      navigate("/order");
     } catch (error) {
       console.error("Error submitting order:", error);
       alert("Failed to submit order. Please try again.");
