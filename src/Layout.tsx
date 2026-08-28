@@ -4,7 +4,7 @@ import { AppThemeProvider } from "./features/dark-mode/dark";
 
 import Home from "./features/home/screen/home";
 import ShoppingCartScreen from "./features/cart/screen/ShoppingCart";
-import LoginScreen from "./features/auth/Screens/Login";
+import LoginScreen from "./features/auth/Screens/login";
 
 import SignUpScreen from "./features/auth/Screens/SignUp";
 
