@@ -22,7 +22,7 @@ createRoot(rootElement).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <Router basename={import.meta.env.BASE_URL}>
+      <Router >
         <Layout />
       </Router>
       </PersistGate>

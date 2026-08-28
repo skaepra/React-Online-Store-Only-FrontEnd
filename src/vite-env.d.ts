@@ -7,5 +7,5 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["maplibre-gl"],
   },
-  base: '/React-Online-Store-Only-FrontEnd/',
+  base: './',
 });
