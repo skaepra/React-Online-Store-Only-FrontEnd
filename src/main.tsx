@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import Layout from "./Layout";
 import { Provider } from "react-redux";
 import { persistor, store } from "./store/store";
@@ -22,9 +22,9 @@ createRoot(rootElement).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <Router >
+      <HashRouter >
         <Layout />
-      </Router>
+      </HashRouter>
       </PersistGate>
     </Provider>
   </StrictMode>,
