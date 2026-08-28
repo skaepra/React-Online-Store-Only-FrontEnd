@@ -32,7 +32,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 
 ### State Management
 
-* Zustand
+* Redux
 
 ### Form Validation
 
@@ -45,7 +45,6 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 ### API Integration
 
 * Axios
-* REST APIs
 * JSON Server (Mock Backend)
 
 ### Maps
@@ -67,7 +66,7 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 Clone the repository
 
 ```bash
-git clone https://github.com/YourUsername/React-Online-Store.git
+https://github.com/skaepra/React-Online-Store-Only-FrontEnd.git
 ```
 
 Navigate to the project
