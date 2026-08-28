@@ -4,8 +4,10 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+
   optimizeDeps: {
     exclude: ["maplibre-gl"],
   },
-  base: './',
+
+  base: "/React-Online-Store-Only-FrontEnd/",
 });
