@@ -1,4 +1,6 @@
-export default function Footer() {
+import { NavLink } from "react-router-dom";
+
+export default function Footer() { 
   return (
     <footer className={styles.footerWrapper}>
       <div className={styles.container}>
@@ -18,9 +20,9 @@ export default function Footer() {
           <div>
             <h3 className={styles.sectionTitle}>Quick Links</h3>
             <ul className={styles.linkList}>
-              <li><a href="/" className={styles.link}>Home</a></li>
-              <li><a href="/shop" className={styles.link}>Shop All</a></li>
-              <li><a href="/cart" className={styles.link}>Shopping Cart</a></li>           
+              <li><NavLink to="/" className={styles.link}>Home</NavLink></li>
+              <li><NavLink to="/shop" className={styles.link}>Shop All</NavLink></li>
+              <li><NavLink to="/cart" className={styles.link}>Shopping Cart</NavLink></li>           
             </ul>
           </div>
 
@@ -28,10 +30,10 @@ export default function Footer() {
           <div>
             <h3 className={styles.sectionTitle}>Customer Care</h3>
             <ul className={styles.linkList}>
-              <li><a href="/faq" className={styles.link}>FAQ & Help</a></li>
-              <li><a href="/shipping" className={styles.link}>Shipping Info</a></li>
-              <li><a href="/returns" className={styles.link}>Returns & Refunds</a></li>
-              <li><a href="/contact" className={styles.link}>Contact Us</a></li>
+              <li><NavLink to="/faq" className={styles.link}>FAQ & Help</NavLink></li>
+              <li><NavLink to="/shipping" className={styles.link}>Shipping Info</NavLink></li>
+              <li><NavLink to="/returns" className={styles.link}>Returns & Refunds</NavLink></li>
+              <li><NavLink to="/contact" className={styles.link}>Contact Us</NavLink></li>
             </ul>
           </div>
 

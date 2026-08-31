@@ -8,7 +8,7 @@ import {
   IoSyncOutline,
   IoShieldCheckmarkOutline,
 } from "react-icons/io5";
-import { Product } from "../../types/product";
+import { Product } from "../types/product";
 
 interface ProductOptionsProps {
   product: Product;

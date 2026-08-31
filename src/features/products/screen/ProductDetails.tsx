@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { IoChevronBack, IoCheckmark } from "react-icons/io5";
 import { useProductDetails } from "../hooks/useProductDetails";
-import ProductGallery from "../components/ProductDetailsComponents/ProductGallery";
-import ProductOptions from "../components/ProductDetailsComponents/ProductOptions";
-import ProductTabs from "../components/ProductDetailsComponents/ProductTabs";
-import RelatedProducts from "../components/ProductDetailsComponents/RelatedProducts";
+import ProductGallery from "../components/ProductGallery";
+import ProductOptions from "../components/ProductOptions";
+import ProductTabs from "../components/ProductTabs";
+import RelatedProducts from "../components/RelatedProducts";
 
 export default function ProductDetails() {
   const {
