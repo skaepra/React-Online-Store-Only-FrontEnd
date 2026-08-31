@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { IoHeart, IoHeartOutline, IoShareSocialOutline } from "react-icons/io5";
-import { Product } from "../../types/product";
+import { Product } from "../types/product";
+
 
 interface ProductGalleryProps {
   product: Product;

@@ -121,7 +121,7 @@ export function useCheckout() {
       navigate("/order");
     } catch (error) {
       console.error("Error submitting order:", error);
-      alert("Failed to submit order. Please try again.");
+      alert("Failed to submit order. The server cannot be reached.");
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { IoSparkles, IoShieldCheckmarkOutline, IoCarOutline, IoRefreshOutline } from "react-icons/io5";
+import { IoSparkles, IoShieldCheckmarkOutline, IoCarOutline, IoRefreshOutline, IoBag } from "react-icons/io5";
 import products from "../../../data/products";
 import { Product } from "../../products/types/product";
 import { ProductCard } from "../../shop/components/ProductCard";
@@ -21,6 +21,8 @@ export default function Home() {
   const handleShopCollection = () => {
     navigate("/shop");
   };
+
+ 
 
   return (
      <Contener>
@@ -59,7 +61,7 @@ export default function Home() {
           >
             Discover our handpicked selection of premium products crafted for quality and perfection.
           </motion.p>
-
+       
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -67,9 +69,12 @@ export default function Home() {
           >
             <button
               onClick={handleShopCollection}
-              className="inline-block bg-white text-gray-900 hover:bg-gray-100 font-semibold px-6 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 text-sm"
+              className="inline-block  dark:bg  hover:bg-indigo-600/90 font-semibold px-5 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 text-sm  justify-center bg-indigo-600 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white "
             >
-              Shop Collection
+              <div className="flex justify-center space-x-2">
+             <IoBag className="text-base" />
+              <p>Shop Collection</p>
+              </div>
             </button>
           </motion.div>
         </div>
