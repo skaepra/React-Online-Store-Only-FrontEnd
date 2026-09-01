@@ -3,10 +3,11 @@ import { IoSparkles, IoShieldCheckmarkOutline, IoCarOutline, IoRefreshOutline, I
 import products from "../../../data/products";
 import { Product } from "../../products/types/product";
 import { ProductCard } from "../../shop/components/ProductCard";
-import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
+
 import { AddedToast } from "../../shop/components/AddedToast";
 import { useNavigate } from "react-router-dom";
 import Contener from "../../../shared/childern/contener";
+import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
 
 const FEATURES = [
   { icon: IoCarOutline, title: "Free Shipping", desc: "On all orders over $5" },
@@ -21,8 +22,6 @@ export default function Home() {
   const handleShopCollection = () => {
     navigate("/shop");
   };
-
- 
 
   return (
      <Contener>
