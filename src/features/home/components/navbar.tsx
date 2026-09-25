@@ -41,17 +41,12 @@ export default function AppNavbar() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             {/* Left Section: Logo & Desktop Links */}
             <div className="flex items-center gap-8">
-              <NavLink to="/" className="flex items-center gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center p-1.5 shadow-md shadow-cyan-500/20 transition-transform group-hover:scale-105">
+              <NavLink to="/" className="flex items-center gap-2.5 group">             
                   <img
-                    src="https://flowbite.com/docs/images/logo.svg"
-                    className="w-full h-full brightness-200"
+                    src="logo.png"
+                    className="w-24 brightness-200 mb-3"
                     alt="Logo"
-                  />
-                </div>
-                <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-                  Flowbite
-                </span>
+                  />            
               </NavLink>
 
               {/* Desktop Navigation */}
