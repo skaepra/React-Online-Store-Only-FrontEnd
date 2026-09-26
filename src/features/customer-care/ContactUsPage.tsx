@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { 
-  IoMailOutline, 
-  IoCallOutline, 
-  IoLocationOutline, 
+import {
+  IoMailOutline,
+  IoCallOutline,
+  IoLocationOutline,
   IoTimeOutline,
   IoSend,
   IoCheckmarkCircle,
@@ -13,7 +13,7 @@ export default function ContactUsPage() {
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -25,22 +25,28 @@ export default function ContactUsPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-20 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
-        
         {/* Page Header */}
         <div className="text-center space-y-4">
-         
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Get in <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Touch</span>
+            Get in{" "}
+            <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">
+              Touch
+            </span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
-            Have a question, feedback, or need assistance with your order? Our team is here to help you.
+            Have a question, feedback, or need assistance with your order? Our
+            team is here to help you.
           </p>
         </div>
 
@@ -48,26 +54,44 @@ export default function ContactUsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoMailOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Email Us</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Our team usually replies within 24 hours.</p>
-            <a href="mailto:support@store.com" className="text-xs font-semibold text-indigo-500 hover:underline block">
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+              Email Us
+            </h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Our team usually replies within 24 hours.
+            </p>
+            <a
+              href="mailto:support@store.com"
+              className="text-xs font-semibold text-indigo-500 hover:underline block"
+            >
               support@store.com
             </a>
           </div>
 
           <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoCallOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Call Us</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Mon - Fri from 9am to 6pm.</p>
-            <a href="tel:+1234567890" className="text-xs font-semibold text-indigo-500 hover:underline block">
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+              Call Us
+            </h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Mon - Fri from 9am to 6pm.
+            </p>
+            <a
+              href="tel:+1234567890"
+              className="text-xs font-semibold text-indigo-500 hover:underline block"
+            >
               +1 (234) 567-890
             </a>
           </div>
 
           <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoLocationOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Headquarters</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400">123 Tech Avenue, Suite 400</p>
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+              Headquarters
+            </h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              123 Tech Avenue, Suite 400
+            </p>
             <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 block">
               New York, NY 10001
             </span>
@@ -75,8 +99,12 @@ export default function ContactUsPage() {
 
           <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoTimeOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Working Hours</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Sunday - Thursday</p>
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+              Working Hours
+            </h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Sunday - Thursday
+            </p>
             <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 block">
               08:00 AM - 05:00 PM
             </span>
@@ -85,22 +113,25 @@ export default function ContactUsPage() {
 
         {/* Main Section: Form & Additional Info */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
           {/* Left Side: Contact Form */}
           <div className="lg:col-span-7 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 bg-white dark:bg-zinc-900">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Send Us a Message
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Fill out the form below and we’ll get back to you as soon as possible.
+              Fill out the form below and we’ll get back to you as soon as
+              possible.
             </p>
 
             {isSubmitted ? (
               <div className="p-6 border border-emerald-200 dark:border-emerald-900/50 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 text-center space-y-3">
                 <IoCheckmarkCircle className="text-4xl text-emerald-500 mx-auto" />
-                <h3 className="font-bold text-base text-gray-900 dark:text-white">Thank You!</h3>
+                <h3 className="font-bold text-base text-gray-900 dark:text-white">
+                  Thank You!
+                </h3>
                 <p className="text-xs text-gray-600 dark:text-gray-300 max-w-sm mx-auto">
-                  Your message has been sent successfully. Our support team will reach out to you shorty.
+                  Your message has been sent successfully. Our support team will
+                  reach out to you shorty.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
@@ -189,7 +220,6 @@ export default function ContactUsPage() {
 
           {/* Right Side: Map & Quick FAQ notice */}
           <div className="lg:col-span-5 space-y-6">
-            
             {/* Embedded Map Visual Box */}
             <div className="border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-800 h-64 relative flex items-center justify-center text-center p-6">
               <iframe
@@ -207,7 +237,8 @@ export default function ContactUsPage() {
                 Looking for quick answers?
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                Before sending us a message, check out our FAQ section to see if your question is already answered.
+                Before sending us a message, check out our FAQ section to see if
+                your question is already answered.
               </p>
               <a
                 href="/faq"
@@ -216,11 +247,8 @@ export default function ContactUsPage() {
                 Visit FAQ & Help Center →
               </a>
             </div>
-
           </div>
-
         </div>
-
       </div>
     </div>
   );

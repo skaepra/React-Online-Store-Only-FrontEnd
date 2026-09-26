@@ -48,7 +48,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pt-20 pb-16 transition-colors duration-200">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pb-16 transition-colors duration-200">
       {/* Toast Notification */}
       <AnimatePresence>
         {addedToast && (
@@ -70,14 +70,14 @@ export default function ProductDetails() {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-white mb-6 transition-colors"
+          className="mb-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-600 transition-colors hover:text-[#0053e2] dark:text-gray-400 dark:hover:text-white"
         >
           <IoChevronBack className="text-base" />
           <span>Back</span>
         </button>
 
         {/* Top Product Details Section */}
-        <div className="sm:flex grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white dark:bg-zinc-800/80 p-6 sm:p-8 rounded-3xl border border-gray-200/80 dark:border-zinc-700/60 shadow-sm">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-7">
           <ProductGallery
             product={product}
             selectedImage={selectedImage}

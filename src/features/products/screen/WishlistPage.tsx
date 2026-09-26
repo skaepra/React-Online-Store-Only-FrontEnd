@@ -26,7 +26,7 @@ export default function WishlistPage() {
   return (
     <div className="bg-gray-50 dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
       {/* 2. Wishlist Products Section */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14 pt-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14">
         {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -71,7 +71,7 @@ export default function WishlistPage() {
             </button>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {wishlist.map((product: Product, index: number) => {
               return (
                 <motion.div
@@ -86,6 +86,7 @@ export default function WishlistPage() {
                     key={product.id}
                     product={product}
                     isFav={actions.isProductInWishlist(product.id)}
+                    variant="wishlist"
                     onProductClick={actions.handleProductClick}
                     onToggleWishlist={actions.handleToggleWishlist}
                     onQuickAdd={actions.handleQuickAdd}

@@ -22,7 +22,6 @@ import CheckOutScreen from "./features/checkout/screen/CheckOut";
 import AppNavbar from "./features/home/components/navbar";
 import NotFoundPage from "./features/error/NotFound";
 
-
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
 
@@ -39,22 +38,24 @@ export default function Layout(): React.JSX.Element {
   return (
     <>
       <AppThemeProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<ShopingScreen />} />
-          <Route path="/wishlist" element={<WishlistPage />} />
-          <Route path="/cart" element={<ShoppingCartScreen />} />
-          <Route path="/checkOut" element={<CheckOutScreen />} />
-          <Route path="/order" element={<OrdersPage />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/singUp" element={<SignUpScreen />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/shipping" element={<ShippingInfoPage />} />
-          <Route path="/returns" element={<ReturnsRefundsPage />} />
-          <Route path="/contact" element={<ContactUsPage />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="*" element={<NotFoundPage/>} />      
-        </Routes>
+        <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px]"}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<ShopingScreen />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
+            <Route path="/cart" element={<ShoppingCartScreen />} />
+            <Route path="/checkOut" element={<CheckOutScreen />} />
+            <Route path="/order" element={<OrdersPage />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/singUp" element={<SignUpScreen />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/shipping" element={<ShippingInfoPage />} />
+            <Route path="/returns" element={<ReturnsRefundsPage />} />
+            <Route path="/contact" element={<ContactUsPage />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
 
         {!shouldHideNavbar && <AppNavbar />}
         {!shouldHideFooter && <Footer />}

@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Product } from "../../products/types/product";
 import Allproducts from "../../../data/Allproducts";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -10,9 +10,9 @@ import { toggleWishlist } from "../../products/store/WishlistSlice";
 export function useShoppingScreen() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const wishlist = useAppSelector (selectWishlistItems)
+  const wishlist = useAppSelector(selectWishlistItems);
 
-
+  const location = useLocation();
 
   // States
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -28,16 +28,23 @@ export function useShoppingScreen() {
   const categories = useMemo(() => {
     const categoryMap: Record<string, number> = {};
 
-    allProducts.forEach((p) => {
-      const cat = p.Category || "General";
-      categoryMap[cat] = (categoryMap[cat] || 0) + 1;
+    allProducts.forEach((product) => {
+      const category = product.Category || "General";
+      categoryMap[category] = (categoryMap[category] || 0) + 1;
     });
 
     return [
-      { name: "All", count: allProducts.length },
+      {
+        name: "All",
+        count: allProducts.length,
+        image: allProducts[0]?.Images[0],
+      },
       ...Object.keys(categoryMap).map((cat) => ({
         name: cat,
         count: categoryMap[cat],
+        image: allProducts.find(
+          (product) => (product.Category || "General") === cat,
+        )?.Images[0],
       })),
     ];
   }, [allProducts]);
@@ -97,13 +104,17 @@ export function useShoppingScreen() {
     setIsFilterMobileOpen(false);
   };
 
-    const handleToggleWishlist = (product:Product) =>{
-    dispatch(toggleWishlist(product))
-  }
+  const handleToggleWishlist = (product: Product) => {
+    dispatch(toggleWishlist(product));
+  };
 
   const isProductInWishlist = (productId: string) => {
     return wishlist.some((item) => item.id === productId);
   };
+
+  useEffect(() => {
+    setSearchQuery(new URLSearchParams(location.search).get("search") ?? "");
+  }, [location.search]);
 
   return {
     state: {

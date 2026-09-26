@@ -35,7 +35,7 @@ import { Product } from "../features/products/types/product";
        ImageAlt: "Front of men's Basic Tee in black.",
        Price: 700,
        Colors:["white","#d6ac6c"],
-       Description: "Sony has just announced the Sony A6700. An APS-C system camera with AI processing unit and great autofocus. It is a hybrid camera for both ..",
+       Description: "A sleek white Apple Watch with a modern sport band. Features include a high-resolution display, optical heart sensor, and multiple color options. Perfect for fitness tracking and connectivity.",
      },  
      {
       

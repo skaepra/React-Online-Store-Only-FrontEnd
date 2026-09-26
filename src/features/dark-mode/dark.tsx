@@ -1,7 +1,17 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, useEffect, ReactNode } from "react";
-import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+} from "@mui/material/styles";
 
 type ThemeMode = "light" | "dark";
 
@@ -13,15 +23,9 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function AppThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<ThemeMode>("dark");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("dark");
-    if (saved === "light") {
-      setMode("light");
-      document.documentElement.classList.add("light");
-    }
-  }, []);
+  const [mode, setMode] = useState<ThemeMode>(() =>
+    localStorage.getItem("dark") === "dark" ? "dark" : "light",
+  );
 
   useEffect(() => {
     localStorage.setItem("dark", mode);
@@ -32,7 +36,8 @@ export function AppThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [mode]);
 
-  const toggleMode = () => setMode((prev) => (prev === "light" ? "dark" : "light"));
+  const toggleMode = () =>
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   const muiTheme = useMemo(
     () =>
@@ -48,7 +53,7 @@ export function AppThemeProvider({ children }: { children: ReactNode }) {
             : { primary: { main: "#1976d2" } }),
         },
       }),
-    [mode]
+    [mode],
   );
 
   return (

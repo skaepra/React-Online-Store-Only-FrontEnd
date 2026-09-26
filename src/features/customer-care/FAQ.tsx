@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { 
-  IoChevronDown, 
-  IoSearch, 
-  IoCarSport, 
-  IoRefresh, 
-  IoBag, 
-  IoCard, 
-  IoMail, 
-  IoChatbubbleEllipses 
+import {
+  IoChevronDown,
+  IoSearch,
+  IoCarSport,
+  IoRefresh,
+  IoBag,
+  IoCard,
+  IoMail,
+  IoChatbubbleEllipses,
 } from "react-icons/io5";
 
 interface FAQItem {
@@ -30,37 +30,43 @@ const FAQ_DATA: FAQItem[] = [
     id: "1",
     category: "shipping",
     question: "How long does shipping take?",
-    answer: "Standard shipping usually takes 2-5 business days depending on your location. You will receive a tracking link via email as soon as your order ships.",
+    answer:
+      "Standard shipping usually takes 2-5 business days depending on your location. You will receive a tracking link via email as soon as your order ships.",
   },
   {
     id: "2",
     category: "shipping",
     question: "Do you offer Cash on Delivery (COD)?",
-    answer: "Yes! We support Cash on Delivery for most regions. You can select COD during checkout.",
+    answer:
+      "Yes! We support Cash on Delivery for most regions. You can select COD during checkout.",
   },
   {
     id: "3",
     category: "returns",
     question: "What is your return policy?",
-    answer: "We offer a 14-day hassle-free return policy for unopened and unused products in their original packaging.",
+    answer:
+      "We offer a 14-day hassle-free return policy for unopened and unused products in their original packaging.",
   },
   {
     id: "4",
     category: "returns",
     question: "How do I request a refund?",
-    answer: "You can initiate a return by contacting our customer support team or submitting a request via the Contact Us section with your order ID.",
+    answer:
+      "You can initiate a return by contacting our customer support team or submitting a request via the Contact Us section with your order ID.",
   },
   {
     id: "5",
     category: "orders",
     question: "Can I cancel or change my order after placing it?",
-    answer: "If your order has not been dispatched yet, you can contact our support team immediately to cancel or modify your items.",
+    answer:
+      "If your order has not been dispatched yet, you can contact our support team immediately to cancel or modify your items.",
   },
   {
     id: "6",
     category: "payment",
     question: "What payment methods are supported?",
-    answer: "We accept Cash on Delivery (COD), major Credit/Debit Cards (Visa, Mastercard), and digital payment gateways.",
+    answer:
+      "We accept Cash on Delivery (COD), major Credit/Debit Cards (Visa, Mastercard), and digital payment gateways.",
   },
 ];
 
@@ -70,7 +76,8 @@ export default function FAQPage() {
   const [openId, setOpenId] = useState<string | null>("1");
 
   const filteredFaqs = FAQ_DATA.filter((faq) => {
-    const matchesCategory = activeCategory === "all" || faq.category === activeCategory;
+    const matchesCategory =
+      activeCategory === "all" || faq.category === activeCategory;
     const matchesSearch =
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
@@ -82,16 +89,19 @@ export default function FAQPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-20 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
-        
         {/* Top Header Section */}
         <div className="text-center space-y-4">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            How can we <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">help you?</span>
+            How can we{" "}
+            <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">
+              help you?
+            </span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
-            Search our knowledge base or browse frequently asked questions below to find quick answers.
+            Search our knowledge base or browse frequently asked questions below
+            to find quick answers.
           </p>
 
           {/* Search Box */}
@@ -143,7 +153,9 @@ export default function FAQPage() {
                     onClick={() => toggleAccordion(faq.id)}
                     className="w-full flex justify-between items-center px-5 py-4 text-left font-medium text-gray-900 bg-gray-50 dark:text-white hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer"
                   >
-                    <span className="text-sm sm:text-base font-semibold">{faq.question}</span>
+                    <span className="text-sm sm:text-base font-semibold">
+                      {faq.question}
+                    </span>
                     <IoChevronDown
                       className={`text-indigo-500 shrink-0 transition-transform duration-200 text-base ${
                         isOpen ? "rotate-180" : ""
@@ -173,7 +185,8 @@ export default function FAQPage() {
               Still have questions?
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              Can’t find the answer you’re looking for? Please reach out to our friendly team.
+              Can’t find the answer you’re looking for? Please reach out to our
+              friendly team.
             </p>
           </div>
 
@@ -181,9 +194,16 @@ export default function FAQPage() {
             <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg bg-gray-50 dark:bg-zinc-800/50 flex items-start gap-3">
               <IoMail className="text-indigo-500 shrink-0 mt-0.5 text-lg" />
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Email Support</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Response within 24 hours</p>
-                <a href="mailto:support@store.com" className="text-xs text-indigo-500 font-medium hover:underline mt-2 inline-block">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Email Support
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Response within 24 hours
+                </p>
+                <a
+                  href="mailto:support@store.com"
+                  className="text-xs text-indigo-500 font-medium hover:underline mt-2 inline-block"
+                >
                   support@store.com
                 </a>
               </div>
@@ -192,16 +212,22 @@ export default function FAQPage() {
             <div className="p-4 border border-gray-200 dark:border-zinc-800 rounded-lg bg-gray-50 dark:bg-zinc-800/50 flex items-start gap-3">
               <IoChatbubbleEllipses className="text-indigo-500 shrink-0 mt-0.5 text-lg" />
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Live Chat</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Mon - Fri from 8am to 5pm</p>
-                <a href="#contact" className="text-xs text-indigo-500 font-medium hover:underline mt-2 inline-block">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Live Chat
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Mon - Fri from 8am to 5pm
+                </p>
+                <a
+                  href="#contact"
+                  className="text-xs text-indigo-500 font-medium hover:underline mt-2 inline-block"
+                >
                   Start a Chat
                 </a>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export function DesktopSidebar({
   return (
     <aside className="hidden lg:block w-64 flex-shrink-0 space-y-6">
       {/* Categories Box */}
-      <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-200 dark:border-zinc-700/60 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
         <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <IoFunnelOutline className="text-indigo-500" />
           <span>Categories</span>
@@ -56,7 +56,7 @@ export function DesktopSidebar({
       </div>
 
       {/* Price Slider Box */}
-      <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-200 dark:border-zinc-700/60 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-bold text-gray-900 dark:text-white">
             Max Price

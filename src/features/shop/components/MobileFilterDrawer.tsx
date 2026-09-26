@@ -41,11 +41,13 @@ export function MobileFilterDrawer({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            className="relative ml-auto w-full max-w-xs bg-white dark:bg-zinc-800 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between"
+            className="relative ml-auto flex h-full w-full max-w-xs flex-col justify-between overflow-y-auto bg-white p-6 shadow-2xl dark:bg-zinc-800"
           >
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b pb-4 dark:border-zinc-700">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Filters</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                  Filters
+                </h2>
                 <button onClick={onClose}>
                   <IoCloseOutline className="text-2xl text-gray-500" />
                 </button>
@@ -62,7 +64,7 @@ export function MobileFilterDrawer({
                       onSelectCategory(cat.name);
                       onClose();
                     }}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-semibold ${
+                    className={`flex w-full items-center justify-between rounded-lg p-3 text-xs font-semibold ${
                       selectedCategory === cat.name
                         ? "bg-indigo-600 text-white"
                         : "bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-200"
@@ -91,7 +93,7 @@ export function MobileFilterDrawer({
 
             <button
               onClick={onClose}
-              className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl text-xs mt-6"
+              className="mt-6 w-full rounded-full bg-[#0071ce] py-3 text-xs font-bold text-white"
             >
               Apply Filters
             </button>

@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Taggol } from "../../dark-mode/taggol";
 import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
 
@@ -8,6 +9,8 @@ import {
   IoMenu,
   IoClose,
   IoSparklesOutline,
+  IoSearchOutline,
+  IoPersonOutline,
 } from "react-icons/io5";
 import { navItems, useNavbar } from "../hook/useNavbar";
 import { useAppSelector } from "../../../store/hooks";
@@ -28,6 +31,37 @@ export default function AppNavbar() {
   } = useNavbar();
 
   const quantity = useAppSelector(selectCartQuantity);
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    navigate(`/shop?search=${encodeURIComponent(searchTerm.trim())}`);
+  };
+
+  const searchForm = (
+    <form
+      onSubmit={handleSearch}
+      role="search"
+      className="flex h-10 w-full items-center rounded-full bg-white p-1 pl-4 shadow-sm focus-within:ring-2 focus-within:ring-[#ffc220]"
+    >
+      <input
+        type="search"
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+        placeholder="Search products"
+        aria-label="Search products"
+        className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
+      />
+      <button
+        type="submit"
+        aria-label="Search"
+        className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0071ce] text-white transition-colors hover:bg-[#005da8]"
+      >
+        <IoSearchOutline className="text-lg" />
+      </button>
+    </form>
+  );
 
   return (
     <>
@@ -37,103 +71,103 @@ export default function AppNavbar() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="bg-slate-900/85 dark:bg-zinc-900/85 backdrop-blur-md border-b border-white/10 dark:border-zinc-800 text-white shadow-lg">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            {/* Left Section: Logo & Desktop Links */}
-            <div className="flex items-center gap-8">
-              <NavLink to="/" className="flex items-center gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center p-1.5 shadow-md shadow-cyan-500/20 transition-transform group-hover:scale-105">
-                  <img
-                    src="https://flowbite.com/docs/images/logo.svg"
-                    className="w-full h-full brightness-200"
-                    alt="Logo"
-                  />
-                </div>
-                <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-                  Flowbite
-                </span>
-              </NavLink>
+        <div className="bg-[#0071ce] text-white shadow-md">
+          <div className="mx-auto flex h-[62px] max-w-[1440px] items-center gap-3 px-4 sm:px-6">
+            <button
+              onClick={toggleMobileMenu}
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full transition-colors hover:bg-white/15 md:hidden"
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? (
+                <IoClose className="text-2xl" />
+              ) : (
+                <IoMenu className="text-2xl" />
+              )}
+            </button>
 
-              {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center gap-1">
-                {navItems.map((item, index) => (
-                  <NavLink
-                    key={index}
-                    to={item.link}
-                    onClick={() => window.scrollTo({ top: 0 })}
-                    className={({ isActive }) =>
-                      `px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                        isActive
-                          ? "bg-white/10 text-white shadow-inner font-semibold"
-                          : "text-gray-300 hover:text-white hover:bg-white/5"
-                      }`
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                ))}
-              </nav>
+            <NavLink
+              to="/"
+              className="flex shrink-0 items-center gap-1"
+              aria-label="Store home"
+            >
+              <span className="text-[21px] font-extrabold tracking-tight">
+                Bazaar
+              </span>
+            </NavLink>
+
+            <div className="hidden min-w-0 flex-1 md:block md:px-4 lg:px-8">
+              {searchForm}
             </div>
 
-            {/* Right Section: Location, DarkMode, Cart & Auth */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Location Picker */}
-              <button
-                onClick={() => setIsMapOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-200 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                title="تحديد الموقع"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+            <button
+              onClick={() => setIsMapOpen(true)}
+              className="hidden shrink-0 items-center gap-2 rounded-full px-3 py-2 text-left transition-colors hover:bg-white/15 lg:flex"
+              title="Select delivery location"
+            >
+              <IoLocationOutline className="text-xl text-[#ffc220]" />
+              <span className="max-w-[125px]">
+                <span className="block text-[10px] text-white/80">
+                  Deliver to
                 </span>
-                <IoLocationOutline className="text-rose-400 text-base" />
-                <span className="hidden lg:inline max-w-[110px] truncate text-gray-200">
-                  {selectedAddress || "Select Location"}
+                <span className="block truncate text-xs font-semibold">
+                  {selectedAddress || "Choose location"}
                 </span>
-              </button>
+              </span>
+            </button>
 
-              {/* Theme Toggle */}
-              <div className="flex items-center mr-[-12px]">
-                <Taggol mode={mode} toggleMode={toggleMode} />
-              </div>
-
-              {/* Cart Button */}
-              <NavLink
-                to="/cart"
-                className="relative p-2 rounded-full hover:bg-white/10 text-gray-200 hover:text-white transition-colors"
-                title="Cart"
-              >
-                <IoCartOutline className="text-2xl" />
-                {quantity > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
-                    {quantity > 99 ? "99+" : quantity}
-                  </span>
-                )}
-              </NavLink>
-
-              {/* Subscribe Button */}
-              <NavLink
-                to="/login"
-                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-500 hover:shadow-indigo-500/40 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-medium text-xs shadow-md shadow-purple-500/20 transition-all dark:hover:shadow-purple-500/40 active:scale-95"
-              >
-                <IoSparklesOutline />
-                <span>Subscribe</span>
-              </NavLink>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={toggleMobileMenu}
-                className="md:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-200 transition-colors"
-                aria-label="Toggle Menu"
-              >
-                {isMobileMenuOpen ? (
-                  <IoClose className="text-2xl" />
-                ) : (
-                  <IoMenu className="text-2xl" />
-                )}
-              </button>
+            <div className="hidden items-center sm:flex">
+              <Taggol mode={mode} toggleMode={toggleMode} />
             </div>
+
+            <NavLink
+              to="/login"
+              className="hidden h-10 shrink-0 items-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors hover:bg-white/15 sm:flex"
+              title="Account"
+            >
+              <IoPersonOutline className="text-lg" />
+              <span className="hidden xl:inline">Sign in</span>
+            </NavLink>
+
+            <NavLink
+              to="/cart"
+              className="relative flex h-10 shrink-0 items-center gap-1 rounded-full px-2 transition-colors hover:bg-white/15"
+              title="Cart"
+            >
+              <IoCartOutline className="text-[25px]" />
+              <span className="hidden text-xs font-semibold xl:inline">
+                Cart
+              </span>
+              {quantity > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[#ffc220] px-1 text-[10px] font-bold text-slate-900">
+                  {quantity > 99 ? "99+" : quantity}
+                </span>
+              )}
+            </NavLink>
+          </div>
+
+          <div className="mx-auto max-w-[1440px] px-4 pb-2 sm:px-6 md:hidden">
+            {searchForm}
+          </div>
+
+          <div className="hidden border-t border-white/20 bg-white text-slate-800 md:block">
+            <nav className="mx-auto flex h-10 max-w-[1440px] items-center gap-1 px-4 sm:px-6">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.link}
+                  to={item.link}
+                  onClick={() => window.scrollTo({ top: 0 })}
+                  className={({ isActive }) =>
+                    `rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
+                      isActive
+                        ? "bg-[#eaf4fc] text-[#005da8]"
+                        : "hover:bg-slate-100"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </nav>
           </div>
         </div>
       </header>
@@ -148,14 +182,14 @@ export default function AppNavbar() {
           />
 
           {/* Sidebar Drawer */}
-          <div className="relative ml-auto w-[70%] max-w-xs h-full bg-slate-900 dark:bg-zinc-900 border-l border-white/10 p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-300">
+          <div className="relative z-10 ml-auto flex h-full w-[80%] max-w-xs flex-col justify-between border-l border-slate-200 bg-white p-6 shadow-2xl animate-in slide-in-from-right duration-300">
             <div className="space-y-6">
               {/* Header Drawer */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                <span className="text-lg font-bold text-white">Menu</span>
+              <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+                <span className="text-lg font-bold text-slate-900">Menu</span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                  className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
                 >
                   <IoClose className="text-2xl" />
                 </button>
@@ -169,10 +203,10 @@ export default function AppNavbar() {
                     to={item.link}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={({ isActive }) =>
-                      `px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                      `rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-white/10 text-white font-bold"
-                          : "text-gray-300 hover:bg-white/5"
+                          ? "bg-[#eaf4fc] font-bold text-[#005da8]"
+                          : "text-slate-700 hover:bg-slate-100"
                       }`
                     }
                   >
@@ -183,10 +217,10 @@ export default function AppNavbar() {
                 <NavLink
                   to="/cart"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5"
+                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100"
                 >
                   <span>Shopping Cart</span>
-                  <span className="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full font-bold">
+                  <span className="rounded-full bg-[#fff3cf] px-2 py-0.5 text-xs font-bold text-slate-900">
                     {quantity} Items
                   </span>
                 </NavLink>
@@ -196,22 +230,24 @@ export default function AppNavbar() {
                     setIsMobileMenuOpen(false);
                     setIsMapOpen(true);
                   }}
-                  className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-colors"
+                  className="flex w-full items-center gap-2 rounded-lg px-4 py-3 text-left text-sm font-medium text-[#005da8] transition-colors hover:bg-[#eaf4fc]"
                 >
                   <IoLocationOutline className="text-lg" />
                   <span className="truncate">
-                    {selectedAddress ? `📍 ${selectedAddress}` : "تحديد الموقع الجغرافي"}
+                    {selectedAddress
+                      ? `📍 ${selectedAddress}`
+                      : "تحديد الموقع الجغرافي"}
                   </span>
                 </button>
               </nav>
             </div>
 
             {/* Footer / Login Button */}
-            <div className="pt-4 border-t border-white/10">
+            <div className="border-t border-slate-200 pt-4">
               <NavLink
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block w-full py-3 text-center rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium text-sm shadow-md active:scale-95 transition-transform"
+                className="block w-full rounded-full bg-[#0071ce] py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#005da8] active:scale-95"
               >
                 Subscribe / Login
               </NavLink>

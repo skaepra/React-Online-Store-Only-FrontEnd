@@ -1,11 +1,11 @@
-import  { useState } from "react";
-import { 
-  IoShieldCheckmarkOutline, 
-  IoTimeOutline, 
+import { useState } from "react";
+import {
+  IoShieldCheckmarkOutline,
+  IoTimeOutline,
   IoCardOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
-  IoChevronDown
+  IoChevronDown,
 } from "react-icons/io5";
 
 export default function ReturnsRefundsPage() {
@@ -16,17 +16,19 @@ export default function ReturnsRefundsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 pt-20 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
-        
         {/* Page Header */}
         <div className="text-center space-y-4">
-          
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Returns & <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">Refunds Policy</span>
+            Returns &{" "}
+            <span className=" text-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text dark:text-transparent">
+              Refunds Policy
+            </span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
-            Hassle-free returns within 14 days. We want you to be completely satisfied with your purchase.
+            Hassle-free returns within 14 days. We want you to be completely
+            satisfied with your purchase.
           </p>
         </div>
 
@@ -34,25 +36,34 @@ export default function ReturnsRefundsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="p-6 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoTimeOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">14-Day Return Window</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">
+              14-Day Return Window
+            </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-              You have 14 full days from delivery date to request a return or exchange.
+              You have 14 full days from delivery date to request a return or
+              exchange.
             </p>
           </div>
 
           <div className="p-6 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoCardOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Fast Refunds</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">
+              Fast Refunds
+            </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-              Refunds are processed back to your original payment method within 3-5 business days after inspection.
+              Refunds are processed back to your original payment method within
+              3-5 business days after inspection.
             </p>
           </div>
 
           <div className="p-6 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50 dark:bg-zinc-800/50 space-y-3">
             <IoShieldCheckmarkOutline className="text-2xl text-indigo-500" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Quality Guarantee</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">
+              Quality Guarantee
+            </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-              If your product arrives damaged or defective, we will replace it immediately at no extra cost.
+              If your product arrives damaged or defective, we will replace it
+              immediately at no extra cost.
             </p>
           </div>
         </div>
@@ -64,26 +75,41 @@ export default function ReturnsRefundsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-5 border bg-gray-50  border-gray-200 dark:border-zinc-800 rounded-xl  dark:bg-zinc-900 space-y-2 relative">
-              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 01</span>
-              <h4 className="font-semibold text-base text-gray-900 dark:text-white">Submit Request</h4>
+              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">
+                Step 01
+              </span>
+              <h4 className="font-semibold text-base text-gray-900 dark:text-white">
+                Submit Request
+              </h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                Contact customer support or visit your account page to initiate a return request with your Order ID.
+                Contact customer support or visit your account page to initiate
+                a return request with your Order ID.
               </p>
             </div>
 
             <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50  dark:bg-zinc-900 space-y-2 relative">
-              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 02</span>
-              <h4 className="font-semibold text-base text-gray-900 dark:text-white">Pack Your Item</h4>
+              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">
+                Step 02
+              </span>
+              <h4 className="font-semibold text-base text-gray-900 dark:text-white">
+                Pack Your Item
+              </h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                Place the item securely in its original packaging along with all tags and accessories.
+                Place the item securely in its original packaging along with all
+                tags and accessories.
               </p>
             </div>
 
             <div className="p-5 border border-gray-200 dark:border-zinc-800 rounded-xl bg-gray-50  dark:bg-zinc-900 space-y-2 relative">
-              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Step 03</span>
-              <h4 className="font-semibold text-base text-gray-900 dark:text-white">Get Refunded</h4>
+              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">
+                Step 03
+              </span>
+              <h4 className="font-semibold text-base text-gray-900 dark:text-white">
+                Get Refunded
+              </h4>
               <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                Our courier will pick up the package, and your refund will be issued once inspected.
+                Our courier will pick up the package, and your refund will be
+                issued once inspected.
               </p>
             </div>
           </div>
@@ -139,24 +165,24 @@ export default function ReturnsRefundsPage() {
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Refund FAQs
           </h2>
-          
+
           <div className="space-y-3">
             {[
               {
                 q: "What if I paid with Cash on Delivery (COD)?",
-                a: "For COD orders, refunds can be issued as store credit instantly, or transferred via bank transfer upon request."
+                a: "For COD orders, refunds can be issued as store credit instantly, or transferred via bank transfer upon request.",
               },
               {
                 q: "Who pays for return shipping?",
-                a: "If the product is damaged or defective, shipping is 100% free. For standard returns or exchanges, a minor courier pickup fee may apply."
+                a: "If the product is damaged or defective, shipping is 100% free. For standard returns or exchanges, a minor courier pickup fee may apply.",
               },
               {
                 q: "How long until I see my money back?",
-                a: "Once the item reaches our warehouse and passes quality control, credit card refunds take 3-5 business days depending on your bank."
-              }
+                a: "Once the item reaches our warehouse and passes quality control, credit card refunds take 3-5 business days depending on your bank.",
+              },
             ].map((faq, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="border border-gray-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 overflow-hidden"
               >
                 <button
@@ -179,7 +205,6 @@ export default function ReturnsRefundsPage() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
