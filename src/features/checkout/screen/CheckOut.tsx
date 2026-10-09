@@ -240,9 +240,9 @@ const styles = {
   wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-[#1c1c20] p-4",
   headerTitle: "mt-2 mb-5 text-center text-2xl font-bold dark:text-white",
   mainLayout:
-    "mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0",
+    "mx-auto max-w-5xl justify-center px-1 sm:px-4 md:px-6 md:flex md:space-x-6 xl:px-0",
   formCard:
-    "rounded-lg md:w-2/3 border bg-white p-6 shadow-md md:mt-0 mb-6 space-y-4 dark:bg-zinc-900 dark:border-zinc-700",
+    "rounded-lg md:w-2/3 border bg-white p-4 sm:p-6 shadow-md md:mt-0 mb-6 space-y-4 dark:bg-zinc-900 dark:border-zinc-700",
   sectionHeader: "text-xl font-bold text-gray-900 dark:text-white",
   inputRow: "grid grid-cols-1 md:grid-cols-2 gap-4",
   label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",

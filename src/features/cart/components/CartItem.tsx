@@ -61,7 +61,7 @@ export function CartItem(props: CartItemProps) {
           <div className={styles.totalSection}>
             <div className={styles.totalWrapper}>
               <span className={styles.totalLabel}>Total:</span>
-              <span className={styles.totalText}>${total.toFixed(2)}</span>
+              <span className={styles.totalText}>${total}</span>
             </div>
 
             <button
@@ -116,5 +116,5 @@ const styles = {
   totalText: "text-sm font-extrabold text-indigo-600 dark:text-indigo-400",
 
   removeBtn:
-    "p-2 text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors duration-150",
+    " text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors duration-150",
 };
