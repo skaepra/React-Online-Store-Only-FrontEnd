@@ -221,8 +221,8 @@ export default function AppNavbar() {
                   className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-slate-700 dark:text-white hover:bg-slate-100"
                 >
                   <span>Shopping Cart</span>
-                  <span className="rounded-full bg-[#fff3cf] px-2 py-0.5 text-xs font-bold text-slate-900">
-                    {quantity} Items
+                  <span className="rounded-full bg-[#fff3cf] px-2 py-0.5 text-xs font-bold text-slate-900 flex justify-center space-x-1">
+                   <span>{quantity}</span> <span>Items</span>
                   </span>
                 </NavLink>
 
@@ -236,7 +236,7 @@ export default function AppNavbar() {
                   <IoLocationOutline className="text-lg" />
                   <span className="truncate">
                     {selectedAddress
-                      ? `📍 ${selectedAddress}`
+                      ? `${selectedAddress}`
                       : "تحديد الموقع الجغرافي"}
                   </span>
                 </button>

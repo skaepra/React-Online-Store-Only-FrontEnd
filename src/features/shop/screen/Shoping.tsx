@@ -22,7 +22,7 @@ export default function ShoppingScreen() {
       <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div
           aria-label="Shop by category"
-          className="-mx-4 mb-5 flex gap-4 overflow-x-auto border-b border-slate-200 px-4 pb-5 sm:mx-0 sm:px-0 dark:border-zinc-700"
+          className="-mx-4 sm:mb-5 flex gap-4 overflow-x-auto border-b border-slate-200 px-4 sm:pb-5 sm:mx-0 sm:px-0 dark:border-zinc-700"
         >
           {state.categories.map((category, index) => (
             <button
@@ -61,7 +61,8 @@ export default function ShoppingScreen() {
           ))}
         </div>
 
-        <div className="mb-5 flex flex-wrap items-center gap-3 border-y border-slate-200 py-3 dark:border-zinc-700">
+        <div className="sm:mb-5 flex flex-wrap items-center gap-3 sm:border-y border-slate-200 py-3 dark:border-zinc-700">
+          <div className="flex justify-center space-x-1">
           <button
             onClick={() => actions.setIsFilterMobileOpen(true)}
             className="inline-flex h-10 items-center gap-2 rounded-full border border-slate-400 px-4 text-sm font-medium text-slate-800 transition-colors hover:bg-slate-100 dark:border-zinc-600 dark:text-gray-200 dark:hover:bg-zinc-800 lg:hidden"
@@ -69,6 +70,20 @@ export default function ShoppingScreen() {
             <IoFunnelOutline className="text-base" />
             Filters
           </button>
+
+           <label className="inline-flex h-10 items-center gap-2 text-xs text-slate-700 dark:text-gray-300">
+            <span className="hidden sm:inline">Sort by</span>
+            <select
+              value={state.sortBy}
+              onChange={(event) => actions.setSortBy(event.target.value)}
+              className="h-10 rounded-full border border-slate-400 bg-white px-4 text-xs font-medium text-slate-900 outline-none focus:border-[#0053e2] dark:border-zinc-600 dark:bg-zinc-800 dark:text-white"
+            >
+              <option value="default">Best match</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+            </select>
+          </label>
+          </div>
 
           <label className="inline-flex h-10 items-center gap-3 rounded-full border border-slate-400 px-4 text-xs font-medium text-slate-800 dark:border-zinc-600 dark:text-gray-200">
             <span>Price up to ${state.maxPrice}</span>
@@ -88,20 +103,7 @@ export default function ShoppingScreen() {
 
           <span className="mr-auto text-xs font-medium text-slate-600 dark:text-gray-400">
             {state.filteredProducts.length} products
-          </span>
-
-          <label className="inline-flex h-10 items-center gap-2 text-xs text-slate-700 dark:text-gray-300">
-            <span className="hidden sm:inline">Sort by</span>
-            <select
-              value={state.sortBy}
-              onChange={(event) => actions.setSortBy(event.target.value)}
-              className="h-10 rounded-full border border-slate-400 bg-white px-4 text-xs font-medium text-slate-900 outline-none focus:border-[#0053e2] dark:border-zinc-600 dark:bg-zinc-800 dark:text-white"
-            >
-              <option value="default">Best match</option>
-              <option value="price-low">Price: low to high</option>
-              <option value="price-high">Price: high to low</option>
-            </select>
-          </label>
+          </span>        
         </div>
 
         <section aria-labelledby="products-heading" className="pb-10">
