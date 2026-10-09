@@ -42,7 +42,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="max-w-xl text-3xl font-semibold leading-tight sm:text-5xl"
+                className="max-w-xl text-2xl font-semibold  leading-tight  sm:text-5xl"
               >
                 Everyday finds, all in one place.
               </motion.h1>

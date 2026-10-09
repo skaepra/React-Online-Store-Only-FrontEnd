@@ -87,13 +87,14 @@ export default function AppNavbar() {
 
             <NavLink
               to="/"
-              className="flex shrink-0 items-center gap-1"
+              className="flex w-full flex-1 items-center gap-1 sm:w-auto md:flex-initial sm:shrink-0"
               aria-label="Store home"
             >
               <span className="text-[21px] font-extrabold tracking-tight">
                 Bazaar
               </span>
             </NavLink>
+ 
 
             <div className="hidden min-w-0 flex-1 md:block md:px-4 lg:px-8">
               {searchForm}
@@ -115,10 +116,10 @@ export default function AppNavbar() {
               </span>
             </button>
 
-            <div className="hidden items-center sm:flex">
+            <div className=" items-center flex">
               <Taggol mode={mode} toggleMode={toggleMode} />
             </div>
-
+            
             <NavLink
               to="/login"
               className="hidden h-10 shrink-0 items-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors hover:bg-white/15 sm:flex"
@@ -130,7 +131,7 @@ export default function AppNavbar() {
 
             <NavLink
               to="/cart"
-              className="relative flex h-10 shrink-0 items-center gap-1 rounded-full px-2 transition-colors hover:bg-white/15"
+              className="relative flex h-10 shrink-0 items-center gap-1 rounded-full px-2 transition-colors hover:bg-white/15 "
               title="Cart"
             >
               <IoCartOutline className="text-[25px]" />
@@ -182,11 +183,11 @@ export default function AppNavbar() {
           />
 
           {/* Sidebar Drawer */}
-          <div className="relative z-10 ml-auto flex h-full w-[80%] max-w-xs flex-col justify-between border-l border-slate-200 bg-white p-6 shadow-2xl animate-in slide-in-from-right duration-300">
+          <div className="relative z-10 mr-auto flex h-full w-[80%] max-w-xs flex-col justify-between border-r border-slate-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-6 shadow-2xl animate-in slide-in-from-left duration-300">
             <div className="space-y-6">
               {/* Header Drawer */}
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-                <span className="text-lg font-bold text-slate-900">Menu</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">Menu</span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
@@ -205,8 +206,8 @@ export default function AppNavbar() {
                     className={({ isActive }) =>
                       `rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-[#eaf4fc] font-bold text-[#005da8]"
-                          : "text-slate-700 hover:bg-slate-100"
+                          ? "bg-[#eaf4fc] dark:bg-zinc-800 font-bold text-[#005da8] dark:text-slate-300"
+                          : "text-slate-700  hover:bg-slate-100 dark:text-white  "
                       }`
                     }
                   >
@@ -217,7 +218,7 @@ export default function AppNavbar() {
                 <NavLink
                   to="/cart"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-slate-700 dark:text-white hover:bg-slate-100"
                 >
                   <span>Shopping Cart</span>
                   <span className="rounded-full bg-[#fff3cf] px-2 py-0.5 text-xs font-bold text-slate-900">

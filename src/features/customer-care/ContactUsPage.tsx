@@ -7,6 +7,7 @@ import {
   IoSend,
   IoCheckmarkCircle,
 } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 export default function ContactUsPage() {
   const [formData, setFormData] = useState({
@@ -240,12 +241,11 @@ export default function ContactUsPage() {
                 Before sending us a message, check out our FAQ section to see if
                 your question is already answered.
               </p>
-              <a
-                href="/faq"
+              <NavLink to="/faq"
                 className="inline-block text-xs font-semibold text-indigo-500 hover:underline"
               >
                 Visit FAQ & Help Center →
-              </a>
+              </NavLink>
             </div>
           </div>
         </div>
