@@ -1,6 +1,4 @@
 import {
-  IoStar,
-  IoStarOutline,
   IoCheckmark,
   IoCartOutline,
   IoBagCheckOutline,
@@ -45,32 +43,9 @@ export default function ProductOptions({
           <h1 className="text-2xl font-bold leading-tight text-slate-900 dark:text-white sm:text-3xl">
             {product.Name}
           </h1>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span
-              className="flex items-center gap-0.5 text-amber-500"
-              aria-label="Rated 4.8 out of 5"
-            >
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStarOutline className="text-slate-300" />
-            </span>
-            <span className="text-xs text-slate-600 dark:text-gray-400">
-              4.8
-            </span>
-            <span className="text-slate-400">|</span>
-            <button
-              onClick={() =>
-                document
-                  .getElementById("product-tabs")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="text-xs text-[#0053e2] underline underline-offset-2"
-            >
-              Reviews
-            </button>
-          </div>
+          <p className="text-xs text-slate-500 dark:text-gray-400">
+            Item #{product.id}
+          </p>
         </div>
 
         <p className="text-sm leading-6 text-slate-700 dark:text-gray-300">
@@ -184,7 +159,7 @@ export default function ProductOptions({
           </button>
           <button
             onClick={onBuyNow}
-            className="h-11 w-full rounded-full border border-[#0053e2] px-4 text-sm font-bold text-[#0053e2] transition-colors hover:bg-[#eaf2ff]"
+            className="h-11 w-full rounded-full border border-[#2a67cf] px-4 text-sm font-bold text-[#2a67cf] transition-colors hover:bg-[#eaf2ff] dark:hover:bg-[#333335]"
           >
             Buy now
           </button>

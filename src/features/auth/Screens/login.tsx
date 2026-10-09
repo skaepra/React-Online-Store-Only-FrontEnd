@@ -4,6 +4,7 @@ import { IoMailOutline, IoArrowBack } from "react-icons/io5";
 import { useLogin } from "../hooks/useLogin";
 import PasswordInput from "../../../shared/components/PasswordInput";
 import BaseInput from "../../../shared/components/BaseInput";
+import { NavLink } from "react-router-dom";
 
 export default function LoginScreen() {
   const { formData, errors, updateField, submit, loading, errorMessage } =
@@ -18,9 +19,9 @@ export default function LoginScreen() {
     <div className={styles.screenWrapper}>
       <form onSubmit={onSubmit} className={styles.card}>
         <div>
-          <a href="/" className={styles.backLink} aria-label="Back to home">
+          <NavLink to="/" className={styles.backLink} aria-label="Back to home">
             <IoArrowBack size={20} className="text-white" />
-          </a>
+          </NavLink>
 
           <div className={styles.titleContainer}>
             <h1 className={styles.title}>Login</h1>
@@ -87,10 +88,10 @@ export default function LoginScreen() {
         </div>
 
         <div className={styles.signupContainer}>
-          <a href="/singUp" className="flex items-center">
+           <NavLink to="/singUp" className="flex items-center">
             <span className={styles.signupText}>Don't have an account?</span>
             <span className={styles.signupLink}>Sign up</span>
-          </a>
+          </NavLink>
         </div>
       </form>
     </div>

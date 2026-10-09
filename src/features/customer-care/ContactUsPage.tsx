@@ -34,7 +34,7 @@ export default function ContactUsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pb-12 px-6 xl:px-0">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-200 transition-colors duration-200 pt-4 pb-12 px-6 xl:px-0">
       <div className="mx-auto max-w-5xl space-y-12">
         {/* Page Header */}
         <div className="text-center space-y-4">

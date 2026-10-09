@@ -24,7 +24,7 @@ export function EmptyCart() {
 }
 
 const styles = {
-  wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-zinc-800 p-4",
+  wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-[#1c1c20] p-4",
   emptyContainer: "flex justify-center p-14",
   emptyContent: "lg:ml-8 text-center flex flex-col items-center",
   emptyIcon: "w-[300px] h-[300px] text-zinc-800 mt-14 dark:text-zinc-700",

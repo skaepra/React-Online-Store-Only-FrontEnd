@@ -5,6 +5,7 @@ import { IoPersonOutline, IoMailOutline, IoArrowBack } from "react-icons/io5";
 import { useSignup } from "../hooks/useSignup"; // اضبط المسار حسب مشروعك
 import BaseInput from "../../../shared/components/BaseInput";
 import PasswordInput from "../../../shared/components/PasswordInput";
+import { NavLink } from "react-router-dom";
 
 export default function SignUpScreen() {
   const { formData, errors, updateField, submit, loading, errorMessage } =
@@ -19,13 +20,12 @@ export default function SignUpScreen() {
     <div className={styles.screenWrapper}>
       <form onSubmit={onSubmit} className={styles.card}>
         <div>
-          <a
-            href="/login"
+        <NavLink to="/login"
             className={styles.backLink}
             aria-label="Back to login"
           >
             <IoArrowBack size={20} className="text-white" />
-          </a>
+          </NavLink>
 
           <div className={styles.titleContainer}>
             <h1 className={styles.title}>Sign up</h1>
@@ -107,10 +107,10 @@ export default function SignUpScreen() {
         </div>
 
         <div className={styles.signinContainer}>
-          <a href="/login" className="flex items-center">
+           <NavLink to="/login" className="flex items-center">
             <span className={styles.signinText}>Already have an account?</span>
             <span className={styles.signinLink}>Sign in</span>
-          </a>
+          </NavLink>
         </div>
       </form>
     </div>

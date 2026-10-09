@@ -346,7 +346,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   bottomCard: {
     position: "absolute",
-    bottom: "30px",
+    bottom: "90px",
     left: "20px",
     right: "20px",
     maxWidth: "400px",
@@ -382,7 +382,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: "#007AFF",
     color: "#FFF",
     border: "none",
-    padding: "12px",
+    padding: "10px",
     borderRadius: "10px",
     fontSize: "16px",
     fontWeight: "bold",

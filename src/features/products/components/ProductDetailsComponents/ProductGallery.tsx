@@ -27,13 +27,13 @@ export default function ProductGallery({
           transition={{ duration: 0.3 }}
           src={selectedImage}
           alt={product.ImageAlt || product.Name}
-          className="h-full w-full object-contain object-center"
+          className="h-full w-full  object-cover"
         />
 
         <div className="absolute right-3 top-3 flex flex-col gap-2">
           <button
             onClick={onToggleWishlist}
-            className={`z-10 grid h-10 w-10 place-items-center rounded-full border-2 shadow-md transition-all active:scale-90 ${
+            className={`z-10 grid h-10 w-10 place-items-center rounded-full hover:border-2 shadow-md transition-all active:scale-90 ${
               isWishlisted
                 ? "border-rose-600 bg-rose-600 text-white hover:bg-rose-700"
                 : "border-slate-500 bg-white text-slate-900 hover:bg-rose-50 hover:text-rose-700 dark:border-zinc-400 dark:bg-zinc-800 dark:text-white"
@@ -56,7 +56,7 @@ export default function ProductGallery({
         </div>
       </div>
 
-      {product.Images.length > 1 && (
+      {product.Images.length > 0 && (
         <div className="order-2 flex gap-2 overflow-x-auto pb-1 lg:order-1 lg:flex-col lg:overflow-visible">
           {product.Images.map((img, idx) => (
             <button
@@ -68,7 +68,7 @@ export default function ProductGallery({
                   : "border-slate-200 opacity-80 hover:opacity-100 dark:border-zinc-700"
               }`}
             >
-              <img src={img} alt="" className="h-full w-full object-contain" />
+              <img src={img} alt="" className="h-full w-full " />
             </button>
           ))}
         </div>

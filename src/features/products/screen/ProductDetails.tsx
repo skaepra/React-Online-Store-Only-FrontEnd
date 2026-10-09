@@ -30,7 +30,7 @@ export default function ProductDetails() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-4 ">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Product Not Found
         </h2>
@@ -48,7 +48,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pb-16 transition-colors duration-200">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pb-16 transition-colors duration-200 py-4">
       {/* Toast Notification */}
       <AnimatePresence>
         {addedToast && (

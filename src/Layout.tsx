@@ -38,7 +38,7 @@ export default function Layout(): React.JSX.Element {
   return (
     <>
       <AppThemeProvider>
-        <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px]"}>
+        <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<ShopingScreen />} />

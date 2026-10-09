@@ -32,19 +32,23 @@ export default function ShoppingScreen() {
               className="group flex w-[82px] shrink-0 flex-col items-center gap-2 text-center"
             >
               <span
-                className={`grid h-[68px] w-[68px] place-items-center overflow-hidden rounded-lg transition-colors ${
+                className={`grid h-[68px] w-[68px] place-items-center overflow-hidden rounded-lg mt-2 transition-colors ${
                   state.selectedCategory === category.name
                     ? "bg-[#e4f0ff] ring-2 ring-[#0053e2]"
-                    : "bg-slate-100 group-hover:bg-slate-200 dark:bg-zinc-800"
+                    : "bg-slate-100 group-hover:bg-slate-200 dark:bg-zinc-200"
                 }`}
               >
                 {index === 0 ? (
-                  <IoAppsOutline className="text-3xl text-[#0053e2]" />
+                  <img
+                    src="allProduct.jfif"
+                    alt=""
+                    className="h-full w-full object-cover mix-blend-multiply "
+                  />
                 ) : category.image ? (
                   <img
                     src={category.image}
                     alt=""
-                    className="h-full w-full object-contain mix-blend-multiply"
+                    className="h-full w-full object-fill mix-blend-multiply"
                   />
                 ) : (
                   <IoAppsOutline className="text-3xl text-[#0053e2]" />

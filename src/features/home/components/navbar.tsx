@@ -8,7 +8,6 @@ import {
   IoLocationOutline,
   IoMenu,
   IoClose,
-  IoSparklesOutline,
   IoSearchOutline,
   IoPersonOutline,
 } from "react-icons/io5";
@@ -43,7 +42,8 @@ export default function AppNavbar() {
     <form
       onSubmit={handleSearch}
       role="search"
-      className="flex h-10 w-full items-center rounded-full bg-white p-1 pl-4 shadow-sm focus-within:ring-2 focus-within:ring-[#ffc220]"
+      className="flex h-10 w-full items-center rounded-full bg-white p-1 pl-4 shadow-sm focus-within:ring-2 focus-within:ring-[#ffc220] dark:focus-within:ring-zinc-700
+      dark:bg-zinc-800"
     >
       <input
         type="search"
@@ -51,12 +51,12 @@ export default function AppNavbar() {
         onChange={(event) => setSearchTerm(event.target.value)}
         placeholder="Search products"
         aria-label="Search products"
-        className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500"
+        className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 placeholder:text-slate-500 dark:text-white dark:placeholder:text-zinc-400 outline-none "
       />
       <button
         type="submit"
         aria-label="Search"
-        className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0071ce] text-white transition-colors hover:bg-[#005da8]"
+        className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0071ce] text-white transition-colors hover:bg-[#005da8] dark:bg-zinc-700"
       >
         <IoSearchOutline className="text-lg" />
       </button>
@@ -71,7 +71,7 @@ export default function AppNavbar() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="bg-[#0071ce] text-white shadow-md">
+        <div className="bg-[#0071ce] dark:bg-zinc-900 text-white shadow-md">
           <div className="mx-auto flex h-[62px] max-w-[1440px] items-center gap-3 px-4 sm:px-6">
             <button
               onClick={toggleMobileMenu}
@@ -104,7 +104,7 @@ export default function AppNavbar() {
               className="hidden shrink-0 items-center gap-2 rounded-full px-3 py-2 text-left transition-colors hover:bg-white/15 lg:flex"
               title="Select delivery location"
             >
-              <IoLocationOutline className="text-xl text-[#ffc220]" />
+              <IoLocationOutline className="text-xl text-[#ffc220] " />
               <span className="max-w-[125px]">
                 <span className="block text-[10px] text-white/80">
                   Deliver to
@@ -138,7 +138,7 @@ export default function AppNavbar() {
                 Cart
               </span>
               {quantity > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[#ffc220] px-1 text-[10px] font-bold text-slate-900">
+                <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[#ffc220] px-1 text-[10px] font-bold text-slate-900 ">
                   {quantity > 99 ? "99+" : quantity}
                 </span>
               )}
@@ -149,7 +149,7 @@ export default function AppNavbar() {
             {searchForm}
           </div>
 
-          <div className="hidden border-t border-white/20 bg-white text-slate-800 md:block">
+          <div className="hidden border-t border-white/20 bg-white text-slate-800 dark:text-white dark:bg-zinc-800 md:block">
             <nav className="mx-auto flex h-10 max-w-[1440px] items-center gap-1 px-4 sm:px-6">
               {navItems.map((item) => (
                 <NavLink
@@ -159,8 +159,8 @@ export default function AppNavbar() {
                   className={({ isActive }) =>
                     `rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
                       isActive
-                        ? "bg-[#eaf4fc] text-[#005da8]"
-                        : "hover:bg-slate-100"
+                        ? "bg-[#eaf4fc] text-[#005da8] dark:bg-zinc-700 dark:text-white "
+                        : "hover:bg-slate-100 dark:hover:bg-zinc-600"
                     }`
                   }
                 >

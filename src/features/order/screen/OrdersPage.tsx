@@ -19,7 +19,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-zinc-900 text-gray-900 dark:text-gray-100 transition-colors duration-200 pb-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50/50 dark:bg-zinc-900 text-gray-900 dark:text-gray-100 transition-colors duration-200 py-4 pb-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-8">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 dark:border-zinc-800 pb-6">

@@ -26,7 +26,7 @@ export default function WishlistPage() {
   return (
     <div className="bg-gray-50 dark:bg-zinc-900 transition-colors duration-200 min-h-screen">
       {/* 2. Wishlist Products Section */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 pb-14">
         {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -86,7 +86,6 @@ export default function WishlistPage() {
                     key={product.id}
                     product={product}
                     isFav={actions.isProductInWishlist(product.id)}
-                    variant="wishlist"
                     onProductClick={actions.handleProductClick}
                     onToggleWishlist={actions.handleToggleWishlist}
                     onQuickAdd={actions.handleQuickAdd}

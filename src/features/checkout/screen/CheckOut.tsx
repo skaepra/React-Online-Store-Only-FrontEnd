@@ -225,7 +225,7 @@ export default function CheckOutScreen() {
                 ✕
               </button>
             </div>
-            <div className="h-[450px] w-full">
+            <div className="h-[450px] w-full ">
               <LocationPickerMaps onConfirm={handleLocationConfirm} />
             </div>
           </div>
@@ -237,8 +237,8 @@ export default function CheckOutScreen() {
 
 
 const styles = {
-  wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-zinc-800 p-4",
-  headerTitle: "mt-12 mb-5 text-center text-2xl font-bold dark:text-white",
+  wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-[#1c1c20] p-4",
+  headerTitle: "mt-2 mb-5 text-center text-2xl font-bold dark:text-white",
   mainLayout:
     "mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0",
   formCard:
@@ -278,10 +278,10 @@ const styles = {
   vatNotice: "text-sm text-gray-500 float-end mt-1",
   checkoutBtn:
     "mt-6 w-full py-2 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none disabled:opacity-50 shadow-md shadow-purple-500/20 hover:shadow-purple-500/40",
-  modalBackdrop:
-    "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4",
+ modalBackdrop:
+    "fixed inset-0  z-50 bg-black/60 backdrop-blur-xs flex justify-center p-4 ",
   modalContent:
-    "bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative border dark:border-zinc-700",
+    "bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl  shadow-2xl relative border dark:border-zinc-700",
   modalHeader:
-    "flex justify-between items-center p-3.5 border-b bg-gray-50 dark:bg-zinc-800 dark:border-zinc-700",
+    "flex justify-between rounded-t-2xl items-center p-3.5 border-b bg-gray-50 dark:bg-zinc-800 dark:border-zinc-700",
 };

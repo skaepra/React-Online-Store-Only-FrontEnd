@@ -1,8 +1,8 @@
-import apiClient from "../../../shared/api/api-Client";
+import Api from "../../../shared/api/Api";
 import { orderType } from "../types/orderType";
 
 export const getOrders  = async () => {
-  const res = await apiClient.get<orderType[]>("orders");
+  const res = await Api.get<orderType[]>("orders");
   return res.data;
 };
 
