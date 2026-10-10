@@ -9,11 +9,13 @@ import {
   IoMenu,
   IoClose,
   IoSearchOutline,
-  IoPersonOutline,
 } from "react-icons/io5";
 import { navItems, useNavbar } from "../hook/useNavbar";
 import { useAppSelector } from "../../../store/hooks";
 import { selectCartQuantity } from "../../cart/store/cartSelectors";
+
+import { AuthActionButton } from "../../auth/components/AuthActionButton";
+import { isTokenValid } from "../../../shared/utils/auth";
 
 export default function AppNavbar() {
   const {
@@ -120,14 +122,7 @@ export default function AppNavbar() {
               <Taggol mode={mode} toggleMode={toggleMode} />
             </div>
             
-            <NavLink
-              to="/login"
-              className="hidden h-10 shrink-0 items-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors hover:bg-white/15 sm:flex"
-              title="Account"
-            >
-              <IoPersonOutline className="text-lg" />
-              <span className="hidden xl:inline">Sign in</span>
-            </NavLink>
+           <AuthActionButton/>
 
             <NavLink
               to="/cart"
@@ -248,9 +243,10 @@ export default function AppNavbar() {
               <NavLink
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block w-full rounded-full bg-[#0071ce] py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#005da8] active:scale-95"
+                className={`block w-full rounded-full bg-[#0071ce] py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#005da8] active:scale-95
+                  ${isTokenValid()?"bg-[#b93131] hover:bg-[#ac2929]":""} `}
               >
-                Subscribe / Login
+                {isTokenValid()?"Log Out":"Log In"} 
               </NavLink>
             </div>
           </div>

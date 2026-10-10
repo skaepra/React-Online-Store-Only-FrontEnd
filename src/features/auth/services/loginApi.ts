@@ -1,6 +1,6 @@
-import apiClient from "../../../shared/api/api-Client";
+import Api from "../../../shared/api/apis";
 
 export const login = async (data: any) => {
-  const res = await apiClient.post('/verifyUser',data);
+  const res = await Api.post('/api/Auth/login',data);
   return res.data;
 };

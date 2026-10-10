@@ -1,3 +1,4 @@
+// Layout.tsx
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AppThemeProvider } from "./features/dark-mode/dark";
@@ -5,7 +6,6 @@ import { AppThemeProvider } from "./features/dark-mode/dark";
 import Home from "./features/home/screen/home";
 import ShoppingCartScreen from "./features/cart/screen/ShoppingCart";
 import LoginScreen from "./features/auth/Screens/login";
-
 import SignUpScreen from "./features/auth/Screens/SignUp";
 
 import Footer from "./features/home/components/Footer";
@@ -21,45 +21,48 @@ import CheckOutScreen from "./features/checkout/screen/CheckOut";
 
 import AppNavbar from "./features/home/components/navbar";
 import NotFoundPage from "./features/error/NotFound";
+import { ProtectedRoute } from "./shared/utils/ProtectedRoute";
+
+
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
 
-  // تحديد النوع كـ مصفوفة نصوص ثابتة للقراءة فقط لضمان الحماية والأداء
   const hideNavbarRoutes: readonly string[] = ["/login", "/singUp"];
   const hideFooterRoutes: readonly string[] = ["/login", "/singUp"];
-  const shouldHideNavbar: boolean = hideNavbarRoutes.includes(
-    location.pathname,
-  );
-  const shouldHideFooter: boolean = hideFooterRoutes.includes(
-    location.pathname,
-  );
+  const shouldHideNavbar: boolean = hideNavbarRoutes.includes(location.pathname);
+  const shouldHideFooter: boolean = hideFooterRoutes.includes(location.pathname);
 
   return (
-    <>
-      <AppThemeProvider>
-        <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<ShopingScreen />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
-            <Route path="/cart" element={<ShoppingCartScreen />} />
-            <Route path="/checkOut" element={<CheckOutScreen />} />
-            <Route path="/order" element={<OrdersPage />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/singUp" element={<SignUpScreen />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/shipping" element={<ShippingInfoPage />} />
-            <Route path="/returns" element={<ReturnsRefundsPage />} />
-            <Route path="/contact" element={<ContactUsPage />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </div>
+    <AppThemeProvider>
+      <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
+        <Routes>
+          {/* 🟢 1. صفحات عامة متاحة لجميع الزوار */}
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<ShopingScreen />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<ShoppingCartScreen />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/order" element={<OrdersPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/shipping" element={<ShippingInfoPage />} />
+          <Route path="/returns" element={<ReturnsRefundsPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/singUp" element={<SignUpScreen />} />
 
-        {!shouldHideNavbar && <AppNavbar />}
-        {!shouldHideFooter && <Footer />}
-      </AppThemeProvider>
-    </>
+          {/* 🔴 2. صفحة الـ Checkout فقط هي المحمية بالتوكن */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/checkOut" element={<CheckOutScreen />} />
+          </Route>
+
+          {/* ⚪ 3. صفحة 404 */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
+
+      {!shouldHideNavbar && <AppNavbar />}
+      {!shouldHideFooter && <Footer />}
+    </AppThemeProvider>
   );
 }

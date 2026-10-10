@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent } from "react";
-import { IoPersonOutline, IoMailOutline, IoArrowBack } from "react-icons/io5";
+import { IoPersonOutline, IoMailOutline, IoArrowBack, IoAlertCircleOutline } from "react-icons/io5";
 
 // استدعاء الهوك والمكونات المصممة
 import { useSignup } from "../hooks/useSignup"; // اضبط المسار حسب مشروعك
@@ -8,7 +8,7 @@ import PasswordInput from "../../../shared/components/PasswordInput";
 import { NavLink } from "react-router-dom";
 
 export default function SignUpScreen() {
-  const { formData, errors, updateField, submit, loading, errorMessage } =
+  const { formData, errors, updateField, submit, loading, errorMessage , isError } =
     useSignup();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -33,9 +33,10 @@ export default function SignUpScreen() {
         </div>
 
         {/* عرض رسالة الخطأ القادمة من السيرفر إن وجدت */}
-        {errorMessage && (
-          <div className="p-2 text-xs text-center text-white bg-dangerRose/80 rounded-lg">
-            {errorMessage}
+        {isError && errorMessage && (
+          <div className="flex items-center gap-2 p-3 text-xs text-red-200 bg-red-900/80 border border-red-500/50 rounded-lg animate-fadeIn">
+            <IoAlertCircleOutline size={18} className="shrink-0 text-red-400" />
+            <span>{errorMessage}</span>
           </div>
         )}
 

@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent } from "react";
-import { IoMailOutline, IoArrowBack } from "react-icons/io5";
+import { IoMailOutline, IoArrowBack, IoAlertCircleOutline } from "react-icons/io5";
 
 import { useLogin } from "../hooks/useLogin";
 import PasswordInput from "../../../shared/components/PasswordInput";
@@ -7,7 +7,7 @@ import BaseInput from "../../../shared/components/BaseInput";
 import { NavLink } from "react-router-dom";
 
 export default function LoginScreen() {
-  const { formData, errors, updateField, submit, loading, errorMessage } =
+  const { formData, errors, updateField, submit, loading, errorMessage ,isError} =
     useLogin();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -29,11 +29,12 @@ export default function LoginScreen() {
         </div>
 
         {/* عرض رسالة الخطأ القادمة من السيرفر إن وجدت */}
-        {errorMessage && (
-          <div className="p-2 text-xs text-center text-white bg-dangerRose/80 rounded-lg">
-            {errorMessage}
-          </div>
-        )}
+         {isError && errorMessage && (
+                  <div className="flex items-center gap-2 p-3 text-xs text-red-200 bg-red-900/80 border border-red-500/50 rounded-lg animate-fadeIn">
+                    <IoAlertCircleOutline size={18} className="shrink-0 text-red-400" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
 
         <div className={styles.inputsContainer}>
           {/* الإيميل - مطابقة الاسم Email للحرف الكبير */}

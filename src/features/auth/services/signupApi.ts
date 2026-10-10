@@ -1,8 +1,7 @@
 // services/signupApi.ts
-import apiClient from "../../../shared/api/api-Client";
+import Api from "../../../shared/api/apis";
 
 export const signup = async (data: any) => {
-  // 💡 التغيير هنا: استخدام /users بدلاً من /User
-  const res = await apiClient.post('/users', data);
+  const res = await Api.post('/api/Auth/createEmployee', data);
   return res.data;
 };
