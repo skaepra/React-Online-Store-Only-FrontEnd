@@ -22,7 +22,7 @@ export default function ShoppingScreen() {
       <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div
           aria-label="Shop by category"
-          className="-mx-4 sm:mb-5 flex gap-4 overflow-x-auto border-b border-slate-200 px-4 sm:pb-5 sm:mx-0 sm:px-0 dark:border-zinc-700"
+          className="-mx-4 sm:mb-1 flex gap-4 overflow-x-auto border-b border-slate-200 px-4 sm:pb-1 sm:mx-0 sm:px-0 dark:border-zinc-700"
         >
           {state.categories.map((category, index) => (
             <button
@@ -124,7 +124,7 @@ export default function ShoppingScreen() {
           {state.filteredProducts.length > 0 ? (
             <motion.div
               layout
-              className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 min-[1280px]:grid-cols-5"
+              className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
             >
               <AnimatePresence>
                 {state.filteredProducts.map((product) => (

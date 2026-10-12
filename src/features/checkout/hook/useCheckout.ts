@@ -1,24 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { OrderItemType, orderType } from "../../order/types/orderType";
-import { AddOrders } from "../services/checkoutService";
+
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectCartItems, selectCartQuantity, selectCartTotalPrice } from "../../cart/store/cartSelectors";
 import { clearCart } from "../../cart/store/cartSlice";
 import { useNavigate } from "react-router-dom";
-
-export interface AddressFormValues {
-  country: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  notes?: string;
-  paymentMethod: "COD" | "Card";
-  latitude?: number;
-  longitude?: number;
-}
+import { CreateOrder } from "../../order/services/orderService";
+import { AddressFormValues } from "../types/addressType";
 
 const initialValues: AddressFormValues = {
   country: "Syria",
@@ -86,34 +73,28 @@ export function useCheckout() {
     try {
       setLoading(true);
 
-      const formattedItems: OrderItemType[] = cartItems.map((item: any) => ({
-        id: item.id,
+     const formattedItems = cartItems.map((item: any) => ({
         productName: item.name,
-        color: item.color || [],
+        color: item.color,
         unitPrice: item.price,
         quantity: item.quantity,
-        lineTotal: item.price * item.quantity,
       }));
 
-      const newOrder: Omit<orderType, "id"> = {
+     const newOrder = {
         Country: values.country,
         City: values.city,
-        fullName: values.fullName,
-        phone: values.phone,
-        email: values.email,
-        building: values.addressLine2,
-        dropoffLatitude: values.latitude || 0,
-        dropoffLongitude: values.longitude || 0,
-        paymentMethod: values.paymentMethod === "COD" ? 0 : 1,
-        Notes: values.notes,
-        totalAmount: allTotal,
-        paymentStatus: 0,
-        status: 0,
-        createdAt: new Date().toISOString(),
-        items: formattedItems,
+        FullName: values.fullName,
+        Phone: values.phone,
+        Email: values.email,
+        Building: values.addressLine1 || values.addressLine2, // أو دمجهم حسب ما يناسب نموذجك
+        DropoffLatitude: values.latitude || 0,
+        DropoffLongitude: values.longitude || 0,
+        PaymentMethod: values.paymentMethod === "COD" ? 0 : 1, // 0 للدفع عند الاستلام، 1 للبطاقة
+        Notes: values.notes || "",
+        Items: formattedItems,
       };
 
-      await AddOrders(newOrder as any);
+      await CreateOrder(newOrder as any);
 
       if (clearCart) 
         dispatch(clearCart());

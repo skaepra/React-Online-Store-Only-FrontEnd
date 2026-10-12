@@ -22,6 +22,7 @@ import CheckOutScreen from "./features/checkout/screen/CheckOut";
 import AppNavbar from "./features/home/components/navbar";
 import NotFoundPage from "./features/error/NotFound";
 import { ProtectedRoute } from "./shared/utils/ProtectedRoute";
+import ScrollToTop from "./shared/utils/ScrollToTop";
 
 
 
@@ -35,6 +36,7 @@ export default function Layout(): React.JSX.Element {
 
   return (
     <AppThemeProvider>
+      <ScrollToTop />
       <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
         <Routes>
           {/* 🟢 1. صفحات عامة متاحة لجميع الزوار */}
