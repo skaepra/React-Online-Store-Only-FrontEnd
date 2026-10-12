@@ -22,7 +22,7 @@ export default function ShoppingScreen() {
       <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div
           aria-label="Shop by category"
-          className="-mx-4 sm:mb-1 flex gap-4 overflow-x-auto border-b border-slate-200 px-4 sm:pb-1 sm:mx-0 sm:px-0 dark:border-zinc-700"
+          className="-mx-4 sm:mb-1 flex gap-4 overflow-x-auto px-4 sm:pb-1 sm:mx-0 sm:px-0 "
         >
           {state.categories.map((category, index) => (
             <button

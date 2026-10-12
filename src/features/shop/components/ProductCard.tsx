@@ -78,13 +78,13 @@ export function ProductCard({
           </div>
         </div>
 
-        <div className="p-4 flex flex-col justify-between flex-grow space-y-2">
+        <div className="p-2 flex flex-col justify-between flex-grow space-y-2">
           <div>
-            <span className="text-[10px] font-bold tracking-wider text-indigo-500 uppercase">
-              {product.Category || "General"}
-            </span>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-1 mt-0.5">
+            <span className="text-[15px] font-semibold text-indigo-500">
               {product.Name}
+            </span>
+            <h3 className="text-[12px] font-semibold text-gray-900 dark:text-white  transition-colors line-clamp-1 mt-0.5">
+              {product.Description}
             </h3>
           </div>
 

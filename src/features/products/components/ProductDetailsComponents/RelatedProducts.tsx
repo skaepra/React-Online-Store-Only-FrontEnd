@@ -14,11 +14,10 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
         You Might Also Like
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {products.slice(0, 4).map((relProduct) => (
+        {products.slice(0, 5).map((relProduct) => (
           <Link
             key={relProduct.id}
             to={`/product/${relProduct.id}`}
-            onClick={() => window.scrollTo({ top: 20, behavior: "smooth" })}
             className="group bg-white dark:bg-zinc-800 rounded-2xl p-3 border border-gray-100 dark:border-zinc-700/50 hover:shadow-lg transition-all"
           >
             <div className="aspect-square rounded-xl bg-gray-100 dark:bg-zinc-900 overflow-hidden mb-3">
