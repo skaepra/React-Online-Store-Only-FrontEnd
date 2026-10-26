@@ -1,7 +1,6 @@
 import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
 import { useCheckout } from "../hook/useCheckout";
 
-
 export default function CheckOutScreen() {
   const {
     values,
@@ -16,7 +15,6 @@ export default function CheckOutScreen() {
     handleLocationConfirm,
     onSubmit,
   } = useCheckout();
-
 
   return (
     <div className={styles.wrapper}>
@@ -150,12 +148,96 @@ export default function CheckOutScreen() {
                   checked={values.paymentMethod === "COD"}
                   onChange={onChangeHandler}
                 />
-                Cash on Delivery (COD)
+                Cash on Delivery 
               </label>
-              <label className="flex items-center gap-2 cursor-not-allowed opacity-50">
-                <input type="radio" name="paymentMethod" value="Card" disabled />
-                Credit Card (Coming Soon)
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Card"
+                  checked={values.paymentMethod === "Card"}
+                  onChange={onChangeHandler}
+                />
+                Credit Card
               </label>
+            </div>
+
+            {/* Smooth Expandable Card Fields */}
+            <div
+              className={`grid transition-all duration-300 ease-in-out overflow-hidden ${
+                values.paymentMethod === "Card"
+                  ? "grid-rows-[1fr] opacity-100 mt-3 pt-2"
+                  : "grid-rows-[0fr] opacity-0 mt-0 pt-0"
+              }`}
+            >
+              <div className="overflow-hidden space-y-3 p-4 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg">
+                {/* Card Types Selection */}
+                <div>
+                  <label className={styles.label}>Select Card Type</label>
+                  <div className="grid grid-cols-3 gap-3 mt-1">
+                    {["Visa", "MasterCard", "Mada"].map((cardType) => (
+                      <label
+                        key={cardType}
+                        className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer text-xs sm:text-sm font-semibold transition-all ${
+                          values.cardType === cardType
+                            ? "border-indigo-500 bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400"
+                            : "border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-400 hover:border-gray-300"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="cardType"
+                          value={cardType}
+                          checked={values.cardType === cardType}
+                          onChange={onChangeHandler}
+                          className="hidden"
+                        />
+                        {cardType}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className={styles.label}>Card Number</label>
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    placeholder="4532 •••• •••• ••••"
+                    maxLength={19}
+                    onChange={onChangeHandler}
+                    value={values.cardNumber || ""}
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className={styles.label}>Expiry Date</label>
+                    <input
+                      type="text"
+                      name="cardExpiry"
+                      placeholder="MM/YY"
+                      maxLength={5}
+                      onChange={onChangeHandler}
+                      value={values.cardExpiry || ""}
+                      className={styles.input}
+                    />
+                  </div>
+                  <div>
+                    <label className={styles.label}>CVV</label>
+                    <input
+                      type="password"
+                      name="cardCvv"
+                      placeholder="123"
+                      maxLength={4}
+                      onChange={onChangeHandler}
+                      value={values.cardCvv || ""}
+                      className={styles.input}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -220,7 +302,7 @@ export default function CheckOutScreen() {
               <button
                 type="button"
                 onClick={() => setShowMapModal(false)}
-                className="text-gray-500 hover:text-black dark:hover:text-white font-bold text-lg px-2"
+                className="text-gray-500 hover:text-black dark:hover:text-white font-bold text-lg px-2 cursor-pointer"
               >
                 ✕
               </button>
@@ -235,7 +317,6 @@ export default function CheckOutScreen() {
   );
 }
 
-
 const styles = {
   wrapper: "min-h-screen bg-[#f3f2f2] dark:bg-[#1c1c20] p-4",
   headerTitle: "mt-2 mb-5 text-center text-2xl font-bold dark:text-white",
@@ -247,7 +328,6 @@ const styles = {
   inputRow: "grid grid-cols-1 md:grid-cols-2 gap-4",
   label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",
 
-  // 🔴 التعديل الأساسي هنا لحل مشكلة اللون الأبيض عند اختيار المقترح
   input: `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-white
     [&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_white_inset] 
     dark:[&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_#27272a_inset] 
@@ -278,10 +358,10 @@ const styles = {
   vatNotice: "text-sm text-gray-500 float-end mt-1",
   checkoutBtn:
     "mt-6 w-full py-2 text-white font-semibold bg-indigo-500 dark:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg duration-200 dark:hover:drop-shadow-2xl cursor-pointer block text-center border-none disabled:opacity-50 shadow-md shadow-purple-500/20 hover:shadow-purple-500/40",
- modalBackdrop:
-    "fixed inset-0  z-50 bg-black/60 backdrop-blur-xs flex justify-center p-4 ",
+  modalBackdrop:
+    "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-center p-4 ",
   modalContent:
-    "bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl  shadow-2xl relative border dark:border-zinc-700",
+    "bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl shadow-2xl relative border dark:border-zinc-700",
   modalHeader:
     "flex justify-between rounded-t-2xl items-center p-3.5 border-b bg-gray-50 dark:bg-zinc-800 dark:border-zinc-700",
 };

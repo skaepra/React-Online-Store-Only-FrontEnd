@@ -4,6 +4,7 @@ import { Product } from "../../types/product";
 
 interface ProductGalleryProps {
   product: Product;
+  images: string[]; // الصور الخاصة باللون المختار حالياً
   selectedImage: string;
   onSelectImage: (img: string) => void;
   isWishlisted: boolean;
@@ -12,6 +13,7 @@ interface ProductGalleryProps {
 
 export default function ProductGallery({
   product,
+  images,
   selectedImage,
   onSelectImage,
   isWishlisted,
@@ -26,8 +28,8 @@ export default function ProductGallery({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
           src={selectedImage}
-          alt={product.ImageAlt || product.Name}
-          className="h-full w-full  object-cover"
+          alt={product.Name}
+          className="h-full w-full object-cover"
         />
 
         <div className="absolute right-3 top-3 flex flex-col gap-2">
@@ -56,9 +58,9 @@ export default function ProductGallery({
         </div>
       </div>
 
-      {product.Images.length > 0 && (
+      {images.length > 0 && (
         <div className="order-2 flex gap-2 overflow-x-auto pb-1 lg:order-1 lg:flex-col lg:overflow-visible">
-          {product.Images.map((img, idx) => (
+          {images.map((img, idx) => (
             <button
               key={idx}
               onClick={() => onSelectImage(img)}
@@ -68,7 +70,7 @@ export default function ProductGallery({
                   : "border-slate-200 opacity-80 hover:opacity-100 dark:border-zinc-700"
               }`}
             >
-              <img src={img} alt="" className="h-full w-full " />
+              <img src={img} alt="" className="h-full w-full object-cover" />
             </button>
           ))}
         </div>

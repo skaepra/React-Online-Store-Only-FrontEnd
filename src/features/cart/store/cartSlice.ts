@@ -28,16 +28,19 @@ const cartSlice = createSlice({
       );
 
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
+        // التأكد من أن الإجمالي لا يتجاوز المخزون المخزن
+        const maxStock = action.payload.stock ?? existingItem.stock ?? 99;
+        const newQuantity = existingItem.quantity + action.payload.quantity;
+        existingItem.quantity = Math.min(newQuantity, maxStock);
+        if (action.payload.stock !== undefined) {
+          existingItem.stock = action.payload.stock;
+        }
       } else {
         state.items.push(action.payload);
       }
     },
 
-    removeFromCart(
-      state,
-      action: PayloadAction<Cartinformation>,
-    ) {
+    removeFromCart(state, action: PayloadAction<Cartinformation>) {
       state.items = state.items.filter(
         (item) =>
           !(
@@ -52,23 +55,24 @@ const cartSlice = createSlice({
       state.items = [];
     },
 
-    increaseQuantity(
-      state,
-      action: PayloadAction<Cartinformation>,
-    ) {
-      state.items = state.items.map((item) =>
-        item.id === action.payload.id &&
-        item.color === action.payload.color &&
-        item.size === action.payload.size
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      );
+    increaseQuantity(state, action: PayloadAction<Cartinformation>) {
+      state.items = state.items.map((item) => {
+        if (
+          item.id === action.payload.id &&
+          item.color === action.payload.color &&
+          item.size === action.payload.size
+        ) {
+          const maxStock = item.stock ?? 99;
+          // منع تجاوز المخزون عند الضغط على زر الزيادة (+)
+          if (item.quantity < maxStock) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+        }
+        return item;
+      });
     },
 
-    decreaseQuantity(
-      state,
-      action: PayloadAction<Cartinformation>,
-    ) {
+    decreaseQuantity(state, action: PayloadAction<Cartinformation>) {
       state.items = state.items.map((item) =>
         item.id === action.payload.id &&
         item.color === action.payload.color &&

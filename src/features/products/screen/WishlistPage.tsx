@@ -63,7 +63,7 @@ export default function WishlistPage() {
             </div>
 
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/shop")}
               className="mt-2 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all duration-200 shadow-lg shadow-indigo-500/25"
             >
               <IoBagHandleOutline className="text-base" />

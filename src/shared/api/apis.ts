@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-  baseURL: "https://localhost:7154", // رابط الباك إند لديك
+  baseURL: "https://bazzar-backend-krgn.onrender.com", // رابط الباك إند لديك
 });
 
 // إرفاق التوكن تلقائياً مع كل طلب

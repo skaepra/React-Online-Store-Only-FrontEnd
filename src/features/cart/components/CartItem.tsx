@@ -1,10 +1,9 @@
 import { IoAdd, IoRemove, IoTrashOutline } from "react-icons/io5";
 import { CartItemProps, useCartItem } from "../hook/useCartItem";
 
-
 export function CartItem(props: CartItemProps) {
   const { name, price, quantity, color, size, image } = props;
-  const { total, handleIncrease, handleDecrease, handleRemove } = useCartItem(props);
+  const { total, handleIncrease, handleDecrease, handleRemove, isMaxStock } = useCartItem(props);
 
   return (
     <div className={styles.card}>
@@ -35,27 +34,39 @@ export function CartItem(props: CartItemProps) {
 
         {/* الأزرار والإنقاص والإجمالي */}
         <div className={styles.actionsWrapper}>
-          <div className={styles.quantityContainer}>
-            <button
-              type="button"
-              onClick={handleDecrease}
-              disabled={quantity <= 1}
-              className={styles.quantityBtn}
-              aria-label="Decrease quantity"
-            >
-              <IoRemove className="text-xs" />
-            </button>
+          <div className="flex flex-col">
+            <div className={styles.quantityContainer}>
+              <button
+                type="button"
+                onClick={handleDecrease}
+                disabled={quantity <= 1}
+                className={styles.quantityBtn}
+                aria-label="Decrease quantity"
+              >
+                <IoRemove className="text-xs" />
+              </button>
 
-            <span className={styles.quantityCount}>{quantity}</span>
+              <span className={styles.quantityCount}>{quantity}</span>
 
-            <button
-              type="button"
-              onClick={handleIncrease}
-              className={styles.quantityBtn}
-              aria-label="Increase quantity"
-            >
-              <IoAdd className="text-xs" />
-            </button>
+              <button
+                type="button"
+                onClick={handleIncrease}
+                disabled={isMaxStock} // تعطيل الزر عند الوصول للحد الأقصى للمخزون
+                className={styles.quantityBtn}
+                aria-label="Increase quantity"
+              >
+                <IoAdd className="text-xs" />
+              </button>
+
+              {/* رسالة التنبيه باللغة الإنجليزية عند الوصول للحد الأقصى */}
+            {isMaxStock && (
+              <span className="text-[11px] text-amber-500 font-semibold mt-1">
+                Maximum stock reached
+              </span>
+            )}
+            </div>
+
+            
           </div>
 
           <div className={styles.totalSection}>

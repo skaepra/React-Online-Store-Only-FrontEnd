@@ -17,6 +17,17 @@ export default function ProductTabs({
     { id: "reviews", label: "Reviews" },
   ] as const;
 
+  // استخراج الألوان والمقاسات الفريدة من الـ Variant
+  const availableColors = product.Variant
+    ? Array.from(new Set(product.Variant.map((v) => v.colorName))).join(", ")
+    : "";
+
+  const availableSizes = product.Variant
+    ? Array.from(
+        new Set(product.Variant.flatMap((v) => v.Sizes || []))
+      ).join(", ")
+    : "";
+
   return (
     <div
       id="product-tabs"
@@ -46,10 +57,10 @@ export default function ProductTabs({
             <li>Product ID: #{product.id}</li>
             <li>Category: {product.Category}</li>
             <li>
-              Available colors: {product.Colors?.join(", ") || "Not specified"}
+              Available colors: {availableColors || "Not specified"}
             </li>
-            {product.Sizes?.length ? (
-              <li>Available sizes: {product.Sizes.join(", ")}</li>
+            {availableSizes ? (
+              <li>Available sizes: {availableSizes}</li>
             ) : null}
           </ul>
         )}

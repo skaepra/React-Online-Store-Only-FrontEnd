@@ -7,10 +7,17 @@ export function AuthActionButton() {
   const isLoggedIn = isTokenValid();
   const { performLogout, loading } = useLogout();
 
+  const handleLogoutClick = () => {
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (confirmed) {
+      performLogout();
+    }
+  };
+
   if (isLoggedIn) {
     return (
       <button
-        onClick={performLogout}
+        onClick={handleLogoutClick}
         disabled={loading}
         className="hidden h-10 shrink-0 items-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors hover:bg-white/15 sm:flex"
         title="Logout"

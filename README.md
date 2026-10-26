@@ -95,6 +95,17 @@ npm run dev
 
 ---
 
+## Deploy to Vercel
+
+1. Import this GitHub repository from the [Vercel dashboard](https://vercel.com/new).
+2. Keep the project root directory as `./`.
+3. Use `npm run build` as the build command and `dist` as the output directory.
+4. Deploy the project. Vercel will create a deployment for each push to the connected branch.
+
+Vercel hosts the frontend only. Any API used by the app must be deployed and reachable over the internet; API URLs pointing to `localhost` will only work on your own computer.
+
+---
+
 ##  Screenshots
 
 ### Home

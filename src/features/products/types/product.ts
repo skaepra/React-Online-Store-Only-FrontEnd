@@ -1,12 +1,20 @@
+
 export interface Product {
   id: string;
   Name: string;
   Images: string[];
-  ImageAlt?: string;
   Price: number;
-  Category: "Electronics" | "Apparel" | "Accessories" | "Footwear"; // فئات محددة لمزيد من الأمان البرمجي
-  Colors?: string[];
-  Sizes?: string[];
+  Category: string; 
+  Variant?:ProductVariant[];
   Description: string;
   IsFeatured?: boolean;
+}
+export interface ProductVariant {
+  id: string;
+  colorName: string; // red , black
+  colorHex: string; // #000
+  Images: string[];
+  Price?: number;
+  Sizes?: string[];
+  stock:number;
 }

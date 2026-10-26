@@ -1,11 +1,12 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectCartItems, selectCartQuantity, selectCartTotalPrice } from "../../cart/store/cartSelectors";
 import { clearCart } from "../../cart/store/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { CreateOrder } from "../../order/services/orderService";
 import { AddressFormValues } from "../types/addressType";
+import { CartItem } from "../../cart/types/CartItem";
+
 
 const initialValues: AddressFormValues = {
   country: "Syria",
@@ -23,7 +24,7 @@ export function useCheckout() {
   const navigate = useNavigate();
   const getTotals = useAppSelector(selectCartTotalPrice);
   const getAllQuantity = useAppSelector(selectCartQuantity);
-  const cartItems = useAppSelector(selectCartItems);
+  const cartItems = useAppSelector(selectCartItems) as CartItem[];
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -73,20 +74,23 @@ export function useCheckout() {
     try {
       setLoading(true);
 
-     const formattedItems = cartItems.map((item: any) => ({
-        productName: item.name,
+      // 3. تجهيز عناصر الطلب مع الخصائص الجديدة (الحجم، اللون، السعر الخاص بالفارينت)
+      const formattedItems = cartItems.map((item: CartItem) => ({
+        productId: item.id, // معرف المنتج أو الفارينت المخزن في السلة
+        productName: item.name || item.title,
         color: item.color,
-        unitPrice: item.price,
+        size: item.size, // تم إضافة الحجم هنا بناءً على التحديثات
+        unitPrice: item.price, // سعر الفارينت أو المنتج المخزن في السلة
         quantity: item.quantity,
       }));
 
-     const newOrder = {
+      const newOrder = {
         Country: values.country,
         City: values.city,
         FullName: values.fullName,
         Phone: values.phone,
         Email: values.email,
-        Building: values.addressLine1 || values.addressLine2, // أو دمجهم حسب ما يناسب نموذجك
+        Building: values.addressLine1 || values.addressLine2,
         DropoffLatitude: values.latitude || 0,
         DropoffLongitude: values.longitude || 0,
         PaymentMethod: values.paymentMethod === "COD" ? 0 : 1, // 0 للدفع عند الاستلام، 1 للبطاقة
@@ -96,8 +100,8 @@ export function useCheckout() {
 
       await CreateOrder(newOrder as any);
 
-      if (clearCart) 
-        dispatch(clearCart());
+      dispatch(clearCart());
+      console.log(newOrder)
       alert("Order placed successfully!");
       navigate("/order");
     } catch (error) {

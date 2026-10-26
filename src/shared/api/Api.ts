@@ -1,11 +1,17 @@
-import axios from 'axios';
+// shared/api/apis.ts
+import axios from "axios";
 
-// إنشاء نسخة مخصصة لـ JSON Server
 const Api = axios.create({
-  baseURL: 'https://6abffefc06bcd2f2067340ea.mockapi.io/', // العنوان الأساسي
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: "https://localhost:7154", // رابط الباك إند لديك
+});
+
+// إرفاق التوكن تلقائياً مع كل طلب
+Api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default Api;

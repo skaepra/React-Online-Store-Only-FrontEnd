@@ -26,7 +26,10 @@ export function ProductCard({
       transition={{ duration: 0.2 }}
     >
       <div
-        onClick={() =>{ onProductClick(product.id),window.scrollTo({ top: 20})}}
+        onClick={() => {
+          onProductClick(product.id);
+          window.scrollTo({ top: 20 });
+        }}
         className="group relative bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700/50 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
       >
         <button
@@ -52,7 +55,7 @@ export function ProductCard({
         <div className="relative aspect-square w-full bg-gray-100 dark:bg-zinc-900 overflow-hidden">
           <img
             src={product.Images[0]}
-            alt={product.ImageAlt || product.Name}
+            alt={product.Name} // تم التعديل هنا لأن ImageAlt لم يعد موجوداً
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
 
@@ -78,14 +81,28 @@ export function ProductCard({
           </div>
         </div>
 
-        <div className="p-2 flex flex-col justify-between flex-grow space-y-2">
+        <div className="p-3 flex flex-col justify-between flex-grow space-y-2">
           <div>
             <span className="text-[15px] font-semibold text-indigo-500">
               {product.Name}
             </span>
-            <h3 className="text-[12px] font-semibold text-gray-900 dark:text-white  transition-colors line-clamp-1 mt-0.5">
+            <h3 className="text-[12px] font-semibold text-gray-900 dark:text-white transition-colors line-clamp-1 mt-0.5">
               {product.Description}
             </h3>
+
+            {/* عرض الألوان المتاحة من الـ Variant إن وجدت */}
+            {product.Variant && product.Variant.length > 0 && (
+              <div className="flex items-center gap-1.5 mt-2">
+                {product.Variant.map((v) => (
+                  <span
+                    key={v.id}
+                    className="w-3.5 h-3.5 rounded-full border border-gray-300 dark:border-zinc-600 shadow-sm"
+                    style={{ backgroundColor: v.colorHex }}
+                    title={v.colorName}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-zinc-700/50">

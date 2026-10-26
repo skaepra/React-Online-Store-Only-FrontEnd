@@ -10,11 +10,10 @@ import {
 import { orderType } from "../types/orderType";
 import { getPaymentMethodLabel, getPaymentStatusBadge, getStatusBadge } from "../Helpers/orderBadges";
 
-
 interface OrderItemCardProps {
   order: orderType;
   isExpanded: boolean;
-  onToggleExpand: (id: string ) => void;
+  onToggleExpand: (id: string) => void;
 }
 
 export default function OrderItemCard({
@@ -119,7 +118,7 @@ export default function OrderItemCard({
                     Address & Coordinates:
                   </span>
                   <span className="font-medium block">
-                    {order.City}, {order.Country}
+                    {order.City} {order.Country}
                   </span>
                   {(order.dropoffLatitude !== 0 ||
                     order.dropoffLongitude !== 0) && (
@@ -181,6 +180,9 @@ export default function OrderItemCard({
                   ? [item.color]
                   : [];
 
+                // استخراج الحجم في حال وجد
+                const sizeValue = item.Size || item.size;
+
                 return (
                   <div
                     key={item.id || idx}
@@ -190,19 +192,36 @@ export default function OrderItemCard({
                       <h5 className="font-semibold text-gray-900 dark:text-white">
                         {name}
                       </h5>
-                      {colorsArray.length > 0 && (
-                        <div className="flex items-center gap-1">
-                          <span className="text-gray-400 text-[11px]">
-                            Color:
-                          </span>
-                          {colorsArray.map((colorVal: string, cIdx: number) => (
-                            <span
-                              key={cIdx}
-                              className="px-1.5 py-0.5 text-[10px] rounded border border-gray-200 dark:border-zinc-700 font-mono"
-                            >
-                              {colorVal}
-                            </span>
-                          ))}
+                      
+                      {/* عرض اللون والحجم */}
+                      {(colorsArray.length > 0 || sizeValue) && (
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {colorsArray.length > 0 && (
+                            <div className="flex items-center gap-1">
+                              <span className="text-gray-400 text-[11px]">
+                                Color:
+                              </span>
+                              {colorsArray.map((colorVal: string, cIdx: number) => (
+                                <span
+                                  key={cIdx}
+                                  className="px-1.5 py-0.5 text-[10px] rounded border border-gray-200 dark:border-zinc-700 font-mono"
+                                >
+                                  {colorVal}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {sizeValue && (
+                            <div className="flex items-center gap-1">
+                              <span className="text-gray-400 text-[11px]">
+                                Size:
+                              </span>
+                              <span className="px-1.5 py-0.5 text-[10px] rounded border border-gray-200 dark:border-zinc-700 font-mono">
+                                {sizeValue}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -227,3 +246,4 @@ export default function OrderItemCard({
     </motion.div>
   );
 }
+

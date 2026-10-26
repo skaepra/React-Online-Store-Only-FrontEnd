@@ -25,12 +25,15 @@ export default function ProductDetails() {
     handleAddToCart,
     handleToggleWishlist,
     relatedProducts,
+    currentImages, // الصور الخاصة باللون المختار
+    currentPrice,  // السعر الحالي المحدث
+    currentStock,
     navigate,
   } = useProductDetails();
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-4 ">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-4">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Product Not Found
         </h2>
@@ -78,16 +81,21 @@ export default function ProductDetails() {
 
         {/* Top Product Details Section */}
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-7">
+          {/* معرض الصور: نمرر له الصور المحدثة حسب اللون */}
           <ProductGallery
             product={product}
+            images={currentImages} // تمرير صور اللون الحالي
             selectedImage={selectedImage}
             onSelectImage={setSelectedImage}
             isWishlisted={isWishlisted}
             onToggleWishlist={handleToggleWishlist}
           />
 
+          {/* خيارات المنتج: نمرر له السعر المحدث */}
           <ProductOptions
             product={product}
+            currentPrice={currentPrice} // تمرير السعر الحالي
+            currentStock={currentStock}
             selectedColor={selectedColor}
             onSelectColor={setSelectedColor}
             selectedSize={selectedSize}

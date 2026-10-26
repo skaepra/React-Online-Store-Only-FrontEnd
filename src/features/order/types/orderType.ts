@@ -1,7 +1,8 @@
 export type OrderItemType = {
   id: string | number;
   productName: string;
-  color?: string[];
+  color?: string | string[];
+  size?: string; 
   unitPrice: number;
   quantity: number;
   lineTotal: number;
@@ -14,14 +15,14 @@ export type orderType = {
   fullName: string;
   phone: string;
   email: string;
-  building : string;
+  building: string;
   dropoffLatitude: number;
   dropoffLongitude: number;
-  paymentMethod: number; 
+  paymentMethod: number;
   Notes?: string;
-  totalAmount: number; 
+  totalAmount: number;
   paymentStatus: number;
-  status: number; 
+  status: number;
   createdAt: string;
   items: OrderItemType[];
 };
