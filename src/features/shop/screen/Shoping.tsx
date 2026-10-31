@@ -7,8 +7,9 @@ import {
 import { AddedToast } from "../components/AddedToast";
 import { ShoppingHeader } from "../components/ShoppingHeader";
 import { useShoppingScreen } from "../hook/useShoppingScreen";
-import { ProductCard } from "../components/ProductCard";
+
 import { MobileFilterDrawer } from "../components/MobileFilterDrawer";
+import { ProductCard } from "../../products/components/ProductCard";
 
 export default function ShoppingScreen() {
   const { state, actions } = useShoppingScreen();
@@ -133,7 +134,6 @@ export default function ShoppingScreen() {
                     product={product}
                     isFav={actions.isProductInWishlist(product.id)}
                     onProductClick={actions.handleProductClick}
-                    onQuickAdd={actions.handleQuickAdd}
                     onToggleWishlist={actions.handleToggleWishlist}
                   />
                 ))}

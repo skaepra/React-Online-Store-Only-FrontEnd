@@ -25,8 +25,8 @@ export default function ProductDetails() {
     handleAddToCart,
     handleToggleWishlist,
     relatedProducts,
-    currentImages, // الصور الخاصة باللون المختار
-    currentPrice,  // السعر الحالي المحدث
+    currentImages, 
+    currentPrice,  
     currentStock,
     navigate,
   } = useProductDetails();
@@ -69,57 +69,67 @@ export default function ProductDetails() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-600 transition-colors hover:text-[#0053e2] dark:text-gray-400 dark:hover:text-white"
-        >
-          <IoChevronBack className="text-base" />
-          <span>Back</span>
-        </button>
+      {/* تم تغيير px-4 إلى px-0 للجوال لتلامس الصورة الحواف، وإبقائها sm:px-6 للشاشات الأكبر */}
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+        
+        {/* زر الرجوع (أضفنا px-4 هنا لكي لا يلتصق بالحافة) */}
+        <div className="px-4 sm:px-0">
+          <button
+            onClick={() => navigate(-1)}
+            className="mb-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-600 transition-colors hover:text-[#0053e2] dark:text-gray-400 dark:hover:text-white"
+          >
+            <IoChevronBack className="text-base" />
+            <span>Back</span>
+          </button>
+        </div>
 
         {/* Top Product Details Section */}
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-7">
-          {/* معرض الصور: نمرر له الصور المحدثة حسب اللون */}
+        <div className="grid grid-cols-1 items-start gap-6 sm:col-span-12 sm:grid-cols-12 sm:gap-7">
+          {/* معرض الصور */}
           <ProductGallery
             product={product}
-            images={currentImages} // تمرير صور اللون الحالي
+            images={currentImages}
             selectedImage={selectedImage}
             onSelectImage={setSelectedImage}
             isWishlisted={isWishlisted}
             onToggleWishlist={handleToggleWishlist}
           />
 
-          {/* خيارات المنتج: نمرر له السعر المحدث */}
-          <ProductOptions
+          {/* خيارات المنتج (أضفنا px-4 للعنصر على الجوال ليحافظ على المسافة) */}
+          <div className="px-4 sm:px-0 sm:col-span-7 ">
+            <ProductOptions
+              product={product}
+              currentPrice={currentPrice}
+              currentStock={currentStock}
+              selectedColor={selectedColor}
+              onSelectColor={setSelectedColor}
+              selectedSize={selectedSize}
+              onSelectSize={setSelectedSize}
+              quantity={quantity}
+              onIncrement={incrementQuantity}
+              onDecrement={decrementQuantity}
+              onAddToCart={handleAddToCart}
+              onBuyNow={() => {
+                handleAddToCart();
+                navigate("/cart");
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Tabs Section (أضفنا px-4 للعوال) */}
+        <div className="px-4 sm:px-0">
+          <ProductTabs
             product={product}
-            currentPrice={currentPrice} // تمرير السعر الحالي
-            currentStock={currentStock}
-            selectedColor={selectedColor}
-            onSelectColor={setSelectedColor}
-            selectedSize={selectedSize}
-            onSelectSize={setSelectedSize}
-            quantity={quantity}
-            onIncrement={incrementQuantity}
-            onDecrement={decrementQuantity}
-            onAddToCart={handleAddToCart}
-            onBuyNow={() => {
-              handleAddToCart();
-              navigate("/cart");
-            }}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
           />
         </div>
 
-        {/* Tabs Section */}
-        <ProductTabs
-          product={product}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
-
-        {/* Related Products */}
-        <RelatedProducts products={relatedProducts} />
+        {/* Related Products (أضفنا px-4 للجوال) */}
+        <div className="px-4 sm:px-0">
+          <RelatedProducts products={relatedProducts} />
+        </div>
       </div>
     </div>
   );

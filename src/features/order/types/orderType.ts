@@ -19,10 +19,10 @@ export type orderType = {
   dropoffLatitude: number;
   dropoffLongitude: number;
   paymentMethod: number;
+  paymentStatus: number; // مثلاً: 0 معلق، 1 مدفوع
+  status: number;
   Notes?: string;
   totalAmount: number;
-  paymentStatus: number;
-  status: number;
   createdAt: string;
   items: OrderItemType[];
 };

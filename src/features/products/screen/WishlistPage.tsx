@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { hand } from "../store/productUiSlice";
 import { selectWishlistItems } from "../store/WishlisSelectors";
 
-import { ProductCard } from "../../shop/components/ProductCard";
+
 import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
+import { ProductCard } from "../components/ProductCard";
 
 export default function WishlistPage() {
   const dispatch = useAppDispatch();
@@ -88,7 +89,7 @@ export default function WishlistPage() {
                     isFav={actions.isProductInWishlist(product.id)}
                     onProductClick={actions.handleProductClick}
                     onToggleWishlist={actions.handleToggleWishlist}
-                    onQuickAdd={actions.handleQuickAdd}
+
                   />
                 </motion.div>
               );

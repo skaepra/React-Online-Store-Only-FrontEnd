@@ -21,14 +21,22 @@ export function useForm<T extends Record<string, any>>(
 
     if (!result.success) {
       const formattedErrors: Record<string, string> = {};
-      const fieldErrors = result.error.flatten().fieldErrors;
+      const errorFormatted = result.error.format();
 
-      // 💡 استخدام Object.entries يضمن التعرف الصحيح على الأنواع في TypeScript
+      // 1. استخراج أخطاء الحقول الفردية
+      const fieldErrors = result.error.flatten().fieldErrors;
       Object.entries(fieldErrors).forEach(([key, messages]) => {
         if (Array.isArray(messages) && messages[0]) {
           formattedErrors[key] = messages[0];
         }
       });
+
+      // 2. 💡 استخراج الأخطاء العامة الناتجة عن refine (مثل خطأ شروط البطاقة)
+      const rootErrors = errorFormatted._errors;
+      if (rootErrors && rootErrors.length > 0) {
+        // يمكننا ربط الخطأ العام بحقل رقم البطاقة أو حفظه كمفتاح عام مثل "general"
+        formattedErrors["cardNumber"] = rootErrors[0]; 
+      }
 
       setErrors(formattedErrors);
       return null;
@@ -43,5 +51,6 @@ export function useForm<T extends Record<string, any>>(
     errors,
     updateField,
     validate,
+    setFormData, 
   };
 }

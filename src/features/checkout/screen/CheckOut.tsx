@@ -1,9 +1,11 @@
+import { COUNTRIES } from "../../../data/countriesCheckOut";
 import LocationPickerMaps from "../../google-map/screen/LocationPickerMaps";
 import { useCheckout } from "../hook/useCheckout";
 
 export default function CheckOutScreen() {
   const {
     values,
+    errors, // 💡 تم استخراج أخطاء الحقول من الهوك
     loading,
     totalQuantity,
     totals,
@@ -37,10 +39,18 @@ export default function CheckOutScreen() {
                 value={values.country}
                 className={styles.select}
               >
-                <option value="Syria">Syria</option>
-                <option value="Usa">USA</option>
-                <option value="China">China</option>
+                <option value="" disabled>
+                  Select Country
+                </option>
+                {COUNTRIES.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
               </select>
+              {errors.country && (
+                <p className={styles.errorText}>{errors.country}</p>
+              )}
             </div>
             <div className="w-full">
               <label className={styles.label}>City</label>
@@ -51,8 +61,8 @@ export default function CheckOutScreen() {
                 onChange={onChangeHandler}
                 value={values.city}
                 className={styles.input}
-                required
               />
+              {errors.city && <p className={styles.errorText}>{errors.city}</p>}
             </div>
           </div>
 
@@ -67,8 +77,10 @@ export default function CheckOutScreen() {
                 onChange={onChangeHandler}
                 value={values.fullName}
                 className={styles.input}
-                required
               />
+              {errors.fullName && (
+                <p className={styles.errorText}>{errors.fullName}</p>
+              )}
             </div>
             <div className="w-full">
               <label className={styles.label}>Phone Number</label>
@@ -79,8 +91,10 @@ export default function CheckOutScreen() {
                 onChange={onChangeHandler}
                 value={values.phone}
                 className={styles.input}
-                required
               />
+              {errors.phone && (
+                <p className={styles.errorText}>{errors.phone}</p>
+              )}
             </div>
           </div>
 
@@ -95,6 +109,7 @@ export default function CheckOutScreen() {
               value={values.email}
               className={styles.input}
             />
+            {errors.email && <p className={styles.errorText}>{errors.email}</p>}
           </div>
 
           {/* Address Line 1 */}
@@ -109,7 +124,6 @@ export default function CheckOutScreen() {
                 value={values.addressLine1}
                 className={styles.input}
                 autoComplete="one-time-code"
-                required
               />
               <button
                 type="button"
@@ -118,14 +132,21 @@ export default function CheckOutScreen() {
                   values.latitude ? styles.mapBtnSelected : styles.mapBtnDefault
                 }`}
               >
-                {values.latitude ? "✏️ Change Selected Location" : "📍 Pin Location on Map"}
+                {values.latitude
+                  ? "✏️ Change Selected Location"
+                  : "📍 Pin Location on Map"}
               </button>
             </div>
+            {errors.addressLine1 && (
+              <p className={styles.errorText}>{errors.addressLine1}</p>
+            )}
           </div>
 
           {/* Address Line 2 */}
           <div>
-            <label className={styles.label}>Building / Apartment / Floor (Optional)</label>
+            <label className={styles.label}>
+              Building / Apartment / Floor (Optional)
+            </label>
             <input
               type="text"
               name="addressLine2"
@@ -134,12 +155,15 @@ export default function CheckOutScreen() {
               value={values.addressLine2}
               className={styles.input}
             />
+            {errors.addressLine2 && (
+              <p className={styles.errorText}>{errors.addressLine2}</p>
+            )}
           </div>
 
           {/* Payment Method */}
           <div className="pt-2 border-t dark:border-zinc-700">
             <label className={styles.label}>Payment Method</label>
-            <div className="flex gap-4 mt-1 text-sm text-gray-700 dark:text-gray-300">
+            <div className="flex gap-4 mt-1 text-sm text-gray-700 dark:text-gray-300 ">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
@@ -148,7 +172,7 @@ export default function CheckOutScreen() {
                   checked={values.paymentMethod === "COD"}
                   onChange={onChangeHandler}
                 />
-                Cash on Delivery 
+                Cash on Delivery
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -161,6 +185,9 @@ export default function CheckOutScreen() {
                 Credit Card
               </label>
             </div>
+            {errors.paymentMethod && (
+              <p className={styles.errorText}>{errors.paymentMethod}</p>
+            )}
 
             {/* Smooth Expandable Card Fields */}
             <div
@@ -170,7 +197,9 @@ export default function CheckOutScreen() {
                   : "grid-rows-[0fr] opacity-0 mt-0 pt-0"
               }`}
             >
-              <div className="overflow-hidden space-y-3 p-4 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg">
+              <div
+                className={`overflow-hidden space-y-3 ${values.paymentMethod === "Card" ? "p-4" : ""} bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg`}
+              >
                 {/* Card Types Selection */}
                 <div>
                   <label className={styles.label}>Select Card Type</label>
@@ -209,6 +238,9 @@ export default function CheckOutScreen() {
                     value={values.cardNumber || ""}
                     className={styles.input}
                   />
+                  {errors.cardNumber && (
+                    <p className={styles.errorText}>{errors.cardNumber}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -223,6 +255,9 @@ export default function CheckOutScreen() {
                       value={values.cardExpiry || ""}
                       className={styles.input}
                     />
+                    {errors.cardExpiry && (
+                      <p className={styles.errorText}>{errors.cardExpiry}</p>
+                    )}
                   </div>
                   <div>
                     <label className={styles.label}>CVV</label>
@@ -235,6 +270,9 @@ export default function CheckOutScreen() {
                       value={values.cardCvv || ""}
                       className={styles.input}
                     />
+                    {errors.cardCvv && (
+                      <p className={styles.errorText}>{errors.cardCvv}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -252,10 +290,21 @@ export default function CheckOutScreen() {
               className={styles.textarea}
               rows={2}
             />
+            {errors.notes && <p className={styles.errorText}>{errors.notes}</p>}
           </div>
 
-          <button type="submit" disabled={loading} className={styles.checkoutBtn}>
-            {loading ? "Submitting Order..." : "Place Order"}
+          <button
+            type="submit"
+            disabled={loading}
+            className={styles.checkoutBtn}
+          >
+            {loading
+              ? values.paymentMethod === "Card"
+                ? "Processing Payment & Order..."
+                : "Placing Order..."
+              : values.paymentMethod === "Card"
+                ? "Pay Now & Place Order"
+                : "Place Order"}
           </button>
         </form>
 
@@ -327,6 +376,7 @@ const styles = {
   sectionHeader: "text-xl font-bold text-gray-900 dark:text-white",
   inputRow: "grid grid-cols-1 md:grid-cols-2 gap-4",
   label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",
+  errorText: "mt-1 text-xs text-red-500 font-medium", // 💡 تنسيق رسالة الخطأ
 
   input: `w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-white
     [&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_white_inset] 

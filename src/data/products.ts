@@ -127,7 +127,8 @@ const homeProducts: Product[] = [
     Images: [
       "products/1111111.jfif",
       "products/422564377559090130.jfif",
-      "products/33333.jfif",
+      "products/33333.jfif"
+      ,
     ],
     Price: 1100,
     Variant: [
@@ -142,7 +143,7 @@ const homeProducts: Product[] = [
         id: "v8-2",
         colorName: "white",
         colorHex: "#ffffff",
-        Images: ["products/422564377559090130.jfif","products/13299761394220174.jfif"],
+        Images: ["products/422564377559090130.jfif","products/13299761394220174.jfif","products/33333.jfif","products/239887117644111066.jfif","products/111.jfif"],
         stock: 7,
       },
     ],

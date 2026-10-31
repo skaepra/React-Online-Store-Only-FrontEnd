@@ -12,7 +12,7 @@ export interface Product {
 export interface ProductVariant {
   id: string;
   colorName: string; // red , black
-  colorHex: string; // #000
+  colorHex?: string; // #000
   Images: string[];
   Price?: number;
   Sizes?: string[];

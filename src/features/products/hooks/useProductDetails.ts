@@ -35,7 +35,7 @@ export function useProductDetails() {
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector(selectWishlistItems);
   
-  // جلب محتويات السلة من Redux (تأكدي أن اسم الـ slice هو cart)
+  // جلب محتويات السلة من Redux
   const cartItems = useAppSelector((state: any) => state.cart?.items || []);
 
   const isWishlisted = product
@@ -63,7 +63,7 @@ export function useProductDetails() {
 
   const quantityInCart = existingCartItem ? existingCartItem.quantity : 0;
 
-  // المخزون الحقيقي المتبقي للإضافة (المخزون الكلي مطروحاً منه ما تم وضعه في السلة)
+  // المخزون الحقيقي المتبقي للإضافة
   const remainingStock = Math.max(0, currentStock - quantityInCart);
 
   // الصور والسعر الحالي
@@ -93,7 +93,7 @@ export function useProductDetails() {
     }
   }, [id, product]);
 
-  // عند تغير اللون، نعيد ضبط الكمية المختارة لتلائم المتبقي
+  // عند تغير اللون
   const handleColorSelect = (colorName: string) => {
     setSelectedColor(colorName);
     if (product?.Variant) {
@@ -115,6 +115,12 @@ export function useProductDetails() {
   const handleAddToCart = () => {
     if (!product || remainingStock <= 0) return;
 
+    // جلب الصورة الأولى للون المختار حالياً بشكل دائم عند الإضافة للسلة
+    const imageToAdd =
+      currentVariant?.Images?.[0] ||
+      product.Images?.[0] ||
+      "";
+
     // التأكد من أن الكمية المضافة لا تتجاوز المتبقي في المخزون
     const finalQuantityToAdd = Math.min(quantity, remainingStock);
 
@@ -123,7 +129,7 @@ export function useProductDetails() {
         id: product.id,
         name: product.Name,
         price: currentPrice,
-        image: selectedImage,
+        image: imageToAdd, // استخدام الصورة الأولى للون المختار
         color: selectedColor,
         size: selectedSize,
         quantity: finalQuantityToAdd,
@@ -133,7 +139,7 @@ export function useProductDetails() {
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
     
-    // إعادة ضبط العداد للمتبقي إن وجد
+    // إعادة ضبط العداد
     setQuantity(1);
   };
 
@@ -143,7 +149,7 @@ export function useProductDetails() {
     }
   };
 
-  // التحكم بالكمية بحيث لا تتجاوز المخزون المتبقي الفعلي
+  // التحكم بالكمية
   const incrementQuantity = () =>
     setQuantity((q) => (q < remainingStock ? q + 1 : q));
   const decrementQuantity = () => setQuantity((q) => Math.max(1, q - 1));

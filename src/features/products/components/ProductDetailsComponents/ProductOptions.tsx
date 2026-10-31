@@ -1,17 +1,10 @@
-import {
-  IoCheckmark,
-  IoCartOutline,
-  IoBagCheckOutline,
-  IoCarOutline,
-  IoSyncOutline,
-  IoShieldCheckmarkOutline,
-} from "react-icons/io5";
+import { IoCartOutline } from "react-icons/io5";
 import { Product } from "../../types/product";
 
 interface ProductOptionsProps {
   product: Product;
   currentPrice: number;
-  currentStock: number; // <-- استقبال المخزون
+  currentStock: number;
   selectedColor: string;
   onSelectColor: (color: string) => void;
   selectedSize: string;
@@ -38,7 +31,7 @@ export default function ProductOptions({
   onBuyNow,
 }: ProductOptionsProps) {
   const currentVariant = product.Variant?.find(
-    (v) => v.colorName === selectedColor
+    (v) => v.colorName === selectedColor,
   );
 
   // حالات المخزون
@@ -46,47 +39,74 @@ export default function ProductOptions({
   const isLowStock = currentStock > 0 && currentStock <= 7;
 
   return (
-    <div className="grid min-w-0 gap-6 lg:col-span-7 lg:grid-cols-[minmax(0,1fr)_280px]">
-      <section className="min-w-0 space-y-5">
-        <div className="space-y-3">
+    <div className="grid min-w-0 gap-6 sm:col-span-7 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <section className="min-w-0 space-y-4">
+        <div className="space-y-1">
           <p className="text-xs font-semibold text-[#0053e2]">
             {product.Category}
           </p>
           <h1 className="text-2xl font-bold leading-tight text-slate-900 dark:text-white sm:text-3xl">
             {product.Name}
           </h1>
-          
-         
         </div>
 
         <p className="text-sm leading-6 text-slate-700 dark:text-gray-300">
           {product.Description}
         </p>
 
-        {/* عرض الألوان */}
+        {/* عرض الألوان والرسومات الخاصة بها */}
         {product.Variant && product.Variant.length > 0 && (
           <div className="space-y-3 border-t border-slate-200 pt-5 dark:border-zinc-700">
             <p className="text-sm font-semibold text-slate-800 dark:text-gray-200">
               Color: <span className="font-normal">{selectedColor}</span>
             </p>
-            <div className="flex flex-wrap items-center gap-3">
-              {product.Variant.map((variant) => (
-                <button
-                  key={variant.id}
-                  onClick={() => onSelectColor(variant.colorName)}
-                  aria-label={`Select ${variant.colorName}`}
-                  className={`grid h-12 w-12 place-items-center rounded-full border-2 transition-colors ${
-                    selectedColor === variant.colorName
-                      ? "border-[#0053e2]"
-                      : "border-slate-300 dark:border-zinc-600"
-                  }`}
-                >
-                  <span
-                    className="h-9 w-9 rounded-full border border-black/10"
-                    style={{ backgroundColor: variant.colorHex }}
-                  />
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-4">
+              {product.Variant.map((variant) => {
+                const isSelected = selectedColor === variant.colorName;
+                const firstImage = variant.Images?.[0]; // الصورة الأولى للـ Variant
+
+                return (
+                  <button
+                    key={variant.id}
+                    onClick={() => onSelectColor(variant.colorName)}
+                    aria-label={`Select ${variant.colorName}`}
+                    className="flex flex-col items-center gap-1.5 focus:outline-none"
+                  >
+                    {/* حاوية الصورة (أو لون الـ Hex كبديل في حال لم تتوفر صورة) */}
+                    <div
+                      className={`relative h-16 w-16 overflow-hidden rounded-xl border-2 transition-all ${
+                        isSelected
+                          ? "border-[#0053e2] ring-2 ring-[#0053e2]/20 scale-105"
+                          : "border-slate-300 hover:border-slate-400 dark:border-zinc-600"
+                      }`}
+                    >
+                      {firstImage ? (
+                        <img
+                          src={firstImage}
+                          alt={variant.colorName}
+                          className="h-full w-full object-cover" 
+                        />
+                      ) : (
+                        <span
+                          className="block h-full w-full"
+                          style={{ backgroundColor: variant.colorHex }}
+                        />
+                      )}
+                    </div>
+
+                    {/* اسم اللون تحت الصورة */}
+                    <span
+                      className={`text-xs font-medium transition-colors ${
+                        isSelected
+                          ? "text-[#0053e2] font-semibold"
+                          : "text-slate-600 dark:text-gray-400"
+                      }`}
+                    >
+                      {variant.colorName}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -126,12 +146,14 @@ export default function ProductOptions({
           </p>
         </div>
 
-        {/* أزرار التحكم بالكمية (تُعطل إذا نفذ المخزون) */}
+        {/* أزرار التحكم بالكمية */}
         <div className="space-y-2">
           <p className="text-sm font-semibold text-slate-800 dark:text-gray-200">
             Quantity
           </p>
-          <div className={`inline-flex h-10 items-center overflow-hidden rounded-full border border-slate-300 dark:border-zinc-600 ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}>
+          <div
+            className={`inline-flex h-10 items-center overflow-hidden rounded-full border border-slate-300 dark:border-zinc-600 ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}
+          >
             <button
               onClick={onDecrement}
               disabled={isOutOfStock}
@@ -145,29 +167,29 @@ export default function ProductOptions({
             <button
               onClick={onIncrement}
               disabled={isOutOfStock || quantity >= currentStock}
-              className="h-10 w-10 text-lg hover:bg-slate-100 dark:hover:bg-zinc-750 disabled:cursor-not-allowed"
+              className="h-10 w-10 text-lg hover:bg-slate-100 dark:hover:bg-zinc-700 disabled:cursor-not-allowed"
             >
               +
             </button>
           </div>
         </div>
 
-         {/* عرض حالة المخزون للمستخدم */}
-          <div className="pt-1">
-            {isOutOfStock ? (
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400">
-                Out of Stock
-              </span>
-            ) : isLowStock ? (
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-600 dark:bg-orange-900/40 dark:text-amber-400">
-                Only {currentStock} left in stock
-              </span>
-            ) : (
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                In Stock
-              </span>
-            )}
-          </div>
+        {/* عرض حالة المخزون للمستخدم */}
+        <div className="pt-1">
+          {isOutOfStock ? (
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400">
+              Out of Stock
+            </span>
+          ) : isLowStock ? (
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-600 dark:bg-orange-900/40 dark:text-amber-400">
+              Only {currentStock} left in stock
+            </span>
+          ) : (
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+              In Stock
+            </span>
+          )}
+        </div>
 
         {/* أزرار الشراء */}
         <div className="space-y-2 border-t border-slate-200 pt-4 dark:border-zinc-700">
@@ -183,7 +205,7 @@ export default function ProductOptions({
             <IoCartOutline className="text-lg" />
             <span>{isOutOfStock ? "Sold Out" : "Add to cart"}</span>
           </button>
-          
+
           <button
             onClick={onBuyNow}
             disabled={isOutOfStock}

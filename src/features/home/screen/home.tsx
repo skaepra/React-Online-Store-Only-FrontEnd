@@ -1,24 +1,15 @@
 import { motion } from "framer-motion";
-import {
-  IoArrowForward,
-} from "react-icons/io5";
 import products from "../../../data/products";
 import { Product } from "../../products/types/product";
-import { ProductCard } from "../../shop/components/ProductCard";
+
 import { useShoppingScreen } from "../../shop/hook/useShoppingScreen";
 import { AddedToast } from "../../shop/components/AddedToast";
-import { useNavigate } from "react-router-dom";
 import Contener from "../../../shared/childern/contener";
-
-
+import { ProductCard } from "../../products/components/ProductCard";
+import HomeAdsSection from "../components/HomeAdsSection";
 
 export default function Home() {
   const { state, actions } = useShoppingScreen();
-  const navigate = useNavigate();
-
-  const handleShopCollection = () => {
-    navigate("/shop");
-  };
 
   return (
     <Contener>
@@ -26,59 +17,10 @@ export default function Home() {
         <AddedToast message={state.addedToast} />
 
         {/* 1. Hero Section */}
-        <section className="mx-auto max-w-[1440px] px-4 py-4 sm:px-6">
-          <div className="grid min-h-[300px] overflow-hidden rounded-xl bg-[#0071ce] text-white md:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative z-10 flex flex-col items-start justify-center gap-4 p-7 sm:p-9 lg:p-14">
-              <motion.p
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-xs font-bold uppercase text-[#ffe08a]"
-              >
-                Welcome to Bazaar
-              </motion.p>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="max-w-xl text-2xl font-semibold  leading-tight  sm:text-5xl"
-              >
-                Everyday finds, all in one place.
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="max-w-lg text-sm leading-6 text-white/90 sm:text-base"
-              >
-                Shop tech, accessories, and personal care from one store.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <button
-                  onClick={handleShopCollection}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#ffc220] px-6 py-3 text-sm font-bold transition-colors hover:bg-[#fac73b] "
-                >
-                  <span className="text-white">Shop now</span>
-                  <IoArrowForward className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </motion.div>
-            </div>
-            <div className="hidden min-h-[240px] items-center justify-center  md:flex">
-              <img
-                src="offer.png"
-                alt="A selection of featured store products"
-                className="h-full max-h-[380px] w-full "
-              />
-            </div>
-          </div>
-        </section>
+        <div>
+          <HomeAdsSection/>
+        </div>
 
         {/* 3. Products Section */}
         <div
@@ -109,7 +51,6 @@ export default function Home() {
                 isFav={actions.isProductInWishlist(product.id)}
                 onProductClick={actions.handleProductClick}
                 onToggleWishlist={actions.handleToggleWishlist}
-                onQuickAdd={actions.handleQuickAdd}
               />
             ))}
           </div>
