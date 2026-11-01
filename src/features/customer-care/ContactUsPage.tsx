@@ -8,6 +8,7 @@ import {
   IoCheckmarkCircle,
 } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import StaticStoreMap from "../google-map/screen/StaticStoreMap";
 
 export default function ContactUsPage() {
   const [formData, setFormData] = useState({

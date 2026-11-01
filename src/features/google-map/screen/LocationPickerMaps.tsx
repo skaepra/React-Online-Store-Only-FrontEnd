@@ -1,15 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import L from "leaflet";
 import axios from "axios";
-
-// يفضل نقلها إلى .env
-const MAPTILER_KEY =
-  "yO5BCOXvi0MwW2kvjQf1";
-
-const ORS_API_KEY =
-
-  "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQ3YWM5M2UxOGE5YjRjZjFiMTgxODU5ODQ1YzNjMDFkIiwiaCI6Im11cm11cjY0In0=";
 
 type LocationType = {
   latitude: number;
@@ -25,105 +16,84 @@ type Props = {
   }) => void;
 };
 
-const DEFAULT_COORDS: [number, number] = [36.2765, 33.5138];
+const DEFAULT_COORDS: L.LatLngExpression = [33.5138, 36.2765];
+const OSM_TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+const OSM_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 export default function LocationPickerMaps({
   onConfirm,
   isPermissionDenied,
 }: Props) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
-
+  const mapRef = useRef<L.Map | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const lastLocationRef = useRef<LocationType | null>(null);
 
-  const [selectedLocation, setSelectedLocation] =
-    useState<LocationType>({
-      longitude: DEFAULT_COORDS[0],
-      latitude: DEFAULT_COORDS[1],
-    });
-
+  const [selectedLocation, setSelectedLocation] = useState<LocationType>({
+    latitude: 33.5138,
+    longitude: 36.2765,
+  });
   const [address, setAddress] = useState("");
-
   const [loading, setLoading] = useState(false);
 
-  /*
-  ========================================
-  REVERSE GEOCODE
-  ========================================
-  */
-
-  async function reverseGeocode(
-    latitude: number,
-    longitude: number
-  ) {
+  async function reverseGeocode(latitude: number, longitude: number) {
     try {
       setLoading(true);
 
       const response = await axios.get(
-        "https://api.openrouteservice.org/geocode/reverse",
+        "https://nominatim.openstreetmap.org/reverse",
         {
           params: {
-            api_key: ORS_API_KEY,
-            "point.lat": latitude,
-            "point.lon": longitude,
+            format: "jsonv2",
+            lat: latitude,
+            lon: longitude,
             "accept-language": "ar",
           },
-        }
+        },
       );
 
-      const label =
-        response.data.features?.[0]?.properties?.label ??
-        "عنوان غير معروف";
-
-      setAddress(label);
+      setAddress(response.data.display_name ?? "عنوان غير معروف");
     } catch (error) {
       console.error("Reverse Geocode Error:", error);
-
       setAddress("تعذر الحصول على العنوان");
     } finally {
       setLoading(false);
     }
   }
 
-  /*
-  ========================================
-  INITIALIZE MAP
-  ========================================
-  */
-
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`,
+    const map = L.map(mapContainerRef.current, {
       center: DEFAULT_COORDS,
       zoom: 13,
-      attributionControl: false,
+      zoomControl: true,
+      attributionControl: true,
     });
+
+    L.tileLayer(OSM_TILE_URL, {
+      attribution: OSM_ATTRIBUTION,
+      maxZoom: 19,
+    }).addTo(map);
 
     mapRef.current = map;
 
-    map.on("load", () => {
-      reverseGeocode(
-        DEFAULT_COORDS[1],
-        DEFAULT_COORDS[0]
-      );
-    });
-
     const resizeObserver = new ResizeObserver(() => {
       requestAnimationFrame(() => {
-        map.resize();
+        map.invalidateSize();
       });
     });
 
     resizeObserver.observe(mapContainerRef.current);
 
+    map.whenReady(() => {
+      map.invalidateSize();
+      reverseGeocode(33.5138, 36.2765);
+    });
+
     map.on("moveend", () => {
       const center = map.getCenter();
-
       const newLoc = {
         latitude: center.lat,
         longitude: center.lng,
@@ -131,20 +101,13 @@ export default function LocationPickerMaps({
 
       if (
         lastLocationRef.current &&
-        Math.abs(
-          lastLocationRef.current.latitude -
-            newLoc.latitude
-        ) < 0.0001 &&
-        Math.abs(
-          lastLocationRef.current.longitude -
-            newLoc.longitude
-        ) < 0.0001
+        Math.abs(lastLocationRef.current.latitude - newLoc.latitude) < 0.0001 &&
+        Math.abs(lastLocationRef.current.longitude - newLoc.longitude) < 0.0001
       ) {
         return;
       }
 
       lastLocationRef.current = newLoc;
-
       setSelectedLocation(newLoc);
 
       if (timeoutRef.current) {
@@ -152,30 +115,19 @@ export default function LocationPickerMaps({
       }
 
       timeoutRef.current = setTimeout(() => {
-        reverseGeocode(
-          newLoc.latitude,
-          newLoc.longitude
-        );
-      }, 500);
+        reverseGeocode(newLoc.latitude, newLoc.longitude);
+      }, 1000);
     });
 
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-
       resizeObserver.disconnect();
-
       map.remove();
-
       mapRef.current = null;
     };
   }, []);
-   /*
-  ========================================
-  GET CURRENT LOCATION
-  ========================================
-  */
 
   function getCurrentLocation() {
     if (!navigator.geolocation) {
@@ -193,45 +145,28 @@ export default function LocationPickerMaps({
         };
 
         setSelectedLocation(coords);
-
-        // حفظ آخر موقع لمنع تكرار reverseGeocode لنفس الإحداثيات
         lastLocationRef.current = coords;
 
-        mapRef.current?.flyTo({
-          center: [coords.longitude, coords.latitude],
-          zoom: 15,
-          duration: 1500,
+        mapRef.current?.flyTo([coords.latitude, coords.longitude], 15, {
+          duration: 1.5,
         });
 
         reverseGeocode(coords.latitude, coords.longitude);
       },
       (error) => {
         setLoading(false);
-
         console.error("Location Error:", error);
-
         alert(
-          "تعذر تحديد موقعك الحالي. تأكد من منح إذن الوصول للموقع في المتصفح."
+          "تعذر تحديد موقعك الحالي. تأكد من منح إذن الوصول للموقع في المتصفح.",
         );
       },
       {
         enableHighAccuracy: true,
-      }
+      },
     );
   }
 
-  /*
-  ========================================
-  CONFIRM LOCATION
-  ========================================
-  */
-
   function handleConfirmLocation() {
-    if (!selectedLocation) {
-      alert("الرجاء تحديد موقع على الخريطة أولاً.");
-      return;
-    }
-
     onConfirm?.({
       latitude: selectedLocation.latitude,
       longitude: selectedLocation.longitude,
@@ -241,34 +176,23 @@ export default function LocationPickerMaps({
 
   return (
     <div style={styles.container}>
-      {/* MAP */}
-      <div
-        ref={mapContainerRef}
-        style={styles.map}
-      />
+      <div ref={mapContainerRef} style={styles.map} />
 
-      {/* CENTER MARKER */}
       <div style={styles.markerContainer}>
         <div style={styles.markerOuter}>
           <div style={styles.markerInner} />
         </div>
       </div>
 
-      {/* BOTTOM CARD */}
       <div style={styles.bottomCard}>
         <h3 style={styles.title}>
-          {isPermissionDenied
-            ? "حدد موقعك يدوياً"
-            : "اختر موقع التوصيل"}
+          {isPermissionDenied ? "حدد موقعك يدوياً" : "اختر موقع التوصيل"}
         </h3>
 
         {loading ? (
           <div style={styles.loadingContainer}>
             <span style={styles.spinner}></span>
-
-            <span style={styles.loadingText}>
-              جاري تحديد العنوان...
-            </span>
+            <span style={styles.loadingText}>جاري تحديد العنوان...</span>
           </div>
         ) : (
           <p style={styles.addressText}>
@@ -277,11 +201,10 @@ export default function LocationPickerMaps({
         )}
 
         <button
+          type="button"
           style={{
             ...styles.confirmButton,
-            ...(loading
-              ? styles.disabledButton
-              : {}),
+            ...(loading ? styles.disabledButton : {}),
           }}
           disabled={loading}
           onClick={handleConfirmLocation}
@@ -290,14 +213,11 @@ export default function LocationPickerMaps({
         </button>
       </div>
 
-      {/* CURRENT LOCATION BUTTON */}
-
       <button
+        type="button"
         style={{
           ...styles.currentLocationButton,
-          ...(isPermissionDenied
-            ? { opacity: 0.6 }
-            : {}),
+          ...(isPermissionDenied ? { opacity: 0.6 } : {}),
         }}
         title="تحديد موقعي الحالي"
         onClick={getCurrentLocation}
@@ -308,18 +228,19 @@ export default function LocationPickerMaps({
   );
 }
 
-// التنسيقات باستخدام Inline CSS للتبسيط (يمكنك تحويلها لـ CSS Modules أو Tailwind)
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     position: "relative",
     width: "100%",
-    height: "100vh",
+    height: "100%",
+    minHeight: "400px",
     fontFamily: "sans-serif",
     direction: "rtl",
   },
   map: {
     width: "100%",
     height: "100%",
+    minHeight: "400px",
   },
   markerContainer: {
     position: "absolute",
@@ -327,13 +248,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     pointerEvents: "none",
-    zIndex: 10,
+    zIndex: 1000,
   },
   markerOuter: {
     width: "30px",
     height: "30px",
     borderRadius: "50%",
-    backgroundColor: "rgba(0, 122, 255, 0.3)",
+    backgroundColor: "rgba(0, 113, 206, 0.3)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -342,11 +263,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: "12px",
     height: "12px",
     borderRadius: "50%",
-    backgroundColor: "#007AFF",
+    backgroundColor: "#0071ce",
   },
   bottomCard: {
     position: "absolute",
-    bottom: "90px",
+    bottom: "24px",
     left: "20px",
     right: "20px",
     maxWidth: "400px",
@@ -355,7 +276,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: "20px",
     borderRadius: "15px",
     boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-    zIndex: 10,
+    zIndex: 1000,
   },
   title: {
     fontSize: "18px",
@@ -368,6 +289,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: "10px",
     margin: "10px 0",
   },
+  spinner: {
+    width: "16px",
+    height: "16px",
+    border: "2px solid #dbeafe",
+    borderTopColor: "#0071ce",
+    borderRadius: "50%",
+    display: "inline-block",
+    animation: "spin 0.8s linear infinite",
+  },
   loadingText: {
     fontSize: "14px",
     color: "#666",
@@ -379,7 +309,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   confirmButton: {
     width: "100%",
-    backgroundColor: "#007AFF",
+    backgroundColor: "#0071ce",
     color: "#FFF",
     border: "none",
     padding: "10px",
@@ -394,7 +324,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   currentLocationButton: {
     position: "absolute",
-    bottom: "220px",
+    bottom: "210px",
     right: "20px",
     backgroundColor: "#FFF",
     border: "none",
@@ -402,9 +332,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     height: "50px",
     borderRadius: "25px",
     fontSize: "24px",
-    color: "#007AFF",
+    color: "#0071ce",
     cursor: "pointer",
     boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-    zIndex: 10,
+    zIndex: 1000,
   },
 };
