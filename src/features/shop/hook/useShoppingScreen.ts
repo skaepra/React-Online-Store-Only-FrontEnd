@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Product } from "../../products/types/product";
-import Allproducts from "../../../data/Allproducts";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addToCart } from "../../cart/store/cartSlice";
 import { hand } from "../../products/store/productUiSlice";
 import { selectWishlistItems } from "../../products/store/WishlisSelectors";
 import { toggleWishlist } from "../../products/store/WishlistSlice";
+import { getCategories } from "../services/categoryService";
+import { getProductPage, getProducts, SHOP_PAGE_SIZE } from "../services/productService";
 export function useShoppingScreen() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -19,35 +19,13 @@ export function useShoppingScreen() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("default");
   const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [page, setPage] = useState(1);
   const [isFilterMobileOpen, setIsFilterMobileOpen] = useState<boolean>(false);
   const [addedToast, setAddedToast] = useState<string | null>(null);
 
-  const allProducts = useMemo(() => Allproducts as Product[], []);
+  const allProducts = useMemo(() => getProducts(), []);
 
-  // Categories Calculation
-  const categories = useMemo(() => {
-    const categoryMap: Record<string, number> = {};
-
-    allProducts.forEach((product) => {
-      const category = product.Category || "General";
-      categoryMap[category] = (categoryMap[category] || 0) + 1;
-    });
-
-    return [
-      {
-        name: "All",
-        count: allProducts.length,
-        image: allProducts[0]?.Images[0],
-      },
-      ...Object.keys(categoryMap).map((cat) => ({
-        name: cat,
-        count: categoryMap[cat],
-        image: allProducts.find(
-          (product) => (product.Category || "General") === cat,
-        )?.Images[0],
-      })),
-    ];
-  }, [allProducts]);
+  const categories = useMemo(() => getCategories(allProducts), [allProducts]);
 
   // Filtering & Sorting
   const filteredProducts = useMemo(() => {
@@ -71,6 +49,12 @@ export function useShoppingScreen() {
         return 0;
       });
   }, [allProducts, selectedCategory, searchQuery, maxPrice, sortBy]);
+
+  const displayedProducts = useMemo(
+    () => getProductPage(filteredProducts, page),
+    [filteredProducts, page],
+  );
+  const hasMoreProducts = page * SHOP_PAGE_SIZE < filteredProducts.length;
 
   // Handlers
   const handleProductClick = (id: string) => {
@@ -116,6 +100,16 @@ export function useShoppingScreen() {
     setSearchQuery(new URLSearchParams(location.search).get("search") ?? "");
   }, [location.search]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCategory, searchQuery, maxPrice, sortBy]);
+
+  const handleLoadMore = () => {
+    if (hasMoreProducts) {
+      setPage((currentPage) => currentPage + 1);
+    }
+  };
+
   return {
     state: {
       selectedCategory,
@@ -126,6 +120,8 @@ export function useShoppingScreen() {
       addedToast,
       categories,
       filteredProducts,
+      displayedProducts,
+      hasMoreProducts,
     },
     actions: {
       setSelectedCategory,
@@ -136,6 +132,7 @@ export function useShoppingScreen() {
       handleProductClick,
       handleQuickAdd,
       handleResetFilters,
+      handleLoadMore,
       handleToggleWishlist,
       isProductInWishlist,
     },

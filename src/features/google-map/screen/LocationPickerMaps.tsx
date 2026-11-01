@@ -48,15 +48,15 @@ export default function LocationPickerMaps({
             format: "jsonv2",
             lat: latitude,
             lon: longitude,
-            "accept-language": "ar",
+            "accept-language": "en",
           },
         },
       );
 
-      setAddress(response.data.display_name ?? "عنوان غير معروف");
+      setAddress(response.data.display_name ?? "Unknown address");
     } catch (error) {
       console.error("Reverse Geocode Error:", error);
-      setAddress("تعذر الحصول على العنوان");
+      setAddress("Unable to get the address");
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,7 @@ export default function LocationPickerMaps({
 
   function getCurrentLocation() {
     if (!navigator.geolocation) {
-      alert("متصفحك لا يدعم تحديد الموقع الجغرافي.");
+      alert("Your browser does not support geolocation.");
       return;
     }
 
@@ -157,7 +157,7 @@ export default function LocationPickerMaps({
         setLoading(false);
         console.error("Location Error:", error);
         alert(
-          "تعذر تحديد موقعك الحالي. تأكد من منح إذن الوصول للموقع في المتصفح.",
+          "Unable to get your current location. Please allow location access in your browser.",
         );
       },
       {
@@ -186,17 +186,19 @@ export default function LocationPickerMaps({
 
       <div style={styles.bottomCard}>
         <h3 style={styles.title}>
-          {isPermissionDenied ? "حدد موقعك يدوياً" : "اختر موقع التوصيل"}
+          {isPermissionDenied
+            ? "Select your location manually"
+            : "Choose a delivery location"}
         </h3>
 
         {loading ? (
           <div style={styles.loadingContainer}>
             <span style={styles.spinner}></span>
-            <span style={styles.loadingText}>جاري تحديد العنوان...</span>
+            <span style={styles.loadingText}>Getting address...</span>
           </div>
         ) : (
           <p style={styles.addressText}>
-            {address || "قم بتحريك الخريطة لتحديد الموقع"}
+            {address || "Move the map to select a location"}
           </p>
         )}
 
@@ -209,7 +211,7 @@ export default function LocationPickerMaps({
           disabled={loading}
           onClick={handleConfirmLocation}
         >
-          تأكيد الموقع
+          Confirm location
         </button>
       </div>
 
@@ -219,7 +221,7 @@ export default function LocationPickerMaps({
           ...styles.currentLocationButton,
           ...(isPermissionDenied ? { opacity: 0.6 } : {}),
         }}
-        title="تحديد موقعي الحالي"
+        title="Use my current location"
         onClick={getCurrentLocation}
       >
         ◎
@@ -235,7 +237,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     height: "100%",
     minHeight: "400px",
     fontFamily: "sans-serif",
-    direction: "rtl",
+    direction: "ltr",
   },
   map: {
     width: "100%",

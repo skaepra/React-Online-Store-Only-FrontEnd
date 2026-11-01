@@ -49,7 +49,9 @@ The project follows **Feature-based Architecture** and demonstrates modern front
 
 ### Maps
 
-* MapLibre GL
+* Leaflet
+* OpenStreetMap tiles
+* Nominatim reverse geocoding
 
 ### Animations
 
@@ -145,7 +147,9 @@ Vercel hosts the frontend only. Any API used by the app must be deployed and rea
 
 ##  Location Services
 
-The checkout page integrates **MapLibre GL** to allow users to select their delivery location directly on the map.
+The checkout page uses **Leaflet** with standard **OpenStreetMap** tiles to let users select a delivery location. It uses Nominatim for English reverse geocoding; no map API key or paid map subscription is required. Map label languages depend on the names available in OpenStreetMap data.
+
+OpenStreetMap data is free and open, but its public tile servers and Nominatim are community services with usage policies and capacity limits. This app is suitable for low-volume use; production deployments with significant traffic should use a provider or self-hosted service that meets their usage requirements. Keep the OpenStreetMap attribution visible on the map.
 
 ---
 

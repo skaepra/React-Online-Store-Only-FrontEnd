@@ -257,19 +257,20 @@ export default function AppNavbar() {
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="relative w-full max-w-3xl h-[520px] bg-white dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-white/10">
-            <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+            <div className="absolute top-4 left-4 right-4 z-[2000] flex items-center justify-between pointer-events-none">
               <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold shadow-md pointer-events-auto">
-                📍 اختر موقعك
+                📍 Select your location
               </span>
               <button
                 onClick={() => setIsMapOpen(false)}
-                className="pointer-events-auto bg-slate-900/80 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110 shadow-md"
+                className="pointer-events-auto relative z-[1100] bg-slate-900/80 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110 shadow-md"
+                aria-label="Close location map"
               >
                 ✕
               </button>
             </div>
 
-            <div className="w-full h-full relative">
+            <div className="relative z-0 isolate w-full h-full">
               <LocationPickerMaps onConfirm={handleConfirmLocation} />
             </div>
           </div>

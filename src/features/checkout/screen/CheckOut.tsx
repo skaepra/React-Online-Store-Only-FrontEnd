@@ -344,7 +344,7 @@ export default function CheckOutScreen() {
       {showMapModal && (
         <div className={styles.modalBackdrop}>
           <div className={styles.modalContent}>
-            <div className={styles.modalHeader}>
+            <div className={`${styles.modalHeader} relative z-[2000]`}>
               <h3 className="font-bold text-gray-800 dark:text-white">
                 Select Delivery Location
               </h3>
@@ -356,7 +356,7 @@ export default function CheckOutScreen() {
                 ✕
               </button>
             </div>
-            <div className="h-[450px] w-full ">
+            <div className="relative z-0 isolate h-[450px] w-full">
               <LocationPickerMaps onConfirm={handleLocationConfirm} />
             </div>
           </div>

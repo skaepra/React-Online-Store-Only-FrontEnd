@@ -128,9 +128,9 @@ export default function ShoppingScreen() {
               className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
             >
               <AnimatePresence>
-                {state.filteredProducts.map((product) => (
+                {state.displayedProducts.map((product, index) => (
                   <ProductCard
-                    key={product.id}
+                    key={`${product.id}-${index}`}
                     product={product}
                     isFav={actions.isProductInWishlist(product.id)}
                     onProductClick={actions.handleProductClick}
@@ -153,6 +153,17 @@ export default function ShoppingScreen() {
                 className="mt-4 rounded-full bg-[#0053e2] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#0047c6]"
               >
                 Reset filters
+              </button>
+            </div>
+          )}
+          {state.hasMoreProducts && (
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                onClick={actions.handleLoadMore}
+                className="rounded-full bg-[#0053e2] px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0047c6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0053e2]"
+              >
+                Show more
               </button>
             </div>
           )}
