@@ -7,6 +7,7 @@ type PasswordInputProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   error?: string;
+  variant?: "default" | "soft";
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange">;
 
 export default function PasswordInput({
@@ -14,6 +15,7 @@ export default function PasswordInput({
   onChange,
   placeholder = "Enter your password",
   error,
+  variant,
   ...rest
 }: PasswordInputProps) {
   const [visible, setVisible] = useState(false);
@@ -23,15 +25,16 @@ export default function PasswordInput({
       {...rest}
       type={visible ? "text" : "password"}
       value={value}
-      onChange={onChange} // تم إزالة as any بفضل التوافق مع BaseInput
+      onChange={onChange}
       placeholder={placeholder}
       error={error}
+      variant={variant}
       icon={<IoLockClosedOutline size={20} />}
       rightElement={
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
-          className="flex items-center justify-center p-1 text-textMuted hover:text-text focus:outline-none transition-colors"
+          className="flex items-center justify-center p-1 text-gray-400 transition-colors hover:text-gray-700 focus:outline-none dark:text-zinc-400 dark:hover:text-white"
           tabIndex={-1}
         >
           {visible ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}

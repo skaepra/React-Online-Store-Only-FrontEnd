@@ -6,6 +6,7 @@ type CommonProps = {
   rightElement?: React.ReactNode;
   leftElement?: React.ReactNode;
   className?: string;
+  variant?: "default" | "soft";
 };
 
 type InputModeProps = CommonProps &
@@ -31,6 +32,7 @@ export default function BaseInput(props: InputProps) {
     leftElement,
     multiline = false,
     className = "",
+    variant = "default",
     onChange,
     ...rest
   } = props;
@@ -38,22 +40,29 @@ export default function BaseInput(props: InputProps) {
   const hasLeftContent = !!icon || !!leftElement;
   const hasRightContent = !!rightElement;
 
-  // 💡 كلاسات مخصصة لمعالجة الخلفية البيضاء الخاصة بالـ Autofill
-  const autofillClasses =
-    "autofill:bg-transparent autofill:text-text [&&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s] [&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
+  const isSoft = variant === "soft";
+  const autofillClasses = isSoft
+    ? "[&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_#eef2f6_inset] [&&:-webkit-autofill]:[-webkit-text-fill-color:#111827] dark:[&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_#27272a_inset] dark:[&&:-webkit-autofill]:[-webkit-text-fill-color:white]"
+    : "[&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_#f9fafb_inset] [&&:-webkit-autofill]:[-webkit-text-fill-color:#111827] dark:[&&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_#27272a_inset] dark:[&&:-webkit-autofill]:[-webkit-text-fill-color:white]";
 
   return (
-    <div className="my-2 flex flex-col w-full">
+    <div className={`flex w-full flex-col ${isSoft ? "my-1.5" : "my-2"}`}>
       <div
-        className={`relative flex flex-row items-center bg-surface rounded-[22px] border transition-colors ${
-          error ? "border-dangerRose" : "border-surface"
-        } ${
-          multiline ? "h-auto min-h-[45px] !items-start" : "h-[45px]"
-        }`}
+        className={`relative flex flex-row items-center transition-colors ${
+          isSoft
+            ? `rounded-md border bg-[#eef2f6] dark:bg-zinc-800 ${
+                error
+                  ? "border-red-500"
+                  : "border-transparent focus-within:border-indigo-300"
+              }`
+            : `rounded-lg border bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-500 dark:bg-zinc-800 ${
+                error ? "border-red-500" : "border-gray-200 dark:border-zinc-700"
+              }`
+        } ${multiline ? "h-auto min-h-[45px] !items-start" : isSoft ? "h-[48px]" : "h-[45px]"}`}
       >
         {icon && (
           <span
-            className={`absolute left-[15px] flex items-center justify-center text-textMuted pointer-events-none ${
+            className={`pointer-events-none absolute left-[15px] flex items-center justify-center text-gray-400 dark:text-zinc-400 ${
               multiline ? "top-[14px]" : ""
             }`}
           >
@@ -78,7 +87,7 @@ export default function BaseInput(props: InputProps) {
               onChange as React.ChangeEventHandler<HTMLTextAreaElement>
             }
             rows={(props as TextAreaModeProps).rows ?? 4}
-            className={`flex-1 w-full bg-transparent text-text text-sm border-none outline-none focus:outline-none focus:ring-0 pt-3 pb-3 resize-y ${autofillClasses} ${
+            className={`w-full flex-1 resize-y border-none bg-transparent pb-3 pt-3 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-zinc-500 ${autofillClasses} ${
               hasLeftContent ? "pl-[45px]" : "pl-4"
             } ${hasRightContent ? "pr-[45px]" : "pr-4"} ${className}`}
           />
@@ -88,7 +97,7 @@ export default function BaseInput(props: InputProps) {
             onChange={
               onChange as React.ChangeEventHandler<HTMLInputElement>
             }
-            className={`flex-1 w-full h-full bg-transparent text-text text-sm border-none outline-none focus:outline-none focus:ring-0 ${autofillClasses} ${
+            className={`h-full w-full flex-1 border-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-zinc-500 ${autofillClasses} ${
               hasLeftContent ? "pl-[45px]" : "pl-4"
             } ${hasRightContent ? "pr-[45px]" : "pr-4"} ${className}`}
           />
@@ -106,7 +115,7 @@ export default function BaseInput(props: InputProps) {
       </div>
 
       {!!error && (
-        <span className="text-dangerRose text-xs mt-1 ml-[15px]">
+        <span className="ml-[4px] mt-1 text-xs font-medium text-red-500">
           {error}
         </span>
       )}

@@ -28,16 +28,13 @@ import ScrollToTop from "./shared/utils/ScrollToTop";
 
 export default function Layout(): React.JSX.Element {
   const location = useLocation();
-
-  const hideNavbarRoutes: readonly string[] = ["/login", "/singUp"];
-  const hideFooterRoutes: readonly string[] = ["/login", "/singUp"];
-  const shouldHideNavbar: boolean = hideNavbarRoutes.includes(location.pathname);
-  const shouldHideFooter: boolean = hideFooterRoutes.includes(location.pathname);
+  const hideChromeRoutes: readonly string[] = ["/login", "/singUp"];
+  const shouldHideChrome = hideChromeRoutes.includes(location.pathname);
 
   return (
     <AppThemeProvider>
       <ScrollToTop />
-      <div className={shouldHideNavbar ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
+      <div className={shouldHideChrome ? "" : "pt-[110px] md:pt-[102px] bg-white dark:bg-zinc-900"}>
         <Routes>
           {/* 🟢 1. صفحات عامة متاحة لجميع الزوار */}
           <Route path="/" element={<Home />} />
@@ -63,8 +60,8 @@ export default function Layout(): React.JSX.Element {
         </Routes>
       </div>
 
-      {!shouldHideNavbar && <AppNavbar />}
-      {!shouldHideFooter && <Footer />}
+      {!shouldHideChrome && <AppNavbar />}
+      {!shouldHideChrome && <Footer />}
     </AppThemeProvider>
   );
 }

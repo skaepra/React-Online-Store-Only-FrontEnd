@@ -1,13 +1,14 @@
 import { FormEvent, ChangeEvent } from "react";
-import { IoMailOutline, IoArrowBack, IoAlertCircleOutline } from "react-icons/io5";
+import { IoMailOutline, IoAlertCircleOutline } from "react-icons/io5";
 
 import { useLogin } from "../hooks/useLogin";
 import PasswordInput from "../../../shared/components/PasswordInput";
 import BaseInput from "../../../shared/components/BaseInput";
-import { NavLink } from "react-router-dom";
+import { AuthScreenLayout } from "../components/AuthScreenLayout";
+import { authStyles } from "../components/authStyles";
 
 export default function LoginScreen() {
-  const { formData, errors, updateField, submit, loading, errorMessage ,isError} =
+  const { formData, errors, updateField, submit, loading, errorMessage, isError } =
     useLogin();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -16,53 +17,40 @@ export default function LoginScreen() {
   };
 
   return (
-    <div className={styles.screenWrapper}>
-      <form onSubmit={onSubmit} className={styles.card}>
-        <div>
-          <NavLink to="/" className={styles.backLink} aria-label="Back to home">
-            <IoArrowBack size={20} className="text-white" />
-          </NavLink>
-
-          <div className={styles.titleContainer}>
-            <h1 className={styles.title}>Login</h1>
+    <AuthScreenLayout mode="login">
+      <form onSubmit={onSubmit} className={authStyles.form}>
+        {isError && errorMessage && (
+          <div className={authStyles.errorBanner}>
+            <IoAlertCircleOutline size={18} className="shrink-0" />
+            <span>{errorMessage}</span>
           </div>
-        </div>
+        )}
 
-        {/* عرض رسالة الخطأ القادمة من السيرفر إن وجدت */}
-         {isError && errorMessage && (
-                  <div className="flex items-center gap-2 p-3 text-xs text-red-200 bg-red-900/80 border border-red-500/50 rounded-lg animate-fadeIn">
-                    <IoAlertCircleOutline size={18} className="shrink-0 text-red-400" />
-                    <span>{errorMessage}</span>
-                  </div>
-                )}
+        <BaseInput
+          type="email"
+          name="Email"
+          value={formData.Email || ""}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            updateField("Email", e.target.value)
+          }
+          placeholder="Email"
+          error={errors?.Email}
+          icon={<IoMailOutline size={18} />}
+          variant="soft"
+        />
 
-        <div className={styles.inputsContainer}>
-          {/* الإيميل - مطابقة الاسم Email للحرف الكبير */}
-          <BaseInput
-            type="email"
-            name="Email"
-            value={formData.Email || ""}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateField("Email", e.target.value)
-            }
-            placeholder="Your Email"
-            error={errors?.Email}
-            icon={<IoMailOutline size={20} />}
-          />
+        <PasswordInput
+          name="password"
+          value={formData.password || ""}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            updateField("password", e.target.value)
+          }
+          placeholder="Password"
+          error={errors?.password}
+          variant="soft"
+        />
 
-          {/* كلمة السر */}
-          <PasswordInput
-            name="password"
-            value={formData.password || ""}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateField("password", e.target.value)
-            }
-            placeholder="Password"
-            error={errors?.password}
-          />
-        </div>
-
-        <div className={styles.checkboxContainer}>
+        <div className={authStyles.checkboxContainer}>
           <input
             type="checkbox"
             id="remember"
@@ -71,60 +59,21 @@ export default function LoginScreen() {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               updateField("Remember", e.target.checked)
             }
-            className={styles.checkbox}
+            className={authStyles.checkbox}
           />
-          <label htmlFor="remember" className={styles.checkboxLabel}>
+          <label htmlFor="remember" className={authStyles.checkboxLabel}>
             Remember me
           </label>
         </div>
 
-        <div>
-          <button
-            type="submit"
-            disabled={loading || !formData.Email || !formData.password}
-            className={styles.submitBtn}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </div>
-
-        <div className={styles.signupContainer}>
-           <NavLink to="/singUp" className="flex items-center">
-            <span className={styles.signupText}>Don't have an account?</span>
-            <span className={styles.signupLink}>Sign up</span>
-          </NavLink>
-        </div>
+        <button
+          type="submit"
+          disabled={loading || !formData.Email || !formData.password}
+          className={authStyles.submitBtn}
+        >
+          {loading ? "Signing In..." : "Sign In"}
+        </button>
       </form>
-    </div>
+    </AuthScreenLayout>
   );
 }
-
-const styles = {
-  screenWrapper:
-    "fixed top-0 left-0 right-0 h-screen text-white w-full flex justify-center items-center bg-[url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1920&auto=format&fit=crop')] bg-center bg-cover bg-no-repeat",
-  card: "relative space-y-3.5 border-2 border-[#9e9e9e] p-5 w-[340px] backdrop-blur-sm bg-black/40 rounded-2xl shadow-xl",
-
-  // Header section
-  backLink:
-    "absolute top-4 left-4 p-1.5 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center",
-  titleContainer: "flex justify-center",
-  title: "font-bold text-2xl text-white mb-2",
-
-  // Form inputs
-  inputsContainer: "space-y-1",
-
-  // Checkbox
-  checkboxContainer: "flex items-center my-2",
-  checkbox:
-    "border bg-transparent rounded cursor-pointer accent-blue-500 w-4 h-4",
-  checkboxLabel: "ml-2 text-sm select-none cursor-pointer text-gray-200",
-
-  // Submit button
-  submitBtn:
-    "border-none bg-white hover:bg-[#e6e4e4] disabled:opacity-50 disabled:hover:bg-white font-bold w-full py-2.5 text-black rounded-2xl transition-all cursor-pointer disabled:cursor-not-allowed mt-2",
-
-  // Footer signup link
-  signupContainer: "flex justify-center text-sm pt-2",
-  signupText: "text-[#ececec]",
-  signupLink: "ml-1 font-semibold hover:underline text-blue-400 ",
-};
